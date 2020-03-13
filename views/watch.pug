@@ -1,0 +1,47 @@
+extends ./layouts/default
+append head
+    link(rel='stylesheet' href='/mod/videojs/videojs.css')
+    link(rel='stylesheet' href='/mod/videojs/vsplugins.min.css')
+    script(type='text/javascript' src='//imasdk.googleapis.com/js/sdkloader/ima3.js')
+    script(type='text/javascript' src='/mod/videojs/hls.min.js')
+    script(type='text/javascript' src='/mod/videojs/p2p-core.min.js')
+    script(type='text/javascript' src='/mod/videojs/p2p-hls.min.js')
+    script(type='text/javascript' src='/mod/videojs/videojs.min.js')
+    script(type='text/javascript' src='/mod/videojs/videojs-contrib-hls.js')
+    script(type='text/javascript' src='/mod/videojs/ads/contrib.min.js')
+    script(type='text/javascript' src='/mod/videojs/ads/videojs.ima.js')
+    script(type='text/javascript' src='/mod/videojs/videojs.logo.js')
+    script(type='text/javascript' src='/mod/videojs/core.min.js')
+    script(type='text/javascript' src='//st.bebi.com/bebi_v3.js')
+append body
+    style.
+        #player {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .player-container {
+            background: #000;
+            position: relative;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            overflow: hidden !important;
+        }
+block content
+    div.ma-container.ma-container-mobile
+        div
+            - var breadcrumb = [{title: 'Home', href: '/' }, {title: 'Fate/Grand Order', href: '/anime/1'}, { title: 'Episode 1'}]
+            if(isMobile)
+                include ./components/player
+                include ./components/episodeDetailsMobile
+                include ./components/breadcrumb
+            else
+                include ./components/breadcrumb
+                include ./components/player
+                include ./components/episodeDetails

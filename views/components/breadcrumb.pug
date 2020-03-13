@@ -1,0 +1,10 @@
+div.bc-no-bg
+    nav.ma-breadcrumb-container(aria-label='breadcrumb')
+        ol.ma-breadcrumb-list
+            each val in breadcrumb
+                if (val.href)
+                    li.ma-breadcrumb-item
+                        a.ma-breadcrumb-link.ma-link.ma-link-dim(href=val.href) #{val.title}
+                else
+                    li.ma-breadcrumb-item(aria-current='page')
+                        span.ma-breadcrumb-link.ma-link.ma-link-dim #{val.title}

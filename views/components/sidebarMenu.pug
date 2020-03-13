@@ -1,0 +1,39 @@
+nav.ma-sidebar-nav.navbar-dark#sidebar.sidebar-wrapper
+    //- ul.ma-navbar-menu-left.ma-non-list.m-2
+    //-     li.ma-navbar-menu-item
+    //-         div.ma-navbar-menu
+    //-             a(href="/")
+    //-                 div.ma-navbar-logo.ma-navbar-button
+    //-                     img.ma-logo(src='https://www.myanime.co/logo/logo-default.svg' onerror="this.onerror=null; this.src='https://www.myanime.co/logo/logo-default.png'")
+    //- ul.position-relative.ma-non-list.m-2
+    //-     li.ma-navbar-menu-item
+    //-         div.ma-navbar-menu
+    //-             button.ma-navbar-button.navbar-toggler#sidebar-close
+    //-                 i.fas.fa-times
+    .sidebar-content.ma-nav-fixed
+        // sidebar-header
+        //- .sidebar-search
+        //-     div
+        //-         .input-group
+        //-             input.form-control.search-menu(type='text' placeholder='Search...')
+        //-             .input-group-append
+        //-                 span.input-group-text
+        //-                     i.fa.fa-search(aria-hidden='true')
+        // sidebar-search
+        .sidebar-menu
+            ul
+                li
+                    a(href='#')
+                        i.fa.fa-list
+                        span Animes List
+                        span.badge.badge-pill.badge-primary Beta
+                li
+                    a(href='/ranking')
+                        i.fa.fa-bolt
+                        span Animes Rank
+                li
+                    a(href='/calendar/sunday')
+                        i.fa.fa-calendar
+                        span Calendar
+        // sidebar-menu
+        // sidebar-content

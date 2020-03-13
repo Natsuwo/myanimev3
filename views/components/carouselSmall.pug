@@ -1,0 +1,18 @@
+#{"div id=" +id }
+    - var threeArray = data.reduce(function(result, value, index, array) {if (index % 3 === 0) result.push(array.slice(index, index + 3)); return result;}, []);
+    each val in threeArray
+        .col
+            each item in val
+                .d-flex.flex-column
+                    //- - var index = item.id
+                    //- - var title = item.title
+                    //- - var img_url = item.thumbComponent.urlPrefix + '/' + item.thumbComponent.filename
+                    //- - var rank = item.rank
+                    - var index = item
+                    - var title = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, iste non placeat, ducimus tempora molestiae nobis at, ad quam fugiat maiores explicabo mollitia cum vel quisquam neque aliquid inventore reprehenderit."
+                    - var img_url = "https://hayabusa.io/abema/series/25-139/thumb.webp?width=128&height=72&quality=85&format=webp"
+                    - var rank = item
+                        include ./cardSmall
+script.
+    var id = "#{id}"
+    carouselCallback(id, 5, 3, 2, 2)

@@ -1,0 +1,12 @@
+extends ./layouts/default
+block content
+    div.container.ma-container-mobile
+        - var breadcrumb = [{title: 'Home', href: '/' }, {title: 'Fate/Grand Order -絶対魔獣戦線バビロニア-'}]
+        if(isMobile)
+            include ./components/animeInfoMobile
+            include ./components/episodeList
+            include ./components/breadcrumb
+        else
+            include ./components/breadcrumb
+            include ./components/animeInfo
+            include ./components/episodeList

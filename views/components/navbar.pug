@@ -1,0 +1,19 @@
+header.navbar.navbar-dark.ma-bg-dark.ma-navbar.fixed-top
+    ul.ma-navbar-menu-left.ma-non-list.m-0.p-0
+        li.ma-navbar-menu-item
+            div.ma-navbar-menu
+                button.ma-navbar-button.navbar-toggler#sidebar-toggler(data-trigger=isMobile ? "false" : "true")
+                    span.navbar-toggler-icon
+        li.ma-navbar-menu-item
+            div.ma-navbar-menu
+                a(href="/")
+                    div.ma-navbar-logo.ma-navbar-button
+                        img.ma-logo(src='https://www.myanime.co/logo/logo-default.svg' onerror="this.onerror=null; this.src='https://www.myanime.co/logo/logo-default.png'")
+    ul.position-relative.ma-non-list.m-0.p-0.ma-search-bar
+        li.ma-navbar-search-bar
+            form.ma-navbar-search-area(role='search')
+                input.ma-navbar-search-input(type='text' name='search' autocomplete='off' placeholder='Sword Art Online' value='')
+                div.ma-navbar-search-icon
+                    i.fas.fa-search
+                .ma-navbar-search-content
+

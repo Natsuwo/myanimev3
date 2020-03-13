@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+html(lang="en" style="overflow-x:hidden;")
+    head
+        block head
+            meta(charset="UTF-8")
+            meta(name="viewport" content="width=device-width, initial-scale=1.0")
+            title #{title || 'Opps'}       
+            link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css")
+            link(rel="stylesheet" href="/mod/bootstrap/css/bootstrap.min.css")
+            link(rel="stylesheet" href="/css/custom.css")
+            link(rel="stylesheet" href="/mod/slick@1.8.1/slick.min.css")
+    body.myanimev3
+        block body
+            script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js")
+            script(type="text/javascript" src="/mod/jquery@3.4.1/jquery-3.4.1.slim.min.js")
+            script(type="text/javascript" src="/mod/slick@1.8.1/slick.min.js")
+            script(type="text/javascript" src="/mod/bootstrap/js/bootstrap.min.js")
+            script(type="text/javascript" src="/js/custom.js")
+            if(isMobile)
+                div.main
+                    #ma-overlay.ma-sidebar-overlay-mobile
+                    .ma-mobile-container.adapt-mobile
+                        .page-wrapper.chiller-theme
+                            include ../components/sidebarMenu
+                            include ../components/navbar 
+                            main
+                                block content
+                            include ../components/footer
+            else
+                div.main
+                    .ma-desktop-container
+                        .page-wrapper.chiller-theme.toggled
+                            include ../components/sidebarMenu
+                            include ../components/navbar
+                            .ma-desktop-content
+                                main.page-content
+                                    block content
+                            include ../components/footer

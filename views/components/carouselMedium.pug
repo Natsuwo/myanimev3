@@ -1,0 +1,10 @@
+#{"div id=" +id }
+    each val in data
+        .ma-carousel-card-wrapper
+            - var index = val.seriesId
+            - var title = val.title
+            - var img_url = val.thumbComponent.urlPrefix + '/' + val.thumbComponent.filename
+                include ./cardMedium
+script.
+    var id = "#{id}"
+    carouselCallback(id, 6)

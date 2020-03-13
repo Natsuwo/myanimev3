@@ -1,0 +1,45 @@
+.embed-responsive.embed-responsive-16by9
+    #player-container.player-container.embed-responsive-item
+        video#player.video-js(style='width: 100%; height: 100%;' controls playsinline)
+script(type="text/javascript").
+    var player = videojs("player")
+    //- function loadAds() {
+    //-     var options = { adTagUrl: BB.getVASTUrl(2008513) }
+    //-     player.ima(options)
+    //-     var contentPlayer = document.getElementById('content_video_html5_api')
+    //-     if ((navigator.userAgent.match(/iPad/i) ||
+    //-         navigator.userAgent.match(/Android/i)) &&
+    //-         contentPlayer.hasAttribute('controls')) {
+    //-         contentPlayer.removeAttribute('controls')
+    //-     }
+    //-     var initAdDisplayContainer = function () {
+    //-         player.ima.initializeAdDisplayContainer()
+    //-         wrapperDiv.removeEventListener(startEvent, initAdDisplayContainer)
+    //-     }
+    //-     var startEvent = 'click'
+    //-     if (navigator.userAgent.match(/iPhone/i) ||
+    //-         navigator.userAgent.match(/iPad/i) ||
+    //-         navigator.userAgent.match(/Android/i)) {
+    //-         startEvent = 'touchend'
+    //-     }
+    //-     var wrapperDiv = document.getElementById('player')
+    //-     wrapperDiv.addEventListener(startEvent, initAdDisplayContainer)
+    //- }
+    var options = {
+        autoplay: false,
+        preload: "auto", 
+        type: "video/mp4",
+        src: "https://s1.myanime.co/video/2237700efb0a391938b214a2fdce78de6ff6275a1480dfc81953306e6ec769687519ef54b36bc4ce3d6b0316f2d98427"
+    };
+    player.poster("https://cdn.discordapp.com/attachments/624929128763621388/685860472066670617/bfe31c0e785999411a8d7212d138da02.jpg");
+    player.src(options);
+    player.one("error", err => {
+        options.type = "application/x-mpegURL";
+        options.src = "https://drstream.live/hls/bfe31c0e785999411a8d7212d138da02.m3u8";
+        player.src(options);
+        player.play();
+    });
+    //- player.ready(() => {
+    //-     player.play();
+    //- });
+    //- loadAds();

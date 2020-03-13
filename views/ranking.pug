@@ -1,0 +1,10 @@
+extends ./layouts/default
+block content
+    div.container.ma-container-mobile
+        - var breadcrumb = [{title: 'Home', href: '/' }, {title: 'Anime Ranking'}]
+        if(isMobile)  
+            include ./components/rankingMobile
+            include ./components/breadcrumb
+        else  
+            include ./components/breadcrumb
+            include ./components/ranking
