@@ -6,13 +6,14 @@ append head
     script(type='text/javascript' src='/mod/videojs/hls.min.js')
     script(type='text/javascript' src='/mod/videojs/p2p-core.min.js')
     script(type='text/javascript' src='/mod/videojs/p2p-hls.min.js')
-    script(type='text/javascript' src='/mod/videojs/videojs.min.js')
+    script(type='text/javascript' src='/mod/videojs/videojs.js')
     script(type='text/javascript' src='/mod/videojs/videojs-contrib-hls.js')
     script(type='text/javascript' src='/mod/videojs/ads/contrib.min.js')
     script(type='text/javascript' src='/mod/videojs/ads/videojs.ima.js')
     script(type='text/javascript' src='/mod/videojs/videojs.logo.js')
     script(type='text/javascript' src='/mod/videojs/core.min.js')
     script(type='text/javascript' src='//st.bebi.com/bebi_v3.js')
+    script(type='text/javascript' src='/js/test.js')
 append body
     style.
         #player {
@@ -36,7 +37,7 @@ append body
 block content
     div.ma-container.ma-container-mobile
         div
-            - var breadcrumb = [{title: 'Home', href: '/' }, {title: 'Fate/Grand Order', href: '/anime/1'}, { title: 'Episode 1'}]
+            - var breadcrumb = [{title: 'Home', href: '/' }, {title: anime.title, href: `/anime/${anime.anime_id}/${anime.slug}`}, { title: episode.caption}]
             if(isMobile)
                 include ./components/player
                 include ./components/episodeDetailsMobile

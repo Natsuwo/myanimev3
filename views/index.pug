@@ -1,23 +1,24 @@
 extends ./layouts/default
 block content
     div.container-fluid.ma-container-mobile
-        div.ma-billboard
-            section
-                div.ma-content-title
-                    h1(class=(isMobile ? "ma-pageTitle ma-pageTitle-mobile": "ma-pageTitle")) #{currentSeason.caption}
-                - var id = "current-season"
-                - var data = currentSeason.items
-                div.ma-content-section
-                    if(isMobile)
-                        include ./components/cardList
-                    else
-                        include ./components/carouselLarge
+        if(currentSeason)
+            div.ma-billboard
+                section
+                    div.ma-content-title
+                        h1(class=(isMobile ? "ma-pageTitle ma-pageTitle-mobile": "ma-pageTitle")) #{currentSeason.caption}
+                    - var id = "current-season"
+                    - var data = currentSeason.items
+                    div.ma-content-section
+                        if(isMobile)
+                            include ./components/cardList
+                        else
+                            include ./components/carouselLarge
         div.ma-billboard
             section
                 div.ma-content-title
                     h1(class=(isMobile ? "ma-pageTitle ma-pageTitle-mobile": "ma-pageTitle")) Top Rank
                 - var id = "top-rank"
-                - var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+                - var data = topRank
                 div.ma-content-section
                     if(isMobile)
                         include ./components/cardList
@@ -25,22 +26,13 @@ block content
                         include ./components/carouselSmall
         div.ma-billboard
             each val in features
-                if (val.type == 1)
-                    section
-                        - if(val.title === "1月クール新作アニメ") val.title = "January New Anime" 
-                        - if(val.title === "「超電磁砲T」視聴者にオススメ") val.title = "Recommend Action Genre" 
-                        - if(val.title === "人気週刊誌原作アニメ") val.title = "Weekly Anime" 
-                        - if(val.title === "ラブコメ・学園アニメ") val.title = "School Anime" 
-                        - if(val.title === "異世界・ファンタジーアニメ") val.title = "Isekai Anime" 
-                        - if(val.title === "新入荷作品") val.title = "New arrival works" 
-                        - if(val.title === "新シリーズ決定アニメ") val.title = "New Series Anime" 
-                        - if(val.title === "1月クール関連アニメ") val.title = "January Related Anime" 
-                        - var id = val.name
-                        - var data = val.cards
-                        div.ma-content-title
-                            h1(class=(isMobile ? "ma-pageTitle ma-pageTitle-mobile": "ma-pageTitle")) #{val.title}
-                        div.ma-content-section
-                            if(isMobile)
-                                include ./components/cardList
-                            else
-                                include ./components/carouselMedium
+                section
+                    - var id = val.name
+                    - var data = val.cards
+                    div.ma-content-title
+                        h1(class=(isMobile ? "ma-pageTitle ma-pageTitle-mobile": "ma-pageTitle")) #{val.title}
+                    div.ma-content-section
+                        if(isMobile)
+                            include ./components/cardList
+                        else
+                            include ./components/carouselMedium

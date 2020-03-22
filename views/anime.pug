@@ -1,7 +1,7 @@
 extends ./layouts/default
 block content
     div.container.ma-container-mobile
-        - var breadcrumb = [{title: 'Home', href: '/' }, {title: 'Fate/Grand Order -絶対魔獣戦線バビロニア-'}]
+        - var breadcrumb = [{title: 'Home', href: '/' }, {title: anime.title}]
         if(isMobile)
             include ./components/animeInfoMobile
             include ./components/episodeList

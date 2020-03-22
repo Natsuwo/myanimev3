@@ -1,8 +1,8 @@
 .ma-card
-    a.ma-link-block(href='/anime/1')
+    a.ma-link-block(href=`/anime/${anime_id}/${slug}`)
         .ma-card-inner
             .ma-m-thumbnail.ma-m-thumbnail-loaded
-                img.ma-m-thumbnail-image(alt=title, srcset=img_url+'?height=136&quality=50&format=webp 1x, '+img_url+'?height=272&quality=50&format=webp 2x' loading='lazy', src=img_url+ '?height=136&quality=50&format=webp')
+                img.ma-m-thumbnail-image(alt=title, srcset=thumb+'?h=136&f=webp 1x, '+thumb+'?h=272&f=webp 2x' loading='lazy', src=thumb+ '?h=136&f=webp')
             .ma-card-list-column-caption
                 .ma-card-list-column-caption-inner
                     p.ma-card-title

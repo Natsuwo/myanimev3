@@ -1,11 +1,10 @@
 #{"div id=" +id }
     each val in data
         .ma-carousel-card-wrapper
-            - var index = val.item_id
-            - var {title, slug, img_url} = val
-            - img_url = img_url + "?width=484&height=272&quality=50&format=webp"
+            - var index = val.anime_id
+            - var {title, anime_id, thumb, slug} = val
+            - thumb = thumb + "?w=484&h=272&f=webp"
                 include ./cardLarge
 script.
     var id = "#{id}"
     carouselCallback(id, 4)
-

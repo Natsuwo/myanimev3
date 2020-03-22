@@ -1,144 +1,116 @@
 const axios = require('axios')
 const Mobile = require('../helpers/is-mobile')
+const Anime = require('../models/Anime')
+const Option = require('../models/Options')
+const Genre = require('../models/Genre')
+const Episode = require('../models/Episode')
 module.exports = {
     async getIndex(req, res) {
         var isMobile = Mobile(req)
-        var currentSeason = {}
-        var items = [
+        var option = await Option.findOne({ default: true })
+        if (!option) throw Error("Setting not found. Please set option in backend fisrt.")
+        var { settings } = option
+        var { current_season } = settings
+        if (current_season) {
+            var currentSeasonItems = await Anime.find({ season: current_season }, { _id: 0 }).select("title slug thumb anime_id")
+            var currentSeason = {}
+            currentSeason.caption = current_season
+            currentSeason.items = currentSeasonItems
+        } else {
+            currentSeason = null
+        }
+        var features = []
+        var topRank = await Anime
+            .find({}, { _id: 0 })
+            .limit(30)
+            .sort({ views: -1 })
+            .select("title slug thumb anime_id")
+        var newUpdate = await Anime
+            .find({}, { _id: 0 })
+            .limit(30)
+            .sort({ updated_at: -1 })
+            .select("title slug thumb anime_id")
+        var recommend = await Anime
+            .find({}, { _id: 0 })
+            .limit(30)
+            .sort({ favorites: -1 })
+            .select("title slug thumb anime_id")
+        var random = await Anime
+            .aggregate([{ $sample: { size: 30 } }])
+            .project("title slug thumb anime_id -_id")
+
+        features.push(
             {
-                item_id: 1,
-                slug: "189-17",
-                img_url: "https://hayabusa.io/abema/series/189-17/thumb.v1583134503.png",
-                title: "Chi Baku Shounen Hanako Kun"
+                name: "anime-new-update",
+                title: "New Update",
+                cards: newUpdate
             },
             {
-                item_id: 2,
-                slug: "26-87",
-                img_url: "https://hayabusa.io/abema/series/26-87/thumb.v1583130903.png",
-                title: "Darwin's Game"
+                name: "anime-recommend",
+                title: "Recommend",
+                cards: recommend
             },
             {
-                item_id: 3,
-                slug: "15-2",
-                img_url: "https://hayabusa.io/abema/series/15-2/thumb.v1582287314.png",
-                title: "Kingdom Season 1"
-            },
-            {
-                item_id: 4,
-                slug: "54-42",
-                img_url: "https://hayabusa.io/abema/series/54-42/thumb.v1583133946.png",
-                title: "Interspecies Reviewers"
-            },
-            {
-                item_id: 5,
-                slug: "54-44",
-                img_url: "https://hayabusa.io/abema/series/54-44/thumb.v1583133947.png",
-                title: "Interspecies Reviewers Ura-Opt ver"
-            },
-            {
-                item_id: 6,
-                slug: "12-18",
-                img_url: "https://hayabusa.io/abema/series/12-18/thumb.v1583219462.png",
-                title: "Crayon Shin-chan"
-            },
-            {
-                item_id: 7,
-                slug: "26-75",
-                img_url: "https://hayabusa.io/abema/series/26-75/thumb.v1582171511.png",
-                title: "Kimetsu no Yaiba"
-            },
-            {
-                item_id: 8,
-                slug: "26-82",
-                img_url: "https://hayabusa.io/abema/series/26-82/thumb.v1583212208.png",
-                title: "Nanatsu no Taizai"
-            }
-        ]
-        currentSeason.caption = "Current Season"
-        currentSeason.items = items
-        var options = {
-            'method': 'GET',
-            'headers': {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
-                'accept': 'application/json, text/plain, */*',
-                'authorization': 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXYiOiJlYzNhOWYzZS1mZjhhLTQ4MjAtYmM3Yi1iOGY2M2QxZThlNDgiLCJleHAiOjIxNDc0ODM2NDcsImlzcyI6ImFiZW1hLmlvL3YxIiwic3ViIjoiOXh0SlNGM2haU1hiVE0ifQ.pwoaObCY_6KxryCvK0iUzW2lSiqBT3sIytonHAdnpAA',
-            }
-        };
-        var feaRes = await axios('https://api.abema.io/v1/video/genres/animation/features/premium?type=program,series,slot', options)
-        var { features } = feaRes.data
+                name: "anime-random",
+                title: "Random",
+                cards: random
+            })
         res.render('index', {
             isMobile,
             currentSeason,
+            topRank,
             features,
         })
     },
     async getAnime(req, res) {
-        var isMobile = Mobile(req)
-        var { slug } = req.params
-        res.render('anime', {
-            isMobile
-        })
+        try {
+            var isMobile = Mobile(req)
+            var { anime_id, slug } = req.params
+            var anime = await Anime.findOne({ anime_id, slug }, { _id: 0, __v: 0 })
+            if (!anime) throw Error("Not found.")
+            var genres = await Genre.find({ genre_id: { $in: anime.genres } }, { _id: 0 }).select("title")
+            var episodes = await Episode.find({ anime_id }, { _id: 0 }).select("thumbnail views sources number description")
+            var recommend = await Anime
+                .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 8 } }])
+                .project("title slug thumb anime_id -_id")
+            res.render('anime', {
+                anime,
+                genres,
+                episodes,
+                recommend,
+                isMobile
+            })
+        } catch (err) {
+            console.log(err.message)
+
+        }
     },
     async getEpisode(req, res) {
-        var isMobile = Mobile(req)
-        var { episode_id } = req.params
-        var episodeList = {}
-        var items = [
-            {
-                item_id: 1,
-                slug: "189-17",
-                img_url: "https://hayabusa.io/abema/series/189-17/thumb.v1583134503.png",
-                title: "Chi Baku Shounen Hanako Kun"
-            },
-            {
-                item_id: 2,
-                slug: "26-87",
-                img_url: "https://hayabusa.io/abema/series/26-87/thumb.v1583130903.png",
-                title: "Darwin's Game"
-            },
-            {
-                item_id: 3,
-                slug: "15-2",
-                img_url: "https://hayabusa.io/abema/series/15-2/thumb.v1582287314.png",
-                title: "Kingdom Season 1"
-            },
-            {
-                item_id: 4,
-                slug: "54-42",
-                img_url: "https://hayabusa.io/abema/series/54-42/thumb.v1583133946.png",
-                title: "Interspecies Reviewers"
-            },
-            {
-                item_id: 5,
-                slug: "54-44",
-                img_url: "https://hayabusa.io/abema/series/54-44/thumb.v1583133947.png",
-                title: "Interspecies Reviewers Ura-Opt ver"
-            },
-            {
-                item_id: 6,
-                slug: "12-18",
-                img_url: "https://hayabusa.io/abema/series/12-18/thumb.v1583219462.png",
-                title: "Crayon Shin-chan"
-            },
-            {
-                item_id: 7,
-                slug: "26-75",
-                img_url: "https://hayabusa.io/abema/series/26-75/thumb.v1582171511.png",
-                title: "Kimetsu no Yaiba"
-            },
-            {
-                item_id: 8,
-                slug: "26-82",
-                img_url: "https://hayabusa.io/abema/series/26-82/thumb.v1583212208.png",
-                title: "Nanatsu no Taizai"
-            }
-        ]
-        episodeList.caption = "Episode List"
-        episodeList.items = items
-        res.render('watch', {
-            isMobile,
-            episodeList,
-        })
+        try {
+            req.connection.setTimeout(60 * 10 * 1000)
+            var isMobile = Mobile(req)
+            var { anime_id, slug, number } = req.params
+            var episodeList = {}
+            var episodes = await Episode
+                .find({ anime_id }, { _id: 0 })
+                .select("thumbnail views sources number description")
+            episodeList.caption = "Episodes List"
+            episodeList.items = episodes
+            var episode = await Episode.findOne({ anime_id, number }, { _id: 0 })
+            var anime = await Anime.findOne({ anime_id, slug }, { _id: 0 }).select("title genres anime_id slug")
+            var recommend = await Anime
+                .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 16 } }])
+                .project("title slug thumb anime_id -_id")
+            res.render('watch', {
+                isMobile,
+                anime,
+                episode,
+                episodeList,
+                recommend,
+            })
+        } catch (err) {
+            console.log(err.message)
+        }
     },
     async getAnimeRanking(req, res) {
         var isMobile = Mobile(req)

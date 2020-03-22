@@ -3,15 +3,14 @@
         header.d-flex
             .ma-episode-details-header-left
                 .ma-episode-details-title-block
-                    p.ma-episode-details-anime-title Fate/Grand Order | Main Story
-                    h1.ma-episode-details-title Episode 1 - Fisrt Game
+                    p.ma-episode-details-anime-title #{anime.title}
+                    h1.ma-episode-details-title Episode #{episode.number} - #{episode.caption}
                     p.ma-episode-details-supplement
-                        span.ma-episode-details-supplement-item 395k views
+                        span.ma-episode-details-supplement-item #{episode.views} Views
                     p.ma-episode-details-lang-text
                         span.ma-episode-list-lang-text
-                            span.ma-episode-list-lang-label EN
-                            span.ma-episode-list-lang-label CN
-                            span.ma-episode-list-lang-label NOSUB
+                            each lang in episode.sources
+                                span.ma-episode-list-lang-label #{lang.subtitle}
                 .ma-episode-details-readmore-details
                     #ma-readmore-content-info.ma-episode-details-readmore(data-trigger='false')
                         .ma-episode-details-readmore-inner.ma-readmore
@@ -19,17 +18,13 @@
                                 section.ma-episode-details-readmore-block-section
                                     h2.ma-episode-details-readmore-block-title.ma-font-16.ma-color-e6
                                         span Infomation
-                                section.ma-episode-details-readmore-block-section.ma-episode-details-readmore-block-thumbnails
-                                    .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail.ma-m-thumbnail-loaded
-                                        img.ma-m-thumbnail-image(alt='' srcset='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb002.q85.w200.h112.v1583130526.webp 1x, https://hayabusa.io/abema/programs/26-87_s1_p1/thumb002.q85.w200.h112.x2.v1583130526.webp 2x' loading='lazy' src='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb002.q85.w200.h112.v1583130526.webp')
-                                    .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail.ma-m-thumbnail-loaded
-                                        img.ma-m-thumbnail-image(alt='' srcset='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb003.q85.w200.h112.v1583130526.webp 1x, https://hayabusa.io/abema/programs/26-87_s1_p1/thumb003.q85.w200.h112.x2.v1583130526.webp 2x' loading='lazy' src='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb003.q85.w200.h112.v1583130526.webp')
-                                    .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail.ma-m-thumbnail-loaded
-                                        img.ma-m-thumbnail-image(alt='' srcset='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb004.q85.w200.h112.v1583130526.webp 1x, https://hayabusa.io/abema/programs/26-87_s1_p1/thumb004.q85.w200.h112.x2.v1583130526.webp 2x' loading='lazy' src='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb004.q85.w200.h112.v1583130526.webp')
-                                    .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail.ma-m-thumbnail-loaded
-                                        img.ma-m-thumbnail-image(alt='' srcset='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb005.q85.w200.h112.v1583130526.webp 1x, https://hayabusa.io/abema/programs/26-87_s1_p1/thumb005.q85.w200.h112.x2.v1583130526.webp 2x' loading='lazy' src='https://hayabusa.io/abema/programs/26-87_s1_p1/thumb005.q85.w200.h112.v1583130526.webp')
+                                if(thumbs && thumbs.length > 0)
+                                    section.ma-episode-details-readmore-block-section.ma-episode-details-readmore-block-thumbnails
+                                        .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail.ma-m-thumbnail-loaded
+                                            each thumb in thumbs
+                                                img.ma-m-thumbnail-image(alt=anime.title srcset=thumb+'?w=200&h=112&f=webp 1x, '+thumb+'?w=200&h=112&f=webp 2x' loading='lazy' src=thumb+'?w=200&h=112&f=webp')
                                 p.ma-episode-details-block-content
-                                    span.ma-color-e6.ma-font-14 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil neque laudantium quae illo! Sequi consequatur tempora, temporibus animi aspernatur maxime iste porro ratione officia inventore? Mollitia tenetur molestiae enim explicabo.
+                                    span.ma-color-e6.ma-font-14 #{episode.description}
                     p.ma-readmore-button-section
                         div#ma-readmore-button.btn.ma-readmore-button(type='button') Show more
             .ma-episode-details-header-right
@@ -51,26 +46,27 @@
             section.ma-episode-list-carousel
                 div.ma-content-title
                     h1.ma-pageTitle #{episodeList.caption}
-                - var id = "current-season"
+                - var id = "episode-list"
                 - var data = episodeList.items
                 div.content-section
-                    include ./carouselLarge
+                    include ./episodeListCarousel
         .ma-episode-section-wrapper
             section
                 h2.ma-episode-list-recommend-title-card-list-section
                     span Genre Recommended
                 .ma-card-list-column(role='list')
-                    - var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                    - var data = recommend
                     - var fourArray = data.reduce(function(result, value, index, array) {if (index % 4 === 0) result.push(array.slice(index, index + 4)); return result;}, []);   
                     each val in fourArray
                         .ma-card-list-column-row
                             each item in val
                                 .ma-card-list-column-item(role='listitem' style='width: calc(25%);')
                                     .ma-card
-                                        a.ma-link-block(href='/anime/1' tabindex='0')
+                                        - var {title, anime_id, slug, thumb} = item
+                                        a.ma-link-block(href=`/anime/${anime_id}/${slug}` tabindex='0')
                                             .ma-card-inner
                                                 .ma-m-thumbnail.ma-m-thumbnail-loaded
-                                                    img.ma-m-thumbnail-image(alt='痛いのは嫌なので防御力に極振りしたいと思います。' srcset='https://hayabusa.io/abema/series/54-43/thumb.v1583395206.png??width=242&height=136&quality=50&format=webp 1x, https://hayabusa.io/abema/series/54-43/thumb.v1583395206.png??width=484&height=272&quality=50&format=webp 2x' loading='lazy' src='https://hayabusa.io/abema/series/54-43/thumb.v1583395206.png??width=242&height=136&quality=50&format=webp')
+                                                    img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=242&h=136&f=webp 1x, '+thumb+'?w=484&h=272&f=webp 2x' loading='lazy' src=thumb+'?w=242&h=136&f=webp')
                                                     .d-none.ma-m-thumbnail-play
                                                         span.ma-m-play-icon
                                                             svg.ma-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
@@ -78,30 +74,5 @@
                                                 .ma-card-list-column-caption
                                                     .ma-card-list-column-caption-inner
                                                         p.ma-card-title
-                                                            span.ma-collapsed-text-container(style='line-height: 1.5; max-height: 1.5em; -webkit-line-clamp: 1;') BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense.
-                                                        p.ma-newest-label New Episode
-        .ma-episode-section-wrapper
-            section.ma-genre-feature-section
-                h2.ma-episode-list-recommend-title-card-list-section
-                    span More Recommended
-                .ma-card-list-column(role='list')
-                    - var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-                    - var fourArray = data.reduce(function(result, value, index, array) {if (index % 4 === 0) result.push(array.slice(index, index + 4)); return result;}, []);   
-                    each val in fourArray
-                        .ma-card-list-column-row
-                            each item in val
-                                .ma-card-list-column-item(role='listitem' style='width: calc(25%);')
-                                    .ma-card
-                                        a.ma-link-block(href='/anime/1' tabindex='0')
-                                            .ma-card-inner
-                                                .ma-m-thumbnail.ma-m-thumbnail-loaded
-                                                    img.ma-m-thumbnail-image(alt='痛いのは嫌なので防御力に極振りしたいと思います。' srcset='https://hayabusa.io/abema/series/54-43/thumb.v1583395206.png??width=242&height=136&quality=50&format=webp 1x, https://hayabusa.io/abema/series/54-43/thumb.v1583395206.png??width=484&height=272&quality=50&format=webp 2x' loading='lazy' src='https://hayabusa.io/abema/series/54-43/thumb.v1583395206.png??width=242&height=136&quality=50&format=webp')
-                                                    .d-none.ma-m-thumbnail-play
-                                                        span.ma-m-play-icon
-                                                            svg.ma-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
-                                                                use(xlink:href='/imgs/icons/playback.svg?v=v20.227.5#svg-body')
-                                                .ma-card-list-column-caption
-                                                    .ma-card-list-column-caption-inner
-                                                        p.ma-card-title
-                                                            span.ma-collapsed-text-container(style='line-height: 1.5; max-height: 1.5em; -webkit-line-clamp: 1;') BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense.
+                                                            span.ma-collapsed-text-container(style='line-height: 1.5; max-height: 1.5em; -webkit-line-clamp: 1;') #{title}
                                                         p.ma-newest-label New Episode

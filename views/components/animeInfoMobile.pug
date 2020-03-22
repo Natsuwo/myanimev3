@@ -1,23 +1,23 @@
 .ma-anime-info
+    - var {title, anime_id, thumb, description, jp_title, en_title} = anime
     article.ma-anime-section-mobile
         .ma-anime-section-image-mobile
             .ma-anime-section-mobile-card-img
                 .ma-m-thumbnail.ma-m-thumbnail-loaded
-                    img.ma-m-thumbnail-image(alt='Re:ゼロから始める異世界生活' srcset='https://abm.hayabusa.media/series/25-139/thumb.png%3Fversion%3D1577334972?height=136&quality=85&format=jpg 1x, https://abm.hayabusa.media/series/25-139/thumb.png%3Fversion%3D1577334972?height=272&quality=85&format=jpg 2x' src='https://abm.hayabusa.media/series/25-139/thumb.png%3Fversion%3D1577334972?height=136&quality=85&format=jpg')
+                    img.ma-m-thumbnail-image(alt=title srcset=thumb+'?h=136&f=webp 1x, '+thumb+'?h=272&f=webp 2x' src=thumb+'?h=136&f=webp')
                     .ma-m-thumbnail-image.ma-m-thumbnail-play-mobile
         .ma-anime-section-content-mobile
             header.ma-anime-section-content-header-mobile
-                h1.ma-anime-section-content-title Re:&#x30BC;&#x30ED;&#x304B;&#x3089;&#x59CB;&#x3081;&#x308B;&#x7570;&#x4E16;&#x754C;&#x751F;&#x6D3B;
-                p.ma-anime-section-content-meta &#x30A2;&#x30CB;&#x30E1;
+                h1.ma-anime-section-content-title #{title}
+                p.ma-anime-section-content-meta #{Array.prototype.map.call(genres, s => s.title).join(", ")}
             .ma-anime-details-block-mobile
-                p.ma-anime-caption-info.ma-anime-caption-info-mobile 2020&#x5E74;4&#x6708;&#x306B;&#x7B2C;2&#x671F;&#x304C;&#x30B9;&#x30BF;&#x30FC;&#x30C8;&#xFF01;
+                p.ma-anime-caption-info.ma-anime-caption-info-mobile #{jp_title}#{en_title ? ", " + en_title : ""}
                 .ma-anime-description-mobile
                     .ma-anime-description-content-mobile.ma-anime-description-content-mobile-collapsed(style='height:60px')
-                        p.ma-anime-content-section-info
-                            | &#x7121;&#x529B;&#x306A;&#x5C11;&#x5E74;&#x304C;&#x624B;&#x306B;&#x3057;&#x305F;&#x306E;&#x306F;&#x3001;&#x6B7B;&#x3057;&#x3066;&#x6642;&#x9593;&#x3092;&#x5DFB;&#x304D;&#x623B;&#x3059;&quot;&#x6B7B;&#x306B;&#x623B;&#x308A;&quot;&#x306E;&#x529B;&#x3002; &#x30B3;&#x30F3;&#x30D3;&#x30CB;&#x304B;&#x3089;&#x306E;&#x5E30;&#x308A;&#x9053;&#x3001;&#x7A81;&#x5982;&#x3068;&#x3057;&#x3066;&#x7570;&#x4E16;&#x754C;&#x3078;&#x3068;&#x53EC;&#x559A;&#x3055;&#x308C;&#x3066;&#x3057;&#x307E;&#x3063;&#x305F;&#x5C11;&#x5E74;&#x30FB;&#x83DC;&#x6708;&#x6634;&#x3002;&#x983C;&#x308C;&#x308B;&#x3082;&#x306E;&#x306A;&#x3069;&#x4F55;&#x4E00; &#x3064;&#x306A;&#x3044;&#x7570;&#x4E16;&#x754C;&#x3067;&#x3001;&#x7121;&#x529B;&#x306A;&#x5C11;&#x5E74;&#x304C;&#x624B;&#x306B;&#x3057;&#x305F;&#x552F;&#x4E00;&#x306E;&#x529B;......&#x305D;&#x308C;&#x306F;&#x6B7B;&#x3057;&#x3066;&#x6642;&#x9593;&#x3092;&#x5DFB;&#x304D;&#x623B;&#x3059;&#x300A;&#x6B7B;&#x306B;&#x623B;&#x308A;&#x300B;&#x306E;&#x529B;&#x3060; &#x3063;&#x305F;&#x3002;&#x5927;&#x5207;&#x306A;&#x4EBA;&#x305F;&#x3061;&#x3092;&#x5B88;&#x308B;&#x305F;&#x3081;&#x3001;&#x305D;&#x3057;&#x3066;&#x78BA;&#x304B;&#x306B;&#x3042;&#x3063;&#x305F;&#x304B;&#x3051;&#x304C;&#x3048;&#x306E;&#x306A;&#x3044;&#x6642;&#x9593;&#x3092;&#x53D6;&#x308A;&#x623B;&#x3059;&#x305F;&#x3081;&#x3001;&#x5C11;&#x5E74;&#x306F;&#x7D76;&#x671B; &#x306B;&#x6297;&#x3044;&#x3001;&#x904E;&#x9177;&#x306A;&#x904B;&#x547D;&#x306B;&#x7ACB;&#x3061;&#x5411;&#x304B;&#x3063;&#x3066;&#x3044;&#x304F;&#x3002;
+                        p.ma-anime-content-section-info #{description}
                     .ma-readmore-button-wrapper
                         div.btn.ma-readmore-button-mobile
-                            span &#x3082;&#x3063;&#x3068;&#x307F;&#x308B;
+                            span Show more
             .ma-anime-section-socical-mobile
                 ul.ma-share-container
                     li.ma-share-item(tabindex='-1')

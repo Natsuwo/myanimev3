@@ -3,6 +3,85 @@
         video#player.video-js(style='width: 100%; height: 100%;' controls playsinline)
 script(type="text/javascript").
     var player = videojs("player")
+    var Button = videojs.getComponent('MenuButton');
+    var MenuItem = videojs.getComponent('MenuItem');
+    var langs = !{JSON.stringify(episode.sources)};
+    videojs.getComponent('Player').prototype.setSource = function (source) {
+        var options = {
+            autoplay: false,
+            preload: "auto", 
+            type: "video/mp4",
+            src: "https://www.googleapis.com/drive/v3/files/"+source+"?alt=media&supportsTeamDrives=true&key=AIzaSyDtV2YN9J2TYCIvO688nsToWj7LtJvqLyo"
+        };
+        player.src(options);
+        player.play();
+    };
+
+    videojs.MenuItemTest = videojs.extend(MenuItem, {
+        constructor: function (player, options, onClickListener) {
+            this.onClickListener = onClickListener;
+            MenuItem.call(this, player, options);
+            this.on('click', this.onClick);
+            this.on('touchstart', this.onClick);
+        },
+        onClick: function () {
+            this.onClickListener(this);
+            var selected = this.options_.source;
+            player.setSource(selected);
+        }
+    });
+
+    var MyButton = videojs.extend(Button, {
+        constructor: function() {
+            Button.apply(this, arguments);
+            this.addClass('vjs-icon-captions');
+            this.addClass('ma-lang-icon');
+        },
+        handleClick: function() {
+            if (this.buttonPressed_) {
+                this.unpressButton();
+            } else {
+                this.pressButton();
+            }
+        },
+        createItems: function () {
+            var langs = !{JSON.stringify(episode.sources)};
+            var menuItems = [];
+
+            if (!langs.length) {
+                return [];
+            }
+
+            var onClickUnselectOthers = function (clickedItem) {
+                menuItems.map(function (item) {
+                    if ($(item.el()).hasClass('vjs-selected')) {
+                        $(item.el()).removeClass('vjs-selected');
+                    }
+                });
+                $(clickedItem.el()).addClass('vjs-selected');
+            };
+
+            for(var i = 0; i < langs.length; i++) {
+                var lang = langs[i]
+                var item = new videojs.MenuItemTest(this.player_, {
+                    tabIndex: i,
+                    label: lang.subtitle,
+                    source: lang.source,
+                    class: 'vjs-menu-item'
+                }, onClickUnselectOthers);
+
+                if (lang.subtitle === 'EN') {
+                    $(item.el()).addClass('vjs-selected');
+                }
+
+                item.addClass(`vjs-${lang.subtitle}-menu-item`);
+                menuItems.push(item);
+            }
+            return menuItems
+        }
+    });
+    videojs.registerComponent('MyButton', MyButton);
+    player.getChild('controlBar').addChild('myButton', {}, 10);
     //- function loadAds() {
     //-     var options = { adTagUrl: BB.getVASTUrl(2008513) }
     //-     player.ima(options)
@@ -29,7 +108,7 @@ script(type="text/javascript").
         autoplay: false,
         preload: "auto", 
         type: "video/mp4",
-        src: "https://s1.myanime.co/video/2237700efb0a391938b214a2fdce78de6ff6275a1480dfc81953306e6ec769687519ef54b36bc4ce3d6b0316f2d98427"
+        src: "https://www.googleapis.com/drive/v3/files/"+langs[0].source+"?alt=media&supportsTeamDrives=true&key=AIzaSyDtV2YN9J2TYCIvO688nsToWj7LtJvqLyo"
     };
     player.poster("https://cdn.discordapp.com/attachments/624929128763621388/685860472066670617/bfe31c0e785999411a8d7212d138da02.jpg");
     player.src(options);
