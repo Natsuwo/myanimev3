@@ -2,9 +2,12 @@
     section
         header.ma-episode-list-section-header
             .ma-episode-list-section-sort-container
-                div.btn.ma-episode-list-section-sort
+                div.btn.ma-episode-list-section-sort(onclick="location = '?sort="+sort+"'")
                     span.ma-episode-list-section-inner
-                        i.fa.fa-arrow-up.ma-color-e6(aria-hidden='true')
+                        if(sort === "asc")
+                            i.fa.fa-arrow-down.ma-color-e6.mx-2(aria-hidden='true')
+                        else 
+                            i.fa.fa-arrow-up.ma-color-e6.mx-2(aria-hidden='true')
                         span.ma-color-e6 Sort
         .ma-episode-list.ma-column-list(role='list') 
             - var {anime_id, slug} = anime

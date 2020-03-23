@@ -2,38 +2,33 @@ extends ./layouts/default
 append head
     link(rel='stylesheet' href='/mod/videojs/videojs.css')
     link(rel='stylesheet' href='/mod/videojs/vsplugins.min.css')
+    link(rel='stylesheet' href='/mod/videojs/resume.css')
+    - var description = "If you want watching anime "+ anime.title + " the world's fastest free anime number #1. MyanimeTV! From the masterpiece that you absolutely want to see, to the latest hot topic, the lineup is enhanced!"
+    meta(name='description' content=description)
+    meta(property='fb:pages' content='469597040116400')
+    meta(property='fb:app_id' content='2167104370235589')
+    meta(property='og:site_name' content='MyanimeTV')
+    meta(property='og:title', content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='og:url' content=url)
+    meta(property='og:image' content='')
+    meta(property='og:description', content=description)
+    meta(property='og:type' content='video.episode')
+    meta(property='twitter:card' content='summary_large_image')
+    meta(property='twitter:site' content='@myanime_co')
+    meta(property='twitter:url' content=url)
+    meta(property='twitter:image' content='')
+    meta(property='twitter:description', content=description)
+    meta(property='twitter:title' content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='twitter:app:country' content='US')
     script(type='text/javascript' src='//imasdk.googleapis.com/js/sdkloader/ima3.js')
-    script(type='text/javascript' src='/mod/videojs/hls.min.js')
-    script(type='text/javascript' src='/mod/videojs/p2p-core.min.js')
-    script(type='text/javascript' src='/mod/videojs/p2p-hls.min.js')
+    script(type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/store.js/1.3.17/store.min.js')
+    script(type='text/javascript' src='//st.bebi.com/bebi_v3.js')
     script(type='text/javascript' src='/mod/videojs/videojs.js')
-    script(type='text/javascript' src='/mod/videojs/videojs-contrib-hls.js')
     script(type='text/javascript' src='/mod/videojs/ads/contrib.min.js')
     script(type='text/javascript' src='/mod/videojs/ads/videojs.ima.js')
     script(type='text/javascript' src='/mod/videojs/videojs.logo.js')
-    script(type='text/javascript' src='/mod/videojs/core.min.js')
-    script(type='text/javascript' src='//st.bebi.com/bebi_v3.js')
-    script(type='text/javascript' src='/js/test.js')
-append body
-    style.
-        #player {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .player-container {
-            background: #000;
-            position: relative;
-            margin: auto;
-            width: 100%;
-            height: 100%;
-            overflow: hidden !important;
-        }
+    script(type='text/javascript' src='/mod/videojs/core.js')
+    script(type='text/javascript' src='/mod/videojs/resume.js')
 block content
     div.ma-container.ma-container-mobile
         div

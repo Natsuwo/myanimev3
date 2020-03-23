@@ -5,6 +5,25 @@
   word-wrap: break-word;
 }
 
+#player {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.player-container {
+  background: #000;
+  position: relative;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+}
+
 h2 {
   display: block;
   font-size: 1.5em;
@@ -843,6 +862,30 @@ input.ma-navbar-search-input[type=text]:focus {
   flex-direction: column;
 }
 
+.ma-column {
+  padding-top: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+  -moz-columns: 15em;
+  columns: 15em;
+  -moz-column-gap: 4em;
+  column-gap: 4em;
+}
+
+.ma-letter {
+  color: orange;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.ma-column li {
+  padding-bottom: 10px;
+}
+
+.ma-letter:first-of-type {
+  padding-top: 0;
+}
+
 .ma-episode-list-items {
   display: flex;
   position: relative;
@@ -1379,6 +1422,10 @@ a:hover.ma-outline {
   padding: 4px 12px;
 }
 
+.ma-ranking-type-tablist-item.active a {
+  pointer-events: none;
+}
+
 .ma-ranking-type-tablist-item:not(.active):hover {
   background-color: hsla(0, 0%, 100%, .08);
   color: #e6e6e6;
@@ -1448,10 +1495,23 @@ a:hover.ma-outline {
   right: 0;
 }
 
-.ma-select-menu-desktop-list-item {
+.ma-select-menu-desktop-list-item a {
   line-height: 1.3;
   padding: 12px 8px;
   transition: background-color .1s linear 0s;
+}
+
+.ma-select-menu-desktop-list-item a:focus, .ma-select-menu-desktop-list-item a:hover {
+  background-color: hsla(0, 0%, 100%, .08);
+  cursor: pointer;
+}
+
+.ma-select-menu-desktop-list-item a {
+  line-height: 1.3;
+  padding: 12px 8px;
+  color: currentColor;
+  width: 100%;
+  display: inline-block;
 }
 
 .ma-select-menu-desktop-list-item.selected {

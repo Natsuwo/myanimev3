@@ -111,6 +111,15 @@ jQuery(function ($) {
 });
 
 $(document).ready(function () {
+    var pathname = window.location.pathname;
+    var { search } = window.location
+    $('.ma-ranking-type-tablist li a[href="' + pathname + '"]').parent().addClass('active');
+    $('#select-menu-1 li a[href="' + search + '"]').parent().addClass('selected');
+    var rankMenuTextPc = $('#select-menu-1 > li.selected a').text() || "All";
+    var rankMenuTextMb = $('.ma-select-menu-mobile-select option[value="' + search + '"]').text() || "All";
+    $('.ma-select-menu-mobile-label-text').text(rankMenuTextMb)
+    $('.ma-select-menu-desktop-label').text(rankMenuTextPc)
+
     $(window).trigger('resize');
     $('#ma-readmore-button').on("click", function () {
         var contentId = "#ma-readmore-content-info"
@@ -181,3 +190,32 @@ $(window).resize(function () {
         myanimeResize = false
     }
 });
+
+function windowPopup(url, width, height) {
+    var left = (screen.width / 2) - (width / 2),
+        top = (screen.height / 2) - (height / 2);
+    window.open(
+        url,
+        "",
+        "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=" + width + ",height=" + height + ",top=" + top + ",left=" + left
+    );
+}
+
+function socialShare(type, text, url) {
+    if(text) text = encodeURIComponent(text)
+    url = encodeURIComponent(url)
+    if (type === "twit") {
+        var url = "https://twitter.com/intent/tweet/?text=" + text + "&url=" + url + "&button_hashtag=myanime&via=myanime_co"
+        windowPopup(url, 600, 480);
+    }
+
+    if (type === "fb") {
+        var url = "https://www.facebook.com/sharer/sharer.php?u=" + url + ""
+        windowPopup(url, 600, 480);
+    }
+
+    if (type === "line") {
+        var url = "https://social-plugins.line.me/lineit/share?url=" + url + ""
+        windowPopup(url, 600, 480);
+    }
+}

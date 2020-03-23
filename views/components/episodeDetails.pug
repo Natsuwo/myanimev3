@@ -25,19 +25,24 @@
                                                 img.ma-m-thumbnail-image(alt=anime.title srcset=thumb+'?w=200&h=112&f=webp 1x, '+thumb+'?w=200&h=112&f=webp 2x' loading='lazy' src=thumb+'?w=200&h=112&f=webp')
                                 p.ma-episode-details-block-content
                                     span.ma-color-e6.ma-font-14 #{episode.description}
+                                p.ma-episode-details-block-content
+                                    - var {title, en_title, jp_title} = anime
+                                    each hashtag in [title + " english subbed", title + " hd quality", title +" chinese subbed", title + " streaming", title +" episode "+episode.number, en_title, jp_title ]
+                                        span.ma-color-e6.ma-font-14 
+                                            a(href='') ##{hashtag}
                     p.ma-readmore-button-section
                         div#ma-readmore-button.btn.ma-readmore-button(type='button') Show more
             .ma-episode-details-header-right
                 .d-inline-block
                     ul.d-flex.justify-content-between
                         li.ma-share-item(tabindex='-1')
-                            .ma-share-button-section
+                            .ma-share-button-section(onclick="socialShare('twit', '"+anime.title+"', window.location.href)")
                                 div.btn.ma-share-twitter-button(aria-label='Twitter' type='button' tabindex='-1')
                                     svg.ma-share-twitter-icon(aria-label='')
                                         use(xlink:href='/imgs/icons/twitter.svg?v=v20.227.5#svg-body')
                             span.ma-share-label Twitter
                         li.ma-share-item(tabindex='-1')
-                            .ma-share-button-section
+                            .ma-share-button-section(onclick="socialShare('fb', null, window.location.href)")
                                 div.btn.ma-share-facebook-button(aria-label='Facebook' type='button' tabindex='-1')
                                     svg.ma-share-facebook-icon(aria-label='')
                                         use(xlink:href='/imgs/icons/facebook.svg?v=v20.227.5#svg-body')

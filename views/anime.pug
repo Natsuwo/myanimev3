@@ -1,4 +1,22 @@
 extends ./layouts/default
+append head
+    - var description = anime.description.replace(/(\r\n|\n|\r)/gm, " ")
+    meta(name='description' content=description)
+    meta(property='fb:pages' content='469597040116400')
+    meta(property='fb:app_id' content='2167104370235589')
+    meta(property='og:site_name' content='MyanimeTV')
+    meta(property='og:title', content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='og:url' content=url)
+    meta(property='og:image' content='')
+    meta(property='og:description', content=description)
+    meta(property='og:type' content='video.episode')
+    meta(property='twitter:card' content='summary_large_image')
+    meta(property='twitter:site' content='@myanime_co')
+    meta(property='twitter:url' content=url)
+    meta(property='twitter:image' content='')
+    meta(property='twitter:description', content=description)
+    meta(property='twitter:title' content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='twitter:app:country' content='US')
 block content
     div.container.ma-container-mobile
         - var breadcrumb = [{title: 'Home', href: '/' }, {title: anime.title}]

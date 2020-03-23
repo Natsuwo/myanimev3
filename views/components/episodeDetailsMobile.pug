@@ -63,19 +63,19 @@
                 .d-flex
                     ul.ma-share-container
                         li.ma-share-item(tabindex='-1')
-                            .ma-share-button-section
+                            .ma-share-button-section(onclick="socialShare('twit', '"+anime.title+"', window.location.href)")
                                 div.btn.ma-share-twitter-button(aria-label='Twitter' type='button' tabindex='-1')
                                     svg.ma-share-twitter-icon(aria-label='')
                                         use(xlink:href='/imgs/icons/twitter.svg?v=v20.227.5#svg-body')
                             span.ma-share-label Twitter
                         li.ma-share-item(tabindex='-1')
-                            .ma-share-button-section
+                            .ma-share-button-section(onclick="socialShare('fb', null, window.location.href)")
                                 div.btn.ma-share-facebook-button(aria-label='Facebook' type='button' tabindex='-1')
                                     svg.ma-share-facebook-icon(aria-label='')
                                         use(xlink:href='/imgs/icons/facebook.svg?v=v20.227.5#svg-body')
                             span.ma-share-label Facebook
                         li.ma-share-item(tabindex='-1')
-                            .ma-share-button-section
+                            .ma-share-button-section(onclick="socialShare('line', null, window.location.href)")
                                 div.btn.ma-share-line-button(aria-label='Facebook' type='button' tabindex='-1')
                                     svg.ma-share-line-button-icon(aria-label='')
                                         use(xlink:href='/imgs/icons/line.svg?v=v20.227.5#svg-body')

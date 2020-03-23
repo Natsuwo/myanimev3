@@ -8,7 +8,6 @@ const calendarSchema = new mongoose.Schema({
     date: String,
     start_time: String,
     end_time: String
-
 })
 
 calendarSchema.pre('save', async function (next) {
