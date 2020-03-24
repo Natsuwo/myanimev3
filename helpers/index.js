@@ -107,5 +107,8 @@ module.exports = {
             listsAb,
             resultAb
         };
+    },
+    escapeRegex(text) {
+        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     }
 }

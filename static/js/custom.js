@@ -202,7 +202,7 @@ function windowPopup(url, width, height) {
 }
 
 function socialShare(type, text, url) {
-    if(text) text = encodeURIComponent(text)
+    if (text) text = encodeURIComponent(text)
     url = encodeURIComponent(url)
     if (type === "twit") {
         var url = "https://twitter.com/intent/tweet/?text=" + text + "&url=" + url + "&button_hashtag=myanime&via=myanime_co"
@@ -219,3 +219,42 @@ function socialShare(type, text, url) {
         windowPopup(url, 600, 480);
     }
 }
+
+$(function () {
+    var searchResult = []
+    var old_value = ""
+    $("#ma-search-input").autocomplete({
+        source: function (value, event) {
+            var { term } = value
+            if (term === old_value) {
+                return event(searchResult)
+            } else {
+                $.ajax({
+                    type: 'GET',
+                    url: '/search/queries?q=' + term,
+                    success: function (resp) {
+                        var result = []
+                        $.each(resp.result, function (index, val) {
+                            val.label = val.title;
+                            result.push(val);
+                        });
+                        searchResult = result
+                        old_value = term
+                        return event(result);
+                    }
+                })
+            }
+        },
+        select: function (event, ui) {
+            $("#ma-search-input").val(ui.item.title);
+            $(".ma-navbar-search-area").submit();
+        },
+        position: {
+            my: "left top+10",
+            at: "left bottom",
+            collision: "none"
+        }
+    }).bind('focus', function () {
+        $(this).autocomplete("search");
+    });
+});

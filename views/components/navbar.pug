@@ -11,9 +11,8 @@ header.navbar.navbar-dark.ma-bg-dark.ma-navbar.fixed-top
                         img.ma-logo(src='https://www.myanime.co/logo/logo-default.svg' onerror="this.onerror=null; this.src='https://www.myanime.co/logo/logo-default.png'")
     ul.position-relative.ma-non-list.m-0.p-0.ma-search-bar
         li.ma-navbar-search-bar
-            form.ma-navbar-search-area(role='search')
-                input.ma-navbar-search-input(type='text' name='search' autocomplete='off' placeholder='Sword Art Online' value='')
+            form.ma-navbar-search-area(role='search' action="/search")
+                input#ma-search-input.ma-navbar-search-input(type='text' name='q' autocomplete='off' placeholder='Sword Art Online' value='')
                 div.ma-navbar-search-icon
                     i.fas.fa-search
                 .ma-navbar-search-content
-

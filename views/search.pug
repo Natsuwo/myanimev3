@@ -1,0 +1,69 @@
+extends ./layouts/default
+append head
+    - var description = "MyanimeTV introduces free searching for anime! Searching your popular anime videos now!"
+    meta(name='description' content=description)
+    meta(property='fb:pages' content='469597040116400')
+    meta(property='fb:app_id' content='2167104370235589')
+    meta(property='og:site_name' content='MyanimeTV')
+    meta(property='og:title', content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='og:url' content=url)
+    meta(property='og:image' content='')
+    meta(property='og:description' content=description)
+    meta(property='og:type' content='video.episode')
+    meta(property='twitter:card' content='summary_large_image')
+    meta(property='twitter:site' content='@myanime_co')
+    meta(property='twitter:url' content=url)
+    meta(property='twitter:image' content='')
+    meta(property='twitter:description', content=description)
+    meta(property='twitter:title' content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='twitter:app:country' content='US')
+block content
+    div.container.ma-container-mobile
+        - var breadcrumb = [{title: 'Home', href: '/' }, {title: pageTitle}]
+        if(isMobile)
+            ul.ma-column.ma-non-list
+                p.ma-letter #
+                each animeOther in resultAb.others
+                    ul.ma-non-list
+                        a(href=`/anime/${animeOther.anime_id}/${animeOther.slug}`)
+                            li #{animeOther.title}
+                each ab in listsAb  
+                    p.ma-letter #{ab}
+                    each anime in resultAb[ab.toLowerCase()]
+                        ul.ma-non-list
+                            a(href=`/anime/${anime.anime_id}/${anime.slug}`)
+                                li #{anime.title}
+            include ./components/breadcrumb
+        else  
+            include ./components/breadcrumb
+            .ma-search-result-container-heading
+                h1.ma-pageTitle
+                    span Result for #{query}
+            .ma-search-result-container
+                section.pt-1
+                    .ma-search-result-container-border
+                        .ma-column-list(role='list')
+                            each anime in animes
+                                - var {title, slug, thumb, anime_id} = anime
+                                - var count = counts[anime_id]
+                                .ma-search-result-list-item(role='listitem')
+                                    a.ma-link-block(href=`/anime/${anime_id}/${slug}`)
+                                        .ma-search-result-list-item-inner
+                                            .ma-search-result-card
+                                                .ma-m-thumbnail.ma-m-thumbnail-loaded
+                                                    img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=192&h=108&f=webp 1x, '+thumb+'?w=384&h=216&f=webp 2x' src=thumb+'?w=192&h=108&f=webp')
+                                                    .ma-m-thumbnail-play.ma-m-thumbnail-play-desktop
+                                                        span.ma-m-play-icon
+                                                            svg.ma-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
+                                                                use(xlink:href='/imgs/icons/playback.svg#svg-body')
+                                            .ma-search-result-body
+                                                p.ma-search-result-body-title
+                                                    span.ma-collapsed-text-container(style='line-height: 1.3; max-height: 2.6em; -webkit-line-clamp: 2;')
+                                                        span.ma-text-icon-dark
+                                                            svg.ma-text-icon(aria-label='episodesCount' height='18' width='30')
+                                                                use(xlink:href='/imgs/icons/watching.svg#svg-body')
+                                                            | #{title}
+                                                p.ma-search-result-body-title
+                                                    span.ma-collapsed-text-container(style='line-height: 1.3; max-height: 2.6em; -webkit-line-clamp: 2;')
+                                                        span.ma-text-icon-dark #{count > 0 ? "Total Eps: " + count : ""}
+

@@ -4,7 +4,7 @@ const Option = require('../models/Options')
 const Genre = require('../models/Genre')
 const Episode = require('../models/Episode')
 const Calendar = require('../models/Calendar')
-const { dayToNum, alphabet } = require('../helpers')
+const { dayToNum, alphabet, escapeRegex } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
         var { settings, reqUrl, isMobile } = res.locals
@@ -219,6 +219,61 @@ module.exports = {
                 url: reqUrl,
                 pageTitle: "Animes List",
                 animes,
+                isMobile
+            })
+        } catch (err) {
+            console.log(err.message)
+        }
+    },
+    async suggestSearch(req, res) {
+        try {
+            var { q } = req.query
+            var regex = new RegExp(escapeRegex(q), 'gi')
+            var animes = await Anime.find({
+                $or: [
+                    { title: regex },
+                    { description: regex },
+                    { en_title: regex },
+                    { jp_title: regex },
+                    { premiered: regex },
+                    { season: regex },
+                    { studios: regex }
+                ]
+            }, { _id: 0 }).select("title").limit(5)
+            res.send({ success: true, result: animes })
+        } catch (err) {
+            console.log(err.message)
+        }
+    },
+    async searchAnime(req, res) {
+        try {
+            var { q, limit } = req.query
+            var { settings, reqUrl, isMobile } = res.locals
+            limit = parseInt(limit)
+            var regex = new RegExp(escapeRegex(q), 'gi')
+            var animes = await Anime.find({
+                $or: [
+                    { title: regex },
+                    { description: regex },
+                    { en_title: regex },
+                    { jp_title: regex },
+                    { premiered: regex },
+                    { season: regex },
+                    { studios: regex }
+                ]
+            }, { _id: 0 }).select("title thumb slug anime_id").limit(limit)
+            counts = {}
+            for (var item of animes) {
+                var { anime_id } = item
+                counts[anime_id] = await Episode.countDocuments({ anime_id })
+            }
+            res.render('search', {
+                settings,
+                query: q,
+                url: reqUrl,
+                pageTitle: "Anime Search",
+                animes,
+                counts,
                 isMobile
             })
         } catch (err) {
