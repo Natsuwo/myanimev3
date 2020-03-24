@@ -4,7 +4,7 @@ const Option = require('../models/Options')
 const Genre = require('../models/Genre')
 const Episode = require('../models/Episode')
 const Calendar = require('../models/Calendar')
-const { dayToNum, alphabet, escapeRegex } = require('../helpers')
+const { dayToNum, alphabet, escapeRegex, getProxy } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
         var { settings, reqUrl, isMobile } = res.locals
@@ -117,6 +117,12 @@ module.exports = {
             var recommend = await Anime
                 .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 16 } }])
                 .project("title slug thumb anime_id -_id")
+            var sources = []
+            for(var item of episode.sources) {
+                item.source = getProxy(item.source)
+                sources.push(item)
+            }
+            
             res.render('watch', {
                 settings,
                 url: reqUrl,
@@ -126,6 +132,7 @@ module.exports = {
                 episode,
                 episodeList,
                 recommend,
+                sources
             })
         } catch (err) {
             console.log(err.message)

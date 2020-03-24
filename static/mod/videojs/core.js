@@ -16,7 +16,7 @@ function switchLangs(langs) {
             autoplay: false,
             preload: "auto",
             type: "video/mp4",
-            src: "https://www.googleapis.com/drive/v3/files/" + source + "?alt=media&supportsTeamDrives=true&key=AIzaSyDtV2YN9J2TYCIvO688nsToWj7LtJvqLyo"
+            src: source
         };
         player.src(options);
         player.Resume({
