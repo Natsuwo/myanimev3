@@ -13,7 +13,7 @@ module.exports = {
             if (current_season) {
                 var currentSeasonItems = await Anime
                     .find({ season: current_season }, { _id: 0 })
-                    .select("title slug thumb anime_id")
+                    .select("title slug thumb anime_id new")
                     .sort({ updated_at: -1 })
                 var currentSeason = {}
                 currentSeason.caption = current_season
