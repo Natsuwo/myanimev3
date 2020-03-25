@@ -48,13 +48,6 @@ animeSchema.pre('save', async function (next) {
     }
 })
 
-animeSchema.pre('updateOne', function (next) {
-    var update = this.getUpdate()
-    update.$set = update.$set || {};
-    update.$set.updated_at = Date.now();
-    next()
-})
-
 const Anime = mongoose.model('Anime', animeSchema, 'anime')
 
 module.exports = Anime

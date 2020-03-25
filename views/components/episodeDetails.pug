@@ -49,8 +49,15 @@
                             span.ma-share-label Facebook
         .ma-episode-section-wrapper
             section.ma-episode-list-carousel
-                div.ma-content-title
-                    h1.ma-pageTitle #{episodeList.caption}
+                div.ma-carousel-section-header
+                    h1.ma-carousel-section-text #{episodeList.caption}
+                    .ma-more-link-wrapper
+                        a.ma-link.ma-link-inline(href=`/anime/${anime.anime_id}/${anime.slug}`)
+                            span.ma-more-link-block
+                                span.ma-more-link-text Watch more
+                                span.ma-more-link-arrow
+                                    svg.ma-more-link-svg.ma-icon-symbol(aria-label='' height='100%' role='img' width='100%')
+                                        use(xlink:href='/imgs/icons/arrow_right.svg#svg-body')
                 - var id = "episode-list"
                 - var data = episodeList.items
                 div.content-section

@@ -32,7 +32,7 @@ append head
 block content
     div.ma-container.ma-container-mobile
         div
-            - var breadcrumb = [{title: 'Home', href: '/' }, {title: anime.title, href: `/anime/${anime.anime_id}/${anime.slug}`}, { title: episode.caption}]
+            - var breadcrumb = [{title: 'Home', href: '/' },{title: anime.title, href: `/anime/${anime.anime_id}/${anime.slug}`},{title: episode.caption ? episode.caption : "Episode " + episode.number}]
             if(isMobile)
                 include ./components/player
                 include ./components/episodeDetailsMobile

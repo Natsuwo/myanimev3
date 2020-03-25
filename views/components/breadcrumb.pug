@@ -1,10 +1,13 @@
 div.bc-no-bg
     nav.ma-breadcrumb-container(aria-label='breadcrumb')
-        ol.ma-breadcrumb-list
-            each val in breadcrumb
+        ol.ma-breadcrumb-list(itemscope itemtype="http://schema.org/BreadcrumbList")
+            each val, index in breadcrumb
                 if (val.href)
-                    li.ma-breadcrumb-item
-                        a.ma-breadcrumb-link.ma-link.ma-link-dim(href=val.href) #{val.title}
+                    li.ma-breadcrumb-item(itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem")
+                        a.ma-breadcrumb-link.ma-link.ma-link-dim(href=val.href itemprop="item" ) 
+                            span(itemprop="name") #{val.title}
+                        meta(itemprop="position" content=index) 
                 else
-                    li.ma-breadcrumb-item(aria-current='page')
-                        span.ma-breadcrumb-link.ma-link.ma-link-dim #{val.title}
+                    li.ma-breadcrumb-item(aria-current='page' itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem")
+                        span.ma-breadcrumb-link.ma-link.ma-link-dim(itemprop="name") #{val.title}
+                        meta(itemprop="position" content=index) 

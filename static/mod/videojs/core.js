@@ -8,6 +8,28 @@ function myAnimePlayer(id) {
     return player
 }
 
+function shortToLongLang(str) {
+    var lang;
+    switch (str) {
+        case "EN":
+            lang = "English";
+            break;
+        case "CN":
+            lang = "Chinese";
+            break;
+        case "JP":
+            lang = "Japanese";
+            break;
+        case "VN":
+            lang = "Vietnamese";
+            break;
+        case "KO":
+            lang = "Korean";
+            break;
+    }
+    return lang
+}
+
 function switchLangs(langs) {
     var LSB = videojs.getComponent('MenuButton');
     var MenuItem = videojs.getComponent('MenuItem');
@@ -70,14 +92,17 @@ function switchLangs(langs) {
 
             for (var i = 0; i < langs.length; i++) {
                 var lang = langs[i]
+                var suffix = lang.suffix
+                var subtitle = shortToLongLang(lang.subtitle)
+                subtitle ? subtitle : lang.subtitle
                 var item = new videojs.MenuItemTest(this.player_, {
                     tabIndex: i,
-                    label: lang.subtitle,
+                    label: suffix ? `${subtitle} (${suffix})` : subtitle,
                     source: lang.source,
                     class: 'vjs-menu-item'
                 }, onClickUnselectOthers);
 
-                if (lang.subtitle === 'EN') {
+                if (i === 0) {
                     $(item.el()).addClass('vjs-selected');
                 }
 

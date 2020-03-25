@@ -18,6 +18,7 @@ html(lang="en" style="overflow-x:hidden;")
             script(type="text/javascript" src="/mod/slick@1.8.1/slick.min.js")
             script(type="text/javascript" src="/mod/bootstrap/js/bootstrap.min.js")
             script(type="text/javascript" src="/js/custom.js")
+            - if(isFooter !== false) isFooter = true
             if(isMobile)
                 div.main
                     #ma-overlay.ma-sidebar-overlay-mobile
@@ -27,7 +28,8 @@ html(lang="en" style="overflow-x:hidden;")
                             include ../components/navbar 
                             main
                                 block content
-                            include ../components/footer
+                            if(isFooter)
+                                include ../components/footer
             else
                 div.main
                     .ma-desktop-container
@@ -37,4 +39,5 @@ html(lang="en" style="overflow-x:hidden;")
                             .ma-desktop-content
                                 main.page-content
                                     block content
-                            include ../components/footer
+                            if(isFooter)
+                                include ../components/footer

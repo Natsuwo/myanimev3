@@ -9,7 +9,7 @@
             p.ma-anime-genre-info #{Array.prototype.map.call(genres, s => s.title).join(", ")}
             p.ma-anime-caption-info #{anime.jp_title}#{anime.en_title ? ", " + anime.en_title : ""}
             #ma-readmore-content-info.ma-anime-content-info(data-trigger='false')
-                p.ma-anime-content-section-info.ma-readmore #{anime.description}
+                p.ma-anime-content-section-info.ma-readmore !{anime.description}
             div.ma-readmore-button-section
                 div#ma-readmore-button.btn.ma-readmore-button(type='button') Show more
             .ma-share

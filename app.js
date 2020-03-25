@@ -30,12 +30,13 @@ module.exports = (rootDir) => {
     app.use('/', routers)
 
     app.use(function (req, res, next) {
+        const Mobile = require('./helpers/is-mobile')
         res.status(404);
         if (req.accepts('html')) {
-            res.render('404', {
-                pageTitle: 'Myanime - Error',
-                layout: '404',
-                message: req.flash(),
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile: Mobile(req),
+                isFooter: false
             });
             return;
         }
@@ -46,10 +47,24 @@ module.exports = (rootDir) => {
         res.type('txt').send('Not found');
     });
 
-
     app.use((err, req, res, next) => {
         if (err) {
-            return res.status(403).send(err.message);
+            console.error(err)
+            const Mobile = require('./helpers/is-mobile')
+            res.status(404);
+            if (req.accepts('html')) {
+                res.render('error', {
+                    pageTitle: 'Error',
+                    isMobile: Mobile(req),
+                    isFooter: false
+                });
+                return;
+            }
+            if (req.accepts('json')) {
+                res.send({ error: 'Not found' });
+                return;
+            }
+            res.type('txt').send('Not found');
         }
         next();
     });

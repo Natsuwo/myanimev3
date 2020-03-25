@@ -4,6 +4,12 @@ const algorithm = 'aes-256-cbc'
 const key = process.env.CRYPTOKEY
 
 module.exports = {
+    encodeQueryData(data) {
+        const ret = [];
+        for (let d in data)
+            ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+        return ret.join('&');
+    },
     dayToNum(str) {
         str = str.toLowerCase()
         var day;

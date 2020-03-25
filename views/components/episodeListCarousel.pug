@@ -4,16 +4,16 @@
         .ma-carousel-card-wrapper
             - var index = val.number
             - var {thumbnail, number} = val
-            - title = title + " Eps. " + number
+            - var titleEp = title + " Eps. " + number
             - if(!thumbnail) thumbnail = "//localhost:5001/view/31/ce7608ca494a5d448a6f775cda17b270.png"
             - thumb = thumbnail + "?w=484&h=272&f=webp"
-                .card.ma-card
-                    a.ma-link-block(href=`/anime/${anime_id}/${slug}/episode/${number}`)
-                        img.card-img-top(src=thumb alt=title)
-                        .card-body
-                            h5.card-title.ma-card-title
-                                span.ma-1-line-text #{title}
-                            p.card-text.ma-newest-label New Episode
+            .card.ma-card
+                a.ma-link-block(href=`/anime/${anime_id}/${slug}/episode/${number}`)
+                    img.card-img-top(src=thumb alt=titleEp)
+                    .card-body
+                        h5.card-title.ma-card-title
+                            span.ma-1-line-text #{titleEp}
+                        p.card-text.ma-newest-label New Episode
 script.
     var id = "#{id}"
     carouselCallback(id, 4)

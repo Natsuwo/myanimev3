@@ -1,0 +1,69 @@
+extends ./layouts/default
+append head
+    - var description = ""
+    meta(name='description' content=description)
+    meta(property='fb:pages' content='469597040116400')
+    meta(property='fb:app_id' content='2167104370235589')
+    meta(property='og:site_name' content='MyanimeTV')
+    meta(property='og:title', content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='og:url' content=url)
+    meta(property='og:image' content='')
+    meta(property='og:description' content=description)
+    meta(property='og:type' content='video.episode')
+    meta(property='twitter:card' content='summary_large_image')
+    meta(property='twitter:site' content='@myanime_co')
+    meta(property='twitter:url' content=url)
+    meta(property='twitter:image' content='')
+    meta(property='twitter:description', content=description)
+    meta(property='twitter:title' content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='twitter:app:country' content='US')
+block content
+    style#style.
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: black;
+            font-family: 'Aria', sans-serif;
+            line-height: 1.5;
+            margin: 8px;
+        }
+        .header {
+            left: 10px;
+            position: absolute;
+            top: 10px;
+        }
+        .container-error {
+            display: block;
+            left: 50%;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .head {
+            color: #EEEEEE;
+            font-size: 70px;
+            margin: 0 0 30px 0;
+        }
+        .messege {
+            color: #EEEEEE;
+            font-size: 22px;
+            margin: 0 0 5px 0;
+        }
+        .detail {
+            color: #8C8C8C;
+            font-size: 16px;
+        }
+        .content-error {
+            margin-top: 40px;
+        }
+    div.container.ma-container-mobile    
+        .container-error
+            .content
+                p.head Sorry...
+                p.messege The path you requested does not exist on this server.
+                p.detail It may be temporarily inaccessible, or may have been deleted or moved.
+            .content-error
+                img(src="/imgs/404.png")

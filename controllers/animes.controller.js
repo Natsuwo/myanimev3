@@ -7,75 +7,88 @@ const Calendar = require('../models/Calendar')
 const { dayToNum, alphabet, escapeRegex, getProxy } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
-        var { settings, reqUrl, isMobile } = res.locals
-        var { current_season } = settings
-        if (current_season) {
-            var currentSeasonItems = await Anime.find({ season: current_season }, { _id: 0 }).select("title slug thumb anime_id")
-            var currentSeason = {}
-            currentSeason.caption = current_season
-            currentSeason.items = currentSeasonItems
-        } else {
-            currentSeason = null
-        }
-        var features = []
-        var topRank = await Anime
-            .find({}, { _id: 0 })
-            .limit(30)
-            .sort({ views: -1 })
-            .select("title slug thumb anime_id")
-        var newUpdate = await Anime
-            .find({}, { _id: 0 })
-            .limit(30)
-            .sort({ updated_at: -1 })
-            .select("title slug thumb anime_id")
-        var recommend = await Anime
-            .find({}, { _id: 0 })
-            .limit(30)
-            .sort({ favorites: -1 })
-            .select("title slug thumb anime_id")
-        var random = await Anime
-            .aggregate([{ $sample: { size: 30 } }])
-            .project("title slug thumb anime_id -_id")
+        try {
+            var { settings, reqUrl, isMobile } = res.locals
+            var { current_season } = settings
+            if (current_season) {
+                var currentSeasonItems = await Anime.find({ season: current_season }, { _id: 0 }).select("title slug thumb anime_id")
+                var currentSeason = {}
+                currentSeason.caption = current_season
+                currentSeason.items = currentSeasonItems
+            } else {
+                currentSeason = null
+            }
+            var features = []
+            var topRank = await Anime
+                .find({}, { _id: 0 })
+                .limit(30)
+                .sort({ views: -1 })
+                .select("title slug thumb anime_id")
+            var newUpdate = await Anime
+                .find({}, { _id: 0 })
+                .limit(30)
+                .sort({ updated_at: -1 })
+                .select("title slug thumb anime_id")
+            var recommend = await Anime
+                .find({}, { _id: 0 })
+                .limit(30)
+                .sort({ favorites: -1 })
+                .select("title slug thumb anime_id")
+            var random = await Anime
+                .aggregate([{ $sample: { size: 30 } }])
+                .project("title slug thumb anime_id -_id")
 
-        features.push(
-            {
-                name: "anime-new-update",
-                title: "New Update",
-                cards: newUpdate
-            },
-            {
-                name: "anime-recommend",
-                title: "Recommend",
-                cards: recommend
-            },
-            {
-                name: "anime-random",
-                title: "Random",
-                cards: random
+            features.push(
+                {
+                    name: "anime-new-update",
+                    title: "New Update",
+                    cards: newUpdate
+                },
+                {
+                    name: "anime-recommend",
+                    title: "Recommend",
+                    cards: recommend
+                },
+                {
+                    name: "anime-random",
+                    title: "Random",
+                    cards: random
+                })
+            res.render('index', {
+                settings,
+                url: reqUrl,
+                pageTitle: "Home Page",
+                isMobile,
+                currentSeason,
+                topRank,
+                features,
             })
-        res.render('index', {
-            settings,
-            url: reqUrl,
-            pageTitle: "Home Page",
-            isMobile,
-            currentSeason,
-            topRank,
-            features,
-        })
+        } catch (err) {
+            console.error(err)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
+        }
     },
     async getAnime(req, res) {
         try {
             var { settings, reqUrl, isMobile } = res.locals
             var { anime_id, slug } = req.params
-            var { sort } = req.query
+            var { sort, eps } = req.query
+            eps = parseInt(eps)
             if (!sort || sort !== "asc" && sort !== "desc") sort = "asc"
+            if (!eps) eps = 0
+            if (eps > 0) eps = eps - 1
             sort = { number: sort }
-            var anime = await Anime.findOne({ anime_id, slug }, { _id: 0, __v: 0 })
+
+            var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0, __v: 0 })
             if (!anime) throw Error("Not found.")
             var genres = await Genre.find({ genre_id: { $in: anime.genres } }, { _id: 0 }).select("title")
             var episodes = await Episode.find({ anime_id }, { _id: 0 })
                 .select("thumbnail views sources number description")
-                .sort(sort)
+                .sort(sort).limit(25).skip(eps)
             var recommend = await Anime
                 .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 8 } }])
                 .project("title slug thumb anime_id -_id")
@@ -88,7 +101,7 @@ module.exports = {
             res.render('anime', {
                 settings,
                 url: reqUrl,
-                pageTitle: "Calendar",
+                pageTitle: anime.title,
                 sort,
                 anime,
                 genres,
@@ -97,8 +110,12 @@ module.exports = {
                 isMobile
             })
         } catch (err) {
-            console.log(err.message)
-
+            console.error(err)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
         }
     },
     async getEpisode(req, res) {
@@ -106,10 +123,14 @@ module.exports = {
             req.connection.setTimeout(60 * 10 * 1000)
             var { settings, reqUrl, isMobile } = res.locals
             var { anime_id, slug, number } = req.params
+            number = parseInt(number)
             var episodeList = {}
             var episodes = await Episode
                 .find({ anime_id }, { _id: 0 })
-                .select("thumbnail views sources number description")
+                .select("thumbnail number description")
+                .limit(25)
+                .sort({ number: 1 })
+                .skip(number)
             episodeList.caption = "Episodes List"
             episodeList.items = episodes
             var episode = await Episode.findOne({ anime_id, number }, { _id: 0 })
@@ -118,11 +139,11 @@ module.exports = {
                 .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 16 } }])
                 .project("title slug thumb anime_id -_id")
             var sources = []
-            for(var item of episode.sources) {
+            for (var item of episode.sources) {
                 item.source = getProxy(item.source)
                 sources.push(item)
             }
-            
+
             res.render('watch', {
                 settings,
                 url: reqUrl,
@@ -135,7 +156,12 @@ module.exports = {
                 sources
             })
         } catch (err) {
-            console.log(err.message)
+            console.error(err)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
         }
     },
     async getAnimeRanking(req, res) {
@@ -171,7 +197,12 @@ module.exports = {
                 isMobile
             })
         } catch (err) {
-            console.log(err.message)
+            console.error(err)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
         }
     },
     async getAnimeCalendar(req, res) {
@@ -213,7 +244,12 @@ module.exports = {
                 isMobile
             })
         } catch (err) {
-            console.log(err.message)
+            console.error(err)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
         }
     },
     async getAnimeList(req, res) {
@@ -229,7 +265,11 @@ module.exports = {
                 isMobile
             })
         } catch (err) {
-            console.log(err.message)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
         }
     },
     async suggestSearch(req, res) {
@@ -249,7 +289,7 @@ module.exports = {
             }, { _id: 0 }).select("title").limit(5)
             res.send({ success: true, result: animes })
         } catch (err) {
-            console.log(err.message)
+            res.send({ success: false, message: err.message })
         }
     },
     async searchAnime(req, res) {
@@ -284,7 +324,12 @@ module.exports = {
                 isMobile
             })
         } catch (err) {
-            console.log(err.message)
+            console.error(err)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
         }
     },
 }
