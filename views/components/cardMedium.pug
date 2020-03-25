@@ -2,6 +2,7 @@
     a.ma-link-block(href=`/anime/${anime_id}/${slug}`)
         .ma-card-inner
             .ma-m-thumbnail.ma-m-thumbnail-loaded
+                - thumb = proxyimg(thumb)
                 img.ma-m-thumbnail-image(alt=title, srcset=thumb+'?h=136&f=webp 1x, '+thumb+'?h=272&f=webp 2x' loading='lazy', src=thumb+ '?h=136&f=webp')
             .ma-card-list-column-caption
                 .ma-card-list-column-caption-inner

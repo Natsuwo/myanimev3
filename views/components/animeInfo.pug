@@ -3,6 +3,7 @@
         .ma-anime-thumb-info-column
             .ma-anime-thumb-info
                 - var thumb = anime.thumbPortrait
+                - thumb = proxyimg(thumb)
                 img.ma-anime-thumb-image(alt=anime.title srcset=thumb+'?w=240&h=341&f=webp 1x, '+thumb+'?w=480&h=682&f=webp 2x' src=thumb + '?w=240&h=341&f=webp')
         .ma-anime-details-info
             h1.ma-anime-title-info #{anime.title}

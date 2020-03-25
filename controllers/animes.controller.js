@@ -4,7 +4,7 @@ const Option = require('../models/Options')
 const Genre = require('../models/Genre')
 const Episode = require('../models/Episode')
 const Calendar = require('../models/Calendar')
-const { dayToNum, alphabet, escapeRegex, getProxy } = require('../helpers')
+const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
         try {
@@ -55,6 +55,7 @@ module.exports = {
                 })
             res.render('index', {
                 settings,
+                proxyimg,
                 url: reqUrl,
                 pageTitle: "Home Page",
                 isMobile,
@@ -101,6 +102,7 @@ module.exports = {
                 settings,
                 url: reqUrl,
                 pageTitle: anime.title,
+                proxyimg,
                 sort,
                 anime,
                 genres,
@@ -146,6 +148,7 @@ module.exports = {
 
             res.render('watch', {
                 settings,
+                proxyimg,
                 url: reqUrl,
                 pageTitle: anime.title + " Episode " + episode.number,
                 isMobile,
@@ -190,6 +193,7 @@ module.exports = {
             }
             res.render('ranking', {
                 settings,
+                proxyimg,
                 url: reqUrl,
                 pageTitle: "Ranking",
                 topRank,
@@ -234,6 +238,7 @@ module.exports = {
                 .project("title slug thumbPortrait anime_id -_id")
             res.render('calendar', {
                 settings,
+                proxyimg,
                 url: reqUrl,
                 pageTitle: "Calendar",
                 animes,
@@ -259,6 +264,7 @@ module.exports = {
             animes = alphabet(animes)
             res.render('animes-list', {
                 settings,
+                proxyimg,
                 url: reqUrl,
                 pageTitle: "Animes List",
                 animes,
@@ -316,6 +322,7 @@ module.exports = {
             }
             res.render('search', {
                 settings,
+                proxyimg,
                 query: q,
                 url: reqUrl,
                 pageTitle: "Anime Search",

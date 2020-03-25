@@ -10,6 +10,30 @@ module.exports = {
             ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
         return ret.join('&');
     },
+    getDomain(url) {
+        var hostname;
+        //find & remove protocol (http, ftp, etc.) and get hostname
+        if (url.indexOf("//") > -1) {
+            hostname = url.split('/')[2];
+        }
+        else {
+            hostname = url.split('/')[0];
+        }
+        //find & remove port number
+        hostname = hostname.split(':')[0];
+        //find & remove "?"
+        hostname = hostname.split('?')[0];
+        return hostname;
+    },
+    proxyimg(img) {
+        var host = module.exports.getDomain(img)
+        if (host === "image.myanime.co") {
+            return img
+        } else {
+            var img = "//image.myanime.co/?url=" + encodeURIComponent(img)
+            return img;
+        }
+    },
     dayToNum(str) {
         str = str.toLowerCase()
         var day;

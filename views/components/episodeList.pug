@@ -25,7 +25,8 @@
                                 .ma-episode-list-card
                                     .ma-m-thumbnail.ma-m-thumbnail-loaded
                                         - var thumb = episode.thumbnail
-                                        - if(!thumb) thumb = "//localhost:5001/view/31/ce7608ca494a5d448a6f775cda17b270.png"
+                                        - if(!thumb) thumb = "https://i.imgur.com/jUJVxG9.png"
+                                        - thumb = proxyimg(thumb)
                                         img.ma-m-thumbnail-image(alt=anime.title srcset=thumb+'?w=192&h=108&f=webp 1x, '+thumb+'?w=384&h=216&f=webp 2x' src=thumb+'?w=192&h=108&f=webp')
                                         .ma-m-thumbnail-play.ma-m-thumbnail-play-desktop
                                             span.ma-m-play-icon

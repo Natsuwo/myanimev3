@@ -4,6 +4,7 @@
         .ma-anime-section-image-mobile
             .ma-anime-section-mobile-card-img
                 .ma-m-thumbnail.ma-m-thumbnail-loaded
+                    - thumb = proxyimg(thumb)
                     img.ma-m-thumbnail-image(alt=title srcset=thumb+'?h=136&f=webp 1x, '+thumb+'?h=272&f=webp 2x' src=thumb+'?h=136&f=webp')
                     .ma-m-thumbnail-image.ma-m-thumbnail-play-mobile
         .ma-anime-section-content-mobile

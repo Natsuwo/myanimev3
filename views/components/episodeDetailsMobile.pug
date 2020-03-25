@@ -26,6 +26,7 @@
                             section.ma-episode-details-readmore-block-section.ma-episode-details-readmore-block-thumbnails
                                 each thumb in thumbs
                                     .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail
+                                        - thumb = proxyimg(thumb)
                                         img.ma-m-thumbnail-image(alt=anime.title srcset=thumb+'?w=200&h=112&f=webp 1x, '+thumb+'?w=200&h=112&f=webp 2x' loading='lazy' src=thumb+'?w=200&h=112&f=webp')
                         p.ma-episode-details-block-content
                             span.ma-color-e6.ma-font-14 #{episode.description}  
@@ -40,13 +41,14 @@
                     each val in data
                         - var {thumbnail, number, sources} = val
                         - title = title + " Eps. " + number
-                        - if(!thumbnail) thumbnail = "//localhost:5001/view/31/ce7608ca494a5d448a6f775cda17b270.png"
+                        - if(!thumbnail) thumbnail = "https://i.imgur.com/jUJVxG9.png"
                         - thumb = thumbnail
                         li.ma-episode-list-mobile-item
                             a.ma-link-block(href=`/anime/${anime_id}/${slug}/episode/${number}`)
                                 .ma-episode-list-mobile-item-inner
                                     .ma-episode-list-thumbnail-mobile
                                         .ma-m-thumbnail.ma-m-thumbnail-loaded
+                                            - thumb = proxyimg(thumb)
                                             img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=128&h=72&f=webp 1x, '+thumb+'?w=256&h=144&f=webp 2x' loading='lazy' src=thumb+'?w=128&h=72&f=webp')
                                             .ma-m-thumbnail-play.ma-m-thumbnail-play-mobile
                                                 span.ma-m-play-icon.ma-m-play-icon-small

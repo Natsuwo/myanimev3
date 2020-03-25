@@ -23,6 +23,7 @@
                 .ma-ranking-mobile-ranking-list-item-inner
                     .ma-ranking-mobile-ranking-list-item-thumbnail
                         .ma-m-thumbnail.ma-m-thumbnail-loaded
+                            - thumb = proxyimg(thumb)
                             img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=128&h=72&f=webp 1x, '+thumb+'?w=256&h=144&f=webp 2x' loading='lazy' src=thumb+'?w=128&h=72&f=webp')
                             .ma-m-thumbnail-play.ma-m-thumbnail-play-mobile
                                 span.ma-m-play-icon.ma-m-play-icon-small

@@ -22,6 +22,7 @@
                                     section.ma-episode-details-readmore-block-section.ma-episode-details-readmore-block-thumbnails
                                         .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail.ma-m-thumbnail-loaded
                                             each thumb in thumbs
+                                                - thumb = proxyimg(thumb)
                                                 img.ma-m-thumbnail-image(alt=anime.title srcset=thumb+'?w=200&h=112&f=webp 1x, '+thumb+'?w=200&h=112&f=webp 2x' loading='lazy' src=thumb+'?w=200&h=112&f=webp')
                                 p.ma-episode-details-block-content
                                     span.ma-color-e6.ma-font-14 #{episode.description}
@@ -78,7 +79,8 @@
                                         - var isNew = item.new
                                         a.ma-link-block(href=`/anime/${anime_id}/${slug}` tabindex='0')
                                             .ma-card-inner
-                                                .ma-m-thumbnail.ma-m-thumbnail-loaded
+                                                .ma-m-thumbnail.ma-m-thumbnail-loaded      
+                                                    - thumb = proxyimg(thumb)
                                                     img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=242&h=136&f=webp 1x, '+thumb+'?w=484&h=272&f=webp 2x' loading='lazy' src=thumb+'?w=242&h=136&f=webp')
                                                     .d-none.ma-m-thumbnail-play
                                                         span.ma-m-play-icon
