@@ -23,14 +23,14 @@ const countViewMidd = async (req, res, next) => {
     return next()
 }
 
-route.get('/', getOption, cache('5 minutes'), getIndex)
-route.get('/animes-list', getOption, cache('5 minutes'), getAnimeList)
-route.get('/anime/:anime_id/:slug', countViewMidd, getOption, cache('5 minutes'), getAnime)
-route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, getOption, cache('5 minutes'), getEpisode)
-route.get('/ranking/:sort', getOption, cache('5 minutes'), getAnimeRanking)
-route.get('/calendar/:day', getOption, cache('5 minutes'), getAnimeCalendar)
-route.get('/search',  getOption, cache('5 minutes'), searchAnime)
-route.get('/privacy-policy', getOption, cache('5 minutes'), (req, res) => {
+route.get('/', getOption, getIndex)
+route.get('/animes-list', getOption, getAnimeList)
+route.get('/anime/:anime_id/:slug', countViewMidd, getOption, getAnime)
+route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, getOption, getEpisode)
+route.get('/ranking/:sort', getOption, getAnimeRanking)
+route.get('/calendar/:day', getOption, getAnimeCalendar)
+route.get('/search',  getOption, searchAnime)
+route.get('/privacy-policy', getOption, (req, res) => {
     var { settings, reqUrl, isMobile } = res.locals
     res.render('privacy-policy', {
         settings,
@@ -40,6 +40,6 @@ route.get('/privacy-policy', getOption, cache('5 minutes'), (req, res) => {
     })
 })
 
-route.get('/search/queries', cache('5 minutes'), suggestSearch)
+route.get('/search/queries', suggestSearch)
 
 module.exports = route
