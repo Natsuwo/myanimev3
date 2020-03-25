@@ -133,7 +133,8 @@ module.exports = {
             episodeList.caption = "Episodes List"
             episodeList.items = episodes
             var episode = await Episode.findOne({ anime_id, number }, { _id: 0 })
-            var anime = await Anime.findOne({ anime_id, slug }, { _id: 0 }).select("title genres anime_id slug en_title jp_title")
+            var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0 }).select("title genres anime_id slug en_title jp_title")
+            
             var recommend = await Anime
                 .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 16 } }])
                 .project("title slug thumb anime_id new -_id")
