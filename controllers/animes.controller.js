@@ -149,8 +149,6 @@ module.exports = {
                 item.source = getProxy(item.source)
                 sources.push(item)
             }
-            console.log(sources)
-
             res.render('watch', {
                 settings,
                 proxyimg,
