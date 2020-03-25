@@ -4,7 +4,7 @@ const Option = require('../models/Options')
 const Genre = require('../models/Genre')
 const Episode = require('../models/Episode')
 const Calendar = require('../models/Calendar')
-const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg } = require('../helpers')
+const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg, getSourceHls } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
         try {
@@ -131,7 +131,7 @@ module.exports = {
             var episodeList = {}
             var episodes = await Episode
                 .find({ anime_id }, { _id: 0 })
-                .select("thumbnail number description")
+                .select("thumbnail number")
                 .limit(25)
                 .sort({ number: 1 })
                 .skip(number)
@@ -145,9 +145,11 @@ module.exports = {
                 .project("title slug thumb anime_id new -_id")
             var sources = []
             for (var item of episode.sources) {
+                item.backup = await getSourceHls(item.source)
                 item.source = getProxy(item.source)
                 sources.push(item)
             }
+            console.log(sources)
 
             res.render('watch', {
                 settings,

@@ -33,7 +33,7 @@ function shortToLongLang(str) {
 function switchLangs(langs) {
     var LSB = videojs.getComponent('MenuButton');
     var MenuItem = videojs.getComponent('MenuItem');
-    videojs.getComponent('Player').prototype.setSource = function (source) {
+    videojs.getComponent('Player').prototype.setSource = function (source, backup) {
         var options = {
             autoplay: false,
             preload: "auto",
@@ -41,10 +41,15 @@ function switchLangs(langs) {
             src: source
         };
         player.src(options);
+        player.one("error", err => {
+            options.type = "application/x-mpegURL";
+            options.src = backup;
+            player.src(options);
+            player.play();
+        });
         player.Resume({
             uuid: window.location.pathname
         });
-
     };
 
     videojs.MenuItemTest = videojs.extend(MenuItem, {
@@ -56,8 +61,9 @@ function switchLangs(langs) {
         },
         onClick: function () {
             this.onClickListener(this);
-            var selected = this.options_.source;
-            player.setSource(selected);
+            var source = this.options_.source;
+            var backup = this.options_.backup;
+            player.setSource(source, backup);
         }
     });
 
@@ -99,6 +105,7 @@ function switchLangs(langs) {
                     tabIndex: i,
                     label: suffix ? `${subtitle} (${suffix})` : subtitle,
                     source: lang.source,
+                    backup: lang.backup,
                     class: 'vjs-menu-item'
                 }, onClickUnselectOthers);
 

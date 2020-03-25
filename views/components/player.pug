@@ -14,6 +14,12 @@ script(type="text/javascript").
     };
     player.poster(lang.thumbnail);
     player.src(options);
+    player.one("error", err => {
+        options.type = "application/x-mpegURL";
+        options.src = lang.backup;
+        player.src(options);
+        player.play();
+    });
     player.Resume({
         uuid: window.location.pathname
     });
