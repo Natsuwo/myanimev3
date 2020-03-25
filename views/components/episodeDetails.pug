@@ -75,6 +75,7 @@
                                 .ma-card-list-column-item(role='listitem' style='width: calc(25%);')
                                     .ma-card
                                         - var {title, anime_id, slug, thumb} = item
+                                        - var isNew = item.new
                                         a.ma-link-block(href=`/anime/${anime_id}/${slug}` tabindex='0')
                                             .ma-card-inner
                                                 .ma-m-thumbnail.ma-m-thumbnail-loaded
@@ -87,4 +88,5 @@
                                                     .ma-card-list-column-caption-inner
                                                         p.ma-card-title
                                                             span.ma-collapsed-text-container(style='line-height: 1.5; max-height: 1.5em; -webkit-line-clamp: 1;') #{title}
-                                                        p.ma-newest-label New Episode
+                                                        if(isNew)
+                                                            p.ma-newest-label New Episode

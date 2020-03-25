@@ -23,21 +23,20 @@ module.exports = {
                 .find({}, { _id: 0 })
                 .limit(30)
                 .sort({ views: -1 })
-                .select("title slug thumb anime_id")
+                .select("title slug thumb anime_id new")
             var newUpdate = await Anime
                 .find({}, { _id: 0 })
                 .limit(30)
                 .sort({ updated_at: -1 })
-                .select("title slug thumb anime_id")
+                .select("title slug thumb anime_id new")
             var recommend = await Anime
                 .find({}, { _id: 0 })
                 .limit(30)
                 .sort({ favorites: -1 })
-                .select("title slug thumb anime_id")
+                .select("title slug thumb anime_id new")
             var random = await Anime
                 .aggregate([{ $sample: { size: 30 } }])
-                .project("title slug thumb anime_id -_id")
-
+                .project("title slug thumb anime_id new -_id")
             features.push(
                 {
                     name: "anime-new-update",
@@ -91,7 +90,7 @@ module.exports = {
                 .sort(sort).limit(25).skip(eps)
             var recommend = await Anime
                 .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 8 } }])
-                .project("title slug thumb anime_id -_id")
+                .project("title slug thumb anime_id new -_id")
             sort = sort.number
             if (sort === "asc") {
                 sort = "desc"
@@ -137,7 +136,7 @@ module.exports = {
             var anime = await Anime.findOne({ anime_id, slug }, { _id: 0 }).select("title genres anime_id slug en_title jp_title")
             var recommend = await Anime
                 .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 16 } }])
-                .project("title slug thumb anime_id -_id")
+                .project("title slug thumb anime_id new -_id")
             var sources = []
             for (var item of episode.sources) {
                 item.source = getProxy(item.source)

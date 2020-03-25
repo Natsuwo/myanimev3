@@ -3,6 +3,7 @@
         .ma-carousel-card-wrapper
             - var index = val.anime_id
             - var {title, anime_id, thumb, slug} = val
+            - var isNew = val.new
             - thumb = thumb
                 include ./cardMedium
 script.

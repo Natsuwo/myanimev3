@@ -6,7 +6,8 @@
   each val in twoArray
     .ma-card-list-column-row.ma-card-list-column-row-mobile
       each item in val
-        - var {title, anime_id, thumb, slug, rank} = item
+        - var {title, anime_id, thumb, slug} = item
+        - var isNew = item.new
         .ma-card-list-column-item.ma-card-list-column-item-mobile(role='listitem' style='width: calc(50%);')
           .ma-card
             a.ma-link-block(href=`/anime/${anime_id}/${slug}`)
@@ -21,4 +22,5 @@
                   .ma-card-list-column-caption-inner
                     p.ma-card-title.ma-card-title-mobile
                       span.ma-collapsed-text-container(style='line-height: 1.3; max-height: 1.3em; -webkit-line-clamp: 1;') #{title}
-                    p.ma-newest-label.ma-newest-label-mobile New Episode
+                    if(isNew)
+                      p.ma-newest-label.ma-newest-label-mobile New Episode

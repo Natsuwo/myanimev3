@@ -1,5 +1,6 @@
 #{"div id=" +id }
     - var {title, anime_id, slug} = anime
+    - var isNew = anime.new
     each val in data
         .ma-carousel-card-wrapper
             - var index = val.number
@@ -13,7 +14,8 @@
                     .card-body
                         h5.card-title.ma-card-title
                             span.ma-1-line-text #{titleEp}
-                        p.card-text.ma-newest-label New Episode
+                        if(isNew)
+                            p.card-text.ma-newest-label New Episode
 script.
     var id = "#{id}"
     carouselCallback(id, 4)

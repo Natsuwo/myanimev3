@@ -21,4 +21,5 @@
                                             .ma-card-list-column-caption-inner
                                                 p.ma-card-title
                                                     span.ma-collapsed-text-container(style='line-height: 1.5; max-height: 1.5em; -webkit-line-clamp: 1;') #{title}
-                                                p.ma-newest-label New Episode
+                                                if(item.new)
+                                                    p.ma-newest-label New Episode
