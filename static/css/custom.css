@@ -674,6 +674,10 @@ input.ma-navbar-search-input[type=text]:focus {
   opacity: 0;
 }
 
+.ma-readmore-expanded-info.ma-anime-content-info::before {
+  position: relative;
+}
+
 .ma-share {
   display: flex;
   margin-bottom: 24px;

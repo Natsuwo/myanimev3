@@ -11,7 +11,10 @@ module.exports = {
             var { settings, reqUrl, isMobile } = res.locals
             var { current_season } = settings
             if (current_season) {
-                var currentSeasonItems = await Anime.find({ season: current_season }, { _id: 0 }).select("title slug thumb anime_id")
+                var currentSeasonItems = await Anime
+                    .find({ season: current_season }, { _id: 0 })
+                    .select("title slug thumb anime_id")
+                    .sort({ updated_at: -1 })
                 var currentSeason = {}
                 currentSeason.caption = current_season
                 currentSeason.items = currentSeasonItems
@@ -136,7 +139,7 @@ module.exports = {
             episodeList.items = episodes
             var episode = await Episode.findOne({ anime_id, number }, { _id: 0 })
             var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0 }).select("title genres anime_id slug en_title jp_title")
-            
+
             var recommend = await Anime
                 .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 16 } }])
                 .project("title slug thumb anime_id new -_id")

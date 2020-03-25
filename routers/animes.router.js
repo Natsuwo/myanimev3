@@ -3,6 +3,9 @@ const route = Router()
 const { getIndex, getAnime, getEpisode, getAnimeRanking,
     getAnimeCalendar, getAnimeList, suggestSearch, searchAnime } = require('../controllers/animes.controller')
 const { getOption } = require('../middlewares/animes.middleware')
+const apicache = require('apicache')
+let cache = apicache.middleware
+
 const countViewMidd = async (req, res, next) => {
     var { anime_id, slug, number } = req.params
     var Anime = require('../models/Anime')
@@ -20,14 +23,14 @@ const countViewMidd = async (req, res, next) => {
     return next()
 }
 
-route.get('/', getOption, getIndex)
-route.get('/animes-list', getOption, getAnimeList)
-route.get('/anime/:anime_id/:slug', getOption, countViewMidd, getAnime)
-route.get('/anime/:anime_id/:slug/episode/:number', getOption, countViewMidd, getEpisode)
-route.get('/ranking/:sort', getOption, getAnimeRanking)
-route.get('/calendar/:day', getOption, getAnimeCalendar)
-route.get('/search', getOption, searchAnime)
-route.get('/privacy-policy', getOption, (req, res) => {
+route.get('/', cache, getOption, getIndex)
+route.get('/animes-list', cache, getOption, getAnimeList)
+route.get('/anime/:anime_id/:slug', countViewMidd, cache, getOption, getAnime)
+route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, cache, getOption, getEpisode)
+route.get('/ranking/:sort', cache, getOption, getAnimeRanking)
+route.get('/calendar/:day', cache, getOption, getAnimeCalendar)
+route.get('/search', cache, getOption, searchAnime)
+route.get('/privacy-policy', cache, getOption, (req, res) => {
     var { settings, reqUrl, isMobile } = res.locals
     res.render('privacy-policy', {
         settings,
@@ -37,6 +40,6 @@ route.get('/privacy-policy', getOption, (req, res) => {
     })
 })
 
-route.get('/search/queries', suggestSearch)
+route.get('/search/queries', cache, suggestSearch)
 
 module.exports = route
