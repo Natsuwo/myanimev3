@@ -4,7 +4,7 @@ const Option = require('../models/Options')
 const Genre = require('../models/Genre')
 const Episode = require('../models/Episode')
 const Calendar = require('../models/Calendar')
-const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg, getSourceHls } = require('../helpers')
+const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg, getSourceHls, escapeRegexRec } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
         try {
@@ -92,9 +92,19 @@ module.exports = {
             var episodes = await Episode.find({ anime_id }, { _id: 0 })
                 .select("thumbnail views sources number description")
                 .sort(sort).limit(25).skip(eps)
-            var recommend = await Anime
-                .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 8 } }])
-                .project("title slug thumb anime_id new -_id")
+
+            var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
+            var totalRec = await Anime.countDocuments({ title: regex })
+            var recommend = await Anime.find({ title: regex }, { _id: 0 })
+                .select("title slug thumb anime_id new")
+                .limit(8)
+            if (totalRec < 8) {
+                var limit = 8 - totalRec
+                var moreRecommend = await Anime
+                    .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: limit } }])
+                    .project("title slug thumb anime_id new -_id")
+                recommend = recommend.concat(moreRecommend)
+            }
             sort = sort.number
             if (sort === "asc") {
                 sort = "desc"
@@ -140,9 +150,18 @@ module.exports = {
             var episode = await Episode.findOne({ anime_id, number }, { _id: 0 })
             var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0 }).select("title genres anime_id slug en_title jp_title")
 
-            var recommend = await Anime
-                .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: 16 } }])
-                .project("title slug thumb anime_id new -_id")
+            var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
+            var totalRec = await Anime.countDocuments({ title: regex })
+            var recommend = await Anime.find({ title: regex }, { _id: 0 })
+                .select("title slug thumb anime_id new")
+                .limit(16)
+            if (totalRec < 16) {
+                var limit = 16 - totalRec
+                var moreRecommend = await Anime
+                    .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: limit } }])
+                    .project("title slug thumb anime_id new -_id")
+                recommend = recommend.concat(moreRecommend)
+            }
             var sources = []
             for (var item of episode.sources) {
                 item.backup = await getSourceHls(item.source)

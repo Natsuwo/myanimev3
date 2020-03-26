@@ -50,6 +50,20 @@ else
                         //- li.ma-footer-list-item
                         //-     a.ma-link-block(href='#')
                         //-         span.ma-footer-link-text Link 7
-                    
+                    small.ma-footer-copyright admin@myanime.co
                 .ma-footer-right
-                    div Email: admin@myanime.co
+                    .ma-social-footer(style="display: flex;")
+                        .ma-share-item
+                            a.ma-link(href="https://fb.com/Myanime.in" target="_blank")
+                                .ma-share-button-section
+                                    div.btn.ma-share-facebook-button(aria-label='Facebook' type='button' tabindex='-1')
+                                        svg.ma-share-facebook-icon(aria-label='')
+                                            use(xlink:href='/imgs/icons/facebook.svg?v=v20.227.5#svg-body')
+                                span.ma-share-label Facebook
+                        .ma-share-item
+                            a.ma-link(href="https://twitter.com/myanime_co" target="_blank")
+                                .ma-share-button-section
+                                    div.btn.ma-share-twitter-button(aria-label='Twitter' type='button' tabindex='-1')
+                                        svg.ma-share-twitter-icon(aria-label='')
+                                            use(xlink:href='/imgs/icons/twitter.svg?v=v20.227.5#svg-body')
+                                span.ma-share-label Twitter

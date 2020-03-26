@@ -166,6 +166,14 @@ module.exports = {
     escapeRegex(text) {
         return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     },
+    escapeRegexRec(text) {
+        text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+        if (text.split("\\").length > 2) {
+            text = text.split("\\").splice(0, 2).join("\\")
+            return text
+        }
+        return text
+    },
     encrypt(text) {
         var cipher = crypto.createCipher(algorithm, Buffer.from(key))
         var encrypted = cipher.update(text, 'utf8', 'hex')

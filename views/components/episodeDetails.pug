@@ -30,7 +30,8 @@
                                     - var {title, en_title, jp_title} = anime
                                     each hashtag in [title + " english subbed", title + " hd quality", title +" chinese subbed", title + " streaming", title +" episode "+episode.number, en_title, jp_title ]
                                         span.ma-color-e6.ma-font-14 
-                                            a(href='') ##{hashtag}
+                                            if(hashtag)
+                                                a(href='') ##{hashtag}
                     p.ma-readmore-button-section
                         div#ma-readmore-button.btn.ma-readmore-button(type='button') Show more
             .ma-episode-details-header-right

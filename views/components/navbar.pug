@@ -16,3 +16,15 @@ header.navbar.navbar-dark.ma-bg-dark.ma-navbar.fixed-top
                 div.ma-navbar-search-icon
                     i.fas.fa-search
                 .ma-navbar-search-content
+            script(type='application/ld+json').
+                {
+                "@context": "https://schema.org",
+                "name": "searchBox",
+                "@type": "WebSite",
+                "url": "http://beta.myanime.co/",
+                "potentialAction": {
+                "@type": "SearchAction",
+                "target": "http://beta.myanime.co/search/?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+                }
+                }
