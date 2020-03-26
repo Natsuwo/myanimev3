@@ -391,7 +391,7 @@ a:hover.ma-link {
 }
 
 .ma-newest-label::before {
-  background-color: #f0163a;
+  background-color: #3a2;
   border-radius: 50%;
   content: "";
   display: inline-block;

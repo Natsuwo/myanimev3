@@ -315,7 +315,11 @@ module.exports = {
     async suggestSearch(req, res) {
         try {
             var { q } = req.query
-            var regex = new RegExp(escapeRegex(q), 'gi')
+            if (/["]/.test(search)) {
+                var regex = q.replace(/['"]+/g, '')
+            } else {
+                var regex = new RegExp(escapeRegex(q), 'gi')
+            }
             var animes = await Anime.find({
                 $or: [
                     { title: regex },
@@ -337,7 +341,11 @@ module.exports = {
             var { q, limit } = req.query
             var { settings, reqUrl, isMobile } = res.locals
             limit = parseInt(limit)
-            var regex = new RegExp(escapeRegex(q), 'gi')
+            if (/["]/.test(search)) {
+                var regex = q.replace(/['"]+/g, '')
+            } else {
+                var regex = new RegExp(escapeRegex(q), 'gi')
+            }
             var animes = await Anime.find({
                 $or: [
                     { title: regex },
