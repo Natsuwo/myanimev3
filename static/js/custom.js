@@ -246,8 +246,8 @@ $(function () {
             }
         },
         select: function (event, ui) {
-            $("#ma-search-input").val(ui.item.title);
-            $(".ma-navbar-search-area").submit();
+            var pathname = `/anime/${ui.item.anime_id}/${ui.item.slug}`
+            window.location.pathname = pathname
         },
         position: {
             my: "left top+10",

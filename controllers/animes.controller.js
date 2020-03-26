@@ -330,7 +330,7 @@ module.exports = {
                     { season: regex },
                     { studios: regex }
                 ]
-            }, { _id: 0 }).select("title").limit(5)
+            }, { _id: 0 }).select("title slug anime_id").limit(5)
             res.send({ success: true, result: animes })
         } catch (err) {
             res.send({ success: false, message: err.message })
@@ -338,9 +338,8 @@ module.exports = {
     },
     async searchAnime(req, res) {
         try {
-            var { q, limit } = req.query
+            var { q } = req.query
             var { settings, reqUrl, isMobile } = res.locals
-            limit = parseInt(limit)
             if (/["]/.test(q)) {
                 var regex = q.replace(/['"]+/g, '')
             } else {
@@ -356,7 +355,7 @@ module.exports = {
                     { season: regex },
                     { studios: regex }
                 ]
-            }, { _id: 0 }).select("title thumb slug anime_id").limit(limit)
+            }, { _id: 0 }).select("title thumb slug anime_id").limit(30)
             counts = {}
             for (var item of animes) {
                 var { anime_id } = item
