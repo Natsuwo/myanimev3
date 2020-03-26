@@ -315,7 +315,7 @@ module.exports = {
     async suggestSearch(req, res) {
         try {
             var { q } = req.query
-            if (/["]/.test(search)) {
+            if (/["]/.test(q)) {
                 var regex = q.replace(/['"]+/g, '')
             } else {
                 var regex = new RegExp(escapeRegex(q), 'gi')
@@ -341,7 +341,7 @@ module.exports = {
             var { q, limit } = req.query
             var { settings, reqUrl, isMobile } = res.locals
             limit = parseInt(limit)
-            if (/["]/.test(search)) {
+            if (/["]/.test(q)) {
                 var regex = q.replace(/['"]+/g, '')
             } else {
                 var regex = new RegExp(escapeRegex(q), 'gi')
