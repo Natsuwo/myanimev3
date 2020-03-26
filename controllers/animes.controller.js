@@ -95,7 +95,7 @@ module.exports = {
 
             var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
             var totalRec = await Anime.countDocuments({ title: regex })
-            var recommend = await Anime.find({ title: regex }, { _id: 0 })
+            var recommend = await Anime.find({ anime_id: { $ne: anime_id }, title: regex }, { _id: 0 })
                 .select("title slug thumb anime_id new")
                 .limit(8)
             if (totalRec < 8) {
@@ -152,7 +152,7 @@ module.exports = {
 
             var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
             var totalRec = await Anime.countDocuments({ title: regex })
-            var recommend = await Anime.find({ title: regex }, { _id: 0 })
+            var recommend = await Anime.find({ anime_id: { $ne: anime_id }, title: regex }, { _id: 0 })
                 .select("title slug thumb anime_id new")
                 .limit(16)
             if (totalRec < 16) {
