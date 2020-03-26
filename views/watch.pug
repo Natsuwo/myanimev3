@@ -27,17 +27,23 @@ append head
     script(type='text/javascript' src='/mod/videojs/ads/contrib.min.js')
     script(type='text/javascript' src='/mod/videojs/ads/videojs.ima.js')
     script(type='text/javascript' src='/mod/videojs/videojs.logo.js')
-    script(type='text/javascript' src='/mod/videojs/core.min.js')
     script(type='text/javascript' src='/mod/videojs/resume.min.js')
 block content
+    script(type='text/javascript' src='/mod/videojs/core.min.js')
     div.ma-container.ma-container-mobile
         div
             - var breadcrumb = [{title: 'Home', href: '/' },{title: anime.title, href: `/anime/${anime.anime_id}/${anime.slug}`},{title: episode.caption ? episode.caption : "Episode " + episode.number}]
             if(isMobile)
+                .custom-control.custom-switch
+                    input#ma-autoPlay.custom-control-input(type='checkbox')
+                    label.custom-control-label(for='ma-autoPlay') Auto Play
                 include ./components/player
                 include ./components/episodeDetailsMobile
                 include ./components/breadcrumb
             else
                 include ./components/breadcrumb
+                .custom-control.custom-switch
+                    input#ma-autoPlay.custom-control-input(type='checkbox')
+                    label.custom-control-label(for='ma-autoPlay') Auto Play
                 include ./components/player
                 include ./components/episodeDetails

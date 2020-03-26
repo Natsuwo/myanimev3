@@ -81,18 +81,15 @@ module.exports = {
             var { anime_id, slug } = req.params
             var { sort, eps } = req.query
             eps = parseInt(eps)
-            if (!sort || sort !== "asc" && sort !== "desc") sort = "asc"
-            if (!eps) eps = 0
-            if (eps > 0) eps = eps - 1
+            if (!sort || sort !== "asc" && sort !== "desc") sort = "desc"
             sort = { number: sort }
-
+            var search = eps >= 0 ? { anime_id, number: eps } : { anime_id }
             var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0, __v: 0 })
             if (!anime) throw Error("Not found.")
             var genres = await Genre.find({ genre_id: { $in: anime.genres } }, { _id: 0 }).select("title")
-            var episodes = await Episode.find({ anime_id }, { _id: 0 })
+            var episodes = await Episode.find(search, { _id: 0 })
                 .select("thumbnail views sources number description")
-                .sort(sort).limit(25).skip(eps)
-
+                .sort(sort).limit(25)
             var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
             var totalRec = await Anime.countDocuments({ title: regex })
             var recommend = await Anime.find({ anime_id: { $ne: anime_id }, title: regex }, { _id: 0 })
@@ -139,12 +136,25 @@ module.exports = {
             var { anime_id, slug, number } = req.params
             number = parseInt(number)
             var episodeList = {}
+            var totalEp = await Episode.findOne({ anime_id }).sort({number: -1}).select("number")
+            totalEp = totalEp.number
+            var skip = 0
+            if (totalEp <= 25) {
+                skip = 0
+            } else {
+                if (number < 25) {
+                    number = 24
+                }
+                skip = totalEp - number - 1
+                if(skip < 0)
+                    skip = 0
+            }
             var episodes = await Episode
                 .find({ anime_id }, { _id: 0 })
                 .select("thumbnail number")
                 .limit(25)
-                .sort({ number: 1 })
-                .skip(number)
+                .sort({ number: - 1 })
+                .skip(skip)
             episodeList.caption = "Episodes List"
             episodeList.items = episodes
             var episode = await Episode.findOne({ anime_id, number }, { _id: 0 })
@@ -170,6 +180,7 @@ module.exports = {
             }
             res.render('watch', {
                 settings,
+                totalEp,
                 proxyimg,
                 url: reqUrl,
                 pageTitle: anime.title + " Episode " + episode.number,

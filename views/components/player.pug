@@ -2,6 +2,11 @@
     #player-container.player-container.embed-responsive-item
         video#player.video-js(style='width: 100%; height: 100%;' controls playsinline)
 script(type="text/javascript").
+    var currentEp = #{episode.number}
+    var AniId = #{anime.anime_id}
+    var slug = "#{anime.slug}"
+    var totalEp = #{totalEp}
+    var nextEp = `/anime/${AniId}/${slug}/episode/${currentEp + 1}`
     var player = myAnimePlayer("player")
     var langs = !{JSON.stringify(sources)};
     var lang = langs[0]
@@ -22,5 +27,17 @@ script(type="text/javascript").
     });
     player.Resume({
         uuid: window.location.pathname
+    });
+    player.one('ended', function() {
+        var isAutoPlay = store.get("autoplay");
+        if(typeof isAutoPlay !== "boolean")
+            isAutoPlay = true
+        if(isAutoPlay) {
+            if(currentEp < totalEp) {
+                setTimeout(() => {
+                    window.location.pathname = nextEp
+                }, 3000)
+            }
+        }
     });
     loadAds(player);

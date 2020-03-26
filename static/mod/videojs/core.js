@@ -1,3 +1,23 @@
+$(document).ready(function () {
+    if (store) {
+        var isAutoPlay = store.get("autoplay")
+        if (typeof isAutoPlay !== "boolean")
+            isAutoPlay = true
+        var autoPlayInput = 'input#ma-autoPlay[type="checkbox"]'
+        if (isAutoPlay) {
+            $(autoPlayInput).attr("checked", "checked");
+        }
+        $('#ma-autoPlay').change(function () {
+            isAutoPlay = !isAutoPlay
+            if (isAutoPlay)
+                $(autoPlayInput).attr("checked", "checked");
+            else
+                $(autoPlayInput).attr("checked", "");
+            store.set("autoplay", isAutoPlay);
+        });
+    }
+});
+
 function myAnimePlayer(id) {
     var player = videojs(id || "player")
     player.watermark({
