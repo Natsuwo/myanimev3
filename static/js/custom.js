@@ -4,7 +4,7 @@ function carouselCallback(id, slide, lg, md, sm, xs) {
         $('#' + id).slick({
             infinite: false,
             dots: false,
-            lazyLoad: 'progressive',
+            lazyLoad: 'ondemand',
             slidesToShow: slide,
             slidesToScroll: slide,
             nextArrow: `<a class="ma-carousel-next" href="#" role="button"><span class="ma-carousel-next-icon"></span><span class="sr-only">Next</span></a>`,

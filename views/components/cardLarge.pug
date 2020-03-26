@@ -1,7 +1,7 @@
 .card.ma-card
     a.ma-link-block(href=`/anime/${anime_id}/${slug}`)
         - thumb = proxyimg(thumb)
-        img.card-img-top(src=thumb alt=title)
+        img.card-img-top(data-lazy=thumb alt=title)
         .card-body
             h5.card-title.ma-card-title
                 span.ma-1-line-text #{title}
