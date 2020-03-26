@@ -136,17 +136,18 @@ module.exports = {
             var { anime_id, slug, number } = req.params
             number = parseInt(number)
             var episodeList = {}
-            var totalEp = await Episode.findOne({ anime_id }).sort({number: -1}).select("number")
+            var totalEp = await Episode.findOne({ anime_id }).sort({ number: -1 }).select("number")
+            var totalDoc = await Episode.countDocuments({ anime_id })
             totalEp = totalEp.number
             var skip = 0
-            if (totalEp <= 25) {
+            if (totalDoc <= 25) {
                 skip = 0
             } else {
                 if (number < 25) {
                     number = 24
                 }
-                skip = totalEp - number - 1
-                if(skip < 0)
+                skip = totalDoc - number - 1
+                if (skip < 0)
                     skip = 0
             }
             var episodes = await Episode
