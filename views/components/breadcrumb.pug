@@ -5,9 +5,9 @@ div.bc-no-bg
                 if (val.href)
                     li.ma-breadcrumb-item(itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem")
                         a.ma-breadcrumb-link.ma-link.ma-link-dim(href=val.href itemprop="item" ) 
-                            span(itemprop="name") #{val.title}
+                            span(itemprop="name") !{val.title}
                         meta(itemprop="position" content=index) 
                 else
                     li.ma-breadcrumb-item(aria-current='page' itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem")
-                        span.ma-breadcrumb-link.ma-link.ma-link-dim(itemprop="name") #{val.title}
+                        span.ma-breadcrumb-link.ma-link.ma-link-dim(itemprop="name") !{val.title}
                         meta(itemprop="position" content=index) 
