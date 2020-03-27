@@ -44,11 +44,17 @@ module.exports = (rootDir) => {
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use('/', routers)
 
-    app.use(function (req, res, next) {
+    app.use(async function (req, res, next) {
+        const Option = require('./models/Options')
+        res.removeHeader('X-Powered-By');
+        var option = await Option.findOne({ default: true })
+        if (!option) throw Error("Setting not found. Please set option in backend fisrt.")
+        var { settings } = option
         const Mobile = require('./helpers/is-mobile')
         res.status(404);
         if (req.accepts('html')) {
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile: Mobile(req),
                 isFooter: false
@@ -62,13 +68,19 @@ module.exports = (rootDir) => {
         res.type('txt').send('Not found');
     });
 
-    app.use((err, req, res, next) => {
+    app.use(async (err, req, res, next) => {
         if (err) {
             console.error(err)
+            const Option = require('./models/Options')
+            res.removeHeader('X-Powered-By');
+            var option = await Option.findOne({ default: true })
+            if (!option) throw Error("Setting not found. Please set option in backend fisrt.")
+            var { settings } = option
             const Mobile = require('./helpers/is-mobile')
             res.status(404);
             if (req.accepts('html')) {
                 res.render('error', {
+                    settings,
                     pageTitle: 'Error',
                     isMobile: Mobile(req),
                     isFooter: false

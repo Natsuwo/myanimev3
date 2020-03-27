@@ -70,6 +70,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
@@ -95,6 +96,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
@@ -152,6 +154,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
@@ -224,6 +227,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
@@ -266,6 +270,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
@@ -314,6 +319,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
@@ -335,6 +341,7 @@ module.exports = {
             })
         } catch (err) {
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
@@ -403,6 +410,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                settings,
                 pageTitle: 'Error',
                 isMobile,
                 isFooter: false
