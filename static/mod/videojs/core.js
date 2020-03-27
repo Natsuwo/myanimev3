@@ -22,7 +22,7 @@ function myAnimePlayer(id) {
     var player = videojs(id || "player")
     player.watermark({
         image: "/imgs/icons/logo-player.svg",
-        url: "https://www.myanime.co",
+        url: "https://bakadora.com",
         width: "200px"
     })
     return player
