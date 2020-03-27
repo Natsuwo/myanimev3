@@ -22,14 +22,20 @@
                         section.ma-episode-details-readmore-block-section
                             h2.ma-episode-details-readmore-block-title.ma-font-15.ma-color-e6
                                 span Infomation
-                        if(thumbs && thumbs.length > 0)        
+                        if(thumbs && thumbs.length)        
                             section.ma-episode-details-readmore-block-section.ma-episode-details-readmore-block-thumbnails
                                 each thumb in thumbs
                                     .ma-episode-details-readmore-block-thumbnail.ma-m-thumbnail
                                         - thumb = proxyimg(thumb)
                                         img.ma-m-thumbnail-image(alt=anime.title srcset=thumb+'?w=200&h=112&f=webp 1x, '+thumb+'?w=200&h=112&f=webp 2x' loading='lazy' src=thumb+'?w=200&h=112&f=webp')
                         p.ma-episode-details-block-content
-                            span.ma-color-e6.ma-font-14 #{episode.description}  
+                            span.ma-color-e6.ma-font-14 #{episode.description}
+                        p.ma-episode-details-block-content
+                            - var {title, en_title, jp_title} = anime
+                            each hashtag in [title + " english subbed", title + " hd quality", title +" chinese subbed", title + " streaming", title +" episode "+episode.number, en_title, jp_title ]
+                                span.ma-color-e6.ma-font-14 
+                                    if(hashtag)
+                                        a(href='') ##{hashtag}
             section.ma-episode-section-episode-list-mobile
                 .ma-episode-section-episode-list-header-mobile
                     h3.ma-episode-section-episode-list-title-mobile #{episodeList.caption}
@@ -39,8 +45,8 @@
                     - var data = episodeList.items
                     - var {title, anime_id, slug} = anime
                     each val in data
-                        - var {thumbnail, number, sources} = val
-                        - title = title + " Eps. " + number
+                        - var {thumbnail, number} = val
+                        - var titleEp = title + " Eps. " + number
                         - if(!thumbnail) thumbnail = "https://i.imgur.com/jUJVxG9.png"
                         - thumb = thumbnail
                         li.ma-episode-list-mobile-item
@@ -49,17 +55,17 @@
                                     .ma-episode-list-thumbnail-mobile
                                         .ma-m-thumbnail.ma-m-thumbnail-loaded
                                             - thumb = proxyimg(thumb)
-                                            img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=128&h=72&f=webp 1x, '+thumb+'?w=256&h=144&f=webp 2x' loading='lazy' src=thumb+'?w=128&h=72&f=webp')
+                                            img.ma-m-thumbnail-image(alt=titleEp srcset=thumb+'?w=128&h=72&f=webp 1x, '+thumb+'?w=256&h=144&f=webp 2x' loading='lazy' src=thumb+'?w=128&h=72&f=webp')
                                             .ma-m-thumbnail-play.ma-m-thumbnail-play-mobile
                                                 span.ma-m-play-icon.ma-m-play-icon-small
                                                     svg.ma-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
                                                         use(xlink:href='/imgs/icons/playback.svg#svg-body')
                                     .ma-episode-list-caption-mobile
                                         p.ma-episode-list-title-mobile
-                                            span.ma-collapsed-text-container(style='line-height: 1.3; max-height: 2.6em; -webkit-line-clamp: 2;') #{title}
+                                            span.ma-collapsed-text-container(style='line-height: 1.3; max-height: 2.6em; -webkit-line-clamp: 2;') #{titleEp}
                                         p.ma-episode-list-lang-text-mobile
                                             span.ma-episode-list-lang-text
-                                                each lang in sources
+                                                each lang in episode.sources
                                                     span.ma-episode-list-lang-label.ma-episode-list-lang-label-mobile #{lang.subtitle}
             .ma-episode-section-buttons
                 .d-flex

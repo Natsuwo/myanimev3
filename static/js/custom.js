@@ -158,11 +158,11 @@ $(window).scroll(function () {
 $(window).resize(function () {
     var width = $(window).width();
     if (width <= 1024) {
-        $(".ma-navbar-search-icon").addClass("btn p-0 ma-search-button").attr('data-searching', 'false');
+        $("#ma-search-icon").addClass("btn p-0 ma-search-button").attr('data-searching', 'false');
         $(".ma-navbar-search-input").addClass("ma-navbar-search-input-collapsed").removeClass("ma-navbar-search-input");
         if (myanimeResize === false) {
             myanimeResize = true
-            $('.ma-search-button').on("click", function () {
+            $('#ma-search-icon').on("click", function () {
                 if ($(this).attr('data-searching') === 'false') {
                     $(this).attr('data-searching', 'true');
                     $(".ma-navbar").addClass("ma-navbar-searching");
@@ -181,7 +181,7 @@ $(window).resize(function () {
         }
 
     } else {
-        $(".ma-navbar-search-icon").removeClass("btn p-0 ma-search-button").removeAttr('data-searching').prop("onclick", null).off("click");
+        $("#ma-search-icon").removeClass("btn p-0 ma-search-button").removeAttr('data-searching').prop("onclick", null).off("click");
         $(".ma-navbar").removeClass("ma-navbar-searching");
         $(".ma-search-bar").removeClass("ma-search-bar-full").addClass("ma-non-list");
         $(".ma-navbar-search-input-collapsed").removeClass("ma-searching-input");

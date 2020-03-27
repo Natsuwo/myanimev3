@@ -1835,14 +1835,6 @@ input.ma-find-ep-input[type=text]:focus {
     position: relative;
     width: 32px;
   }
-  .ma-navbar-search-eps-area {
-    align-items: center;
-    display: flex;
-    height: 46px;
-    margin-right: 8px;
-    position: relative;
-    width: 32px;
-  }
 }
 
 @keyframes swing {
