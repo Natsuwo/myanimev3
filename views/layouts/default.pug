@@ -5,14 +5,14 @@ html(lang="en" style="overflow-x:hidden;")
             meta(charset="UTF-8")
             meta(name="viewport" content="width=device-width, initial-scale=1.0")
             title #{pageTitle} - #{settings.site_title}
-            link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css")
+            link(rel="stylesheet" href="/mod/fa@5.0.6/css/fontawesome-all.min.css")
             link(rel="stylesheet" href="/mod/jquery@3.4.1/jquery-ui.min.css")
             link(rel="stylesheet" href="/mod/bootstrap/css/bootstrap.min.css")
             link(rel="stylesheet" href="/css/custom.min.css")
             link(rel="stylesheet" href="/mod/slick@1.8.1/slick.min.css")
             link(rel="manifest" href="/manifest.json")
     body.myanimev3
-        block body        
+        block body     
             noscript
                 img(height='1' width='1' style='display:none' src='https://www.facebook.com/tr?id=2606921149565067&ev=PageView&noscript=1')
             script(type="text/javascript" src="/js/service.min.js")
@@ -23,26 +23,29 @@ html(lang="en" style="overflow-x:hidden;")
             script(type="text/javascript" src="/mod/slick@1.8.1/slick.min.js")
             script(type="text/javascript" src="/mod/bootstrap/js/bootstrap.min.js")
             script(type="text/javascript" src="/js/custom.min.js")
-            - if(isFooter !== false) isFooter = true
-            if(isMobile)
-                div.main
+            - if(isFooter !== false) isFooter = true     
+            div.main
+                if(isMobile)
                     #ma-overlay.ma-sidebar-overlay-mobile
                     .ma-mobile-container.adapt-mobile
                         .page-wrapper.chiller-theme
                             include ../components/sidebarMenu
                             include ../components/navbar 
                             main
+                                .alert.alert-primary(role='alert')
+                                    | !{settings.noti}
                                 block content
                             if(isFooter)
                                 include ../components/footer
-            else
-                div.main
+                else
                     .ma-desktop-container
                         .page-wrapper.chiller-theme.toggled
                             include ../components/sidebarMenu
                             include ../components/navbar
                             .ma-desktop-content
                                 main.page-content
+                                    .alert.alert-primary(role='alert')
+                                        | !{settings.noti}
                                     block content
                             if(isFooter)
                                 include ../components/footer

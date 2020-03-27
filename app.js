@@ -1,14 +1,16 @@
 'use strict';
 
 module.exports = (rootDir) => {
-    require('./database')
-    const express = require('express')
-    const app = express()
-    const bodyParser = require('body-parser')
+    require('./database');
+    // require('./cache');
+    const compression = require('compression');
+    const express = require('express');
+    const app = express();
+    const bodyParser = require('body-parser');
     const cookieParser = require('cookie-parser');
-    const session = require('express-session')
+    const session = require('express-session');
     const flash = require('connect-flash');
-    const routers = require('./routes')
+    const routers = require('./routes');
 
     app.use(session({
         secret: process.env.SESSION_SECRET,
@@ -24,7 +26,20 @@ module.exports = (rootDir) => {
     // App Use
     app.use(flash())
     app.use(cookieParser(process.env.SESSION_SECRET))
-    app.use(express.static('static'));
+    app.use(compression());
+    app.use(express.static('static', {
+        maxAge: 31536000,
+        setHeaders: (res, path) => {
+            const hashRegExp = new RegExp('\\.[0-9a-f]{8}\\.');
+            if (path.endsWith('.html')) {
+                // All of the project's HTML files end in .html
+                res.setHeader('Cache-Control', 'no-cache');
+            } else if (hashRegExp.test(path)) {
+                // If the RegExp matched, then we have a versioned URL.
+                res.setHeader('Cache-Control', 'max-age=31536000');
+            }
+        },
+    }));
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use('/', routers)
@@ -68,6 +83,5 @@ module.exports = (rootDir) => {
         }
         next();
     });
-
     return app;
 }

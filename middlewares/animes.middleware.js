@@ -3,6 +3,7 @@ const Mobile = require('../helpers/is-mobile')
 module.exports = {
     async getOption(req, res, next) {
         try {
+            res.removeHeader('X-Powered-By');
             var option = await Option.findOne({ default: true })
             if (!option) throw Error("Setting not found. Please set option in backend fisrt.")
             var { settings } = option

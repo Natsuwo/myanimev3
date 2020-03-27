@@ -56,6 +56,7 @@ module.exports = {
                     title: "Random",
                     cards: random
                 })
+
             res.render('index', {
                 settings,
                 proxyimg,

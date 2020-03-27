@@ -1,4 +1,9 @@
 const mongoose = require('mongoose')
+var mongooseRedisCache = require("mongoose-redis-cache");
+mongooseRedisCache(mongoose, {
+    cache: true
+});
+
 mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
