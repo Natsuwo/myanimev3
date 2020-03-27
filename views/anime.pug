@@ -1,6 +1,6 @@
 extends ./layouts/default
 append head
-    - var description = anime.description.replace(/(\r\n|\n|\r)/gm, " ")
+    - var description = anime.description ? anime.description.replace(/(\r\n|\n|\r)/gm, " ") : anime.title
     meta(name='description' content=description)
     meta(property='fb:pages' content='469597040116400')
     meta(property='fb:app_id' content='2167104370235589')

@@ -76,10 +76,38 @@ module.exports = {
             });
         }
     },
+    async getAnimeId(req, res, next) {
+        try {
+            var { anime_id } = req.params
+            var fs = require('fs')
+            var old_db = fs.readFileSync('./old_db.json', { encoding: 'utf8' })
+            old_db = JSON.parse(old_db)
+            var oldData = old_db.filter(x => x.old === parseInt(anime_id))[0]
+            if (oldData) {
+                anime_id = oldData.new
+                var slug = oldData.slug
+                return res.redirect(`/anime/${anime_id}/${slug}`)
+            } else {
+                var anime = await Anime.findOne({ anime_id }).select("slug")
+                if (anime)
+                    return res.redirect(`/anime/${anime_id}/${slug}`)
+            }
+        } catch (err) {
+            console.error(err)
+            res.render('error', {
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
+        }
+    },
     async getAnime(req, res) {
         try {
             var { settings, reqUrl, isMobile } = res.locals
-            var { anime_id, slug } = req.params
+            var { anime_id, slug } = res.locals
+            if (!anime_id && !slug) {
+                var { anime_id, slug } = req.params
+            }
             var { sort, eps } = req.query
             eps = parseInt(eps)
             if (!sort || sort !== "asc" && sort !== "desc") sort = "desc"
