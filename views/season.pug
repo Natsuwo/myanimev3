@@ -25,9 +25,9 @@ block content
             .ma-ranking-mobile-type-tab-container
                 ul.ma-ranking-type-tablist.ma-non-list(role='tablist')
                     li.ma-ranking-type-tablist-item(role='tab' aria-selected='true')
-                        a.ma-ranking-type-tablist-link.ma-link.ma-outline(href='/ranking/views') by Views
+                        a.ma-ranking-type-tablist-link.ma-link.ma-outline(href=`/season/${slug}/views`) by Views
                     li.ma-ranking-type-tablist-item(role='tab' aria-selected='false')
-                        a.ma-ranking-type-tablist-link.ma-link.ma-outline(href='/ranking/favorites') by Favorites   
+                        a.ma-ranking-type-tablist-link.ma-link.ma-outline(href=`/season/${slug}/favorites`) by Favorites   
             .ma-ranking-mobile-ranking-list
                 each val, index in data
                     - var {title, anime_id, thumb, slug} = val
