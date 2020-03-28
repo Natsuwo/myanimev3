@@ -1,7 +1,12 @@
 - var day = "sunday";
 - switch((new Date).getDay()){case 0:day="sunday";break;case 1:day="monday";break;case 2:day="tuesday";break;case 3:day="wednesday";break;case 4:day="thursday";break;case 5:day="friday";break;case 6:day="saturday"}
+- function changeToSlug(e){var a;return a=(a="@"+(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=e).replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi,"a")).replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi,"e")).replace(/i|í|ì|ỉ|ĩ|ị/gi,"i")).replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi,"o")).replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi,"u")).replace(/ý|ỳ|ỷ|ỹ|ỵ/gi,"y")).replace(/đ/gi,"d")).replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\[|\]|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,"")).replace(/ /gi,"_")).replace(/\-\-\-\-\-/gi,"_")).replace(/\-\-\-\-/gi,"_")).replace(/\-\-\-/gi,"_")).replace(/\-\-/gi,"_"))+"@").replace(/\@\-|\-\@|\@/gi,""),encodeURIComponent(a)}
 nav.ma-sidebar-nav.navbar-dark#sidebar.sidebar-wrapper
     .sidebar-content.ma-nav-fixed
+        - var {prev_season, current_season, next_season} = settings
+        - prev_season = prev_season ? changeToSlug(prev_season) : "";
+        - current_season = current_season ? changeToSlug(current_season) : "";
+        - next_season = next_season ? changeToSlug(next_season) : "";
         .sidebar-menu
             ul
                 li
@@ -13,6 +18,18 @@ nav.ma-sidebar-nav.navbar-dark#sidebar.sidebar-wrapper
                     a(href='/ranking/views')
                         i.fa.fa-bolt
                         span Animes Rank
+                li
+                    a(href=`/season/${prev_season || ""}/views`)
+                        i.far.fa-folder
+                        span Prev Season
+                li
+                    a(href=`/season/${current_season || ""}/views`)
+                        i.fa.fa-folder-open
+                        span Current Season
+                li
+                    a(href=`/season/${next_season || ""}/views`)
+                        i.fa.fa-folder
+                        span Next Season
                 li
                     a(href='/calendar/' + day)
                         i.fa.fa-calendar

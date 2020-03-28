@@ -4,7 +4,8 @@ const Option = require('../models/Options')
 const Genre = require('../models/Genre')
 const Episode = require('../models/Episode')
 const Calendar = require('../models/Calendar')
-const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg, getSourceHls, escapeRegexRec } = require('../helpers')
+const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg,
+    getSourceHls, escapeRegexRec, changeToSlug } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
         try {
@@ -15,7 +16,8 @@ module.exports = {
                     .find({ season: current_season }, { _id: 0 })
                     .select("title slug thumb anime_id new")
                     .sort({ updated_at: -1 })
-                    .cache(150, 'current-season')
+                    .limit(30)
+                    .cache(150, 'current-season-home')
                 var currentSeason = {}
                 currentSeason.caption = current_season
                 currentSeason.items = currentSeasonItems
@@ -71,6 +73,45 @@ module.exports = {
                 currentSeason,
                 topRank,
                 features,
+            })
+        } catch (err) {
+            console.error(err)
+            res.render('error', {
+                settings,
+                pageTitle: 'Error',
+                isMobile,
+                isFooter: false
+            });
+        }
+    },
+    async getSeason(req, res) {
+        try {
+            var { settings, reqUrl, isMobile } = res.locals
+            var { slug, sort } = req.params
+            if (!slug) throw Error("Not found.")
+            if (!sort || sort !== "views" && sort !== "favorites") throw Error("Not found.")
+            var season = slug.split("_").join(" ")
+            if (!season) throw Error("Not found.")
+            sort = [[sort, -1]]
+            if (season) {
+                var seasons = await Anime
+                    .find({ season }, { _id: 0 })
+                    .select("title slug thumb anime_id")
+                    .sort(sort)
+                    .cache(300, "season-" + season + sort)
+            } else {
+                season = "Season ??"
+                seasons = []
+            }
+
+            res.render('season', {
+                slug,
+                settings,
+                proxyimg,
+                url: reqUrl,
+                pageTitle: season,
+                seasons,
+                isMobile
             })
         } catch (err) {
             console.error(err)

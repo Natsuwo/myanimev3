@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const route = Router()
 const { getIndex, getAnime, getEpisode, getAnimeRanking,
-    getAnimeCalendar, getAnimeList, suggestSearch, searchAnime, getAnimeId } = require('../controllers/animes.controller')
+    getAnimeCalendar, getAnimeList, suggestSearch, searchAnime, getAnimeId, getSeason } = require('../controllers/animes.controller')
 const { getOption } = require('../middlewares/animes.middleware')
 const apicache = require('apicache')
 apicache.options({
@@ -33,6 +33,7 @@ route.get('/anime/:anime_id/:slug', countViewMidd, getOption, getAnime)
 route.get('/anime/:anime_id', countViewMidd, getOption, getAnimeId)
 route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, getOption, cache('2 minutes'), getEpisode)
 route.get('/ranking/:sort', getOption, getAnimeRanking)
+route.get('/season/:slug/:sort', getOption, getSeason)
 route.get('/calendar/:day', getOption, getAnimeCalendar)
 route.get('/search', getOption, searchAnime)
 route.get('/privacy-policy', getOption, (req, res) => {
