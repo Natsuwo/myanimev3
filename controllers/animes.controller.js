@@ -15,6 +15,7 @@ module.exports = {
                     .find({ season: current_season }, { _id: 0 })
                     .select("title slug thumb anime_id new")
                     .sort({ updated_at: -1 })
+                    .cache(150, 'current-season')
                 var currentSeason = {}
                 currentSeason.caption = current_season
                 currentSeason.items = currentSeasonItems
@@ -27,19 +28,23 @@ module.exports = {
                 .limit(30)
                 .sort({ views: -1 })
                 .select("title slug thumb anime_id new")
+                .cache(150, 'top-rank')
             var newUpdate = await Anime
                 .find({}, { _id: 0 })
                 .limit(30)
                 .sort({ updated_at: -1 })
                 .select("title slug thumb anime_id new")
+                .cache(60, 'new-update')
             var recommend = await Anime
                 .find({}, { _id: 0 })
                 .limit(30)
                 .sort({ favorites: -1 })
                 .select("title slug thumb anime_id new")
+                .cache(300, 'recommend')
             var random = await Anime
                 .aggregate([{ $sample: { size: 30 } }])
                 .project("title slug thumb anime_id new -_id")
+                .cache(150, 'random')
             features.push(
                 {
                     name: "anime-new-update",
@@ -80,6 +85,9 @@ module.exports = {
     async getAnimeId(req, res, next) {
         try {
             var { anime_id } = req.params
+            if (!parseInt(anime_id)) {
+                throw Error("Not found.")
+            }
             var fs = require('fs')
             var old_db = fs.readFileSync('./old_db.json', { encoding: 'utf8' })
             old_db = JSON.parse(old_db)
@@ -89,7 +97,7 @@ module.exports = {
                 var slug = oldData.slug
                 return res.redirect(`/anime/${anime_id}/${slug}`)
             } else {
-                var anime = await Anime.findOne({ anime_id }).select("slug")
+                var anime = await Anime.findOne({ anime_id }).select("slug").cache(300, 're-' + anime_id)
                 if (anime)
                     return res.redirect(`/anime/${anime_id}/${slug}`)
             }
@@ -115,22 +123,31 @@ module.exports = {
             if (!sort || sort !== "asc" && sort !== "desc") sort = "desc"
             sort = { number: sort }
             var search = eps >= 0 ? { anime_id, number: eps } : { anime_id }
-            var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0, __v: 0 })
+            var anime = await Anime
+                .findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0, __v: 0 })
+                .cache(300, anime_id)
+
             if (!anime) throw Error("Not found.")
-            var genres = await Genre.find({ genre_id: { $in: anime.genres } }, { _id: 0 }).select("title")
+            var genres = await Genre.find({ genre_id: { $in: anime.genres } }, { _id: 0 })
+                .select("title")
+                .cache(300, 'genre-' + anime_id)
+
             var episodes = await Episode.find(search, { _id: 0 })
                 .select("thumbnail views sources number description")
                 .sort(sort).limit(25)
+                .cache(60, "episodes-" + anime_id)
             var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
             var totalRec = await Anime.countDocuments({ title: regex })
             var recommend = await Anime.find({ anime_id: { $ne: anime_id }, title: regex }, { _id: 0 })
                 .select("title slug thumb anime_id new")
                 .limit(8)
+                .cache(300, "recommend-" + anime_id)
             if (totalRec < 8) {
-                var limit = 8 - totalRec
+                var limit = 8 - totalRec + 1
                 var moreRecommend = await Anime
                     .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: limit } }])
                     .project("title slug thumb anime_id new -_id")
+                    .cache(300, "recommendmore-" + anime_id)
                 recommend = recommend.concat(moreRecommend)
             }
             sort = sort.number
@@ -168,15 +185,16 @@ module.exports = {
             var { anime_id, slug, number } = req.params
             number = parseInt(number)
             var episodeList = {}
-            var totalEp = await Episode.findOne({ anime_id }).sort({ number: -1 }).select("number")
+            var totalEp = await Episode.findOne({ anime_id })
+                .sort({ number: -1 }).select("number")
             var totalDoc = await Episode.countDocuments({ anime_id })
             totalEp = totalEp.number
             var skip = 0
-            if (totalDoc <= 25) {
+            if (totalDoc <= 12) {
                 skip = 0
             } else {
-                if (number < 25) {
-                    number = 24
+                if (number < 12) {
+                    number = 1
                 }
                 skip = totalDoc - number - 1
                 if (skip < 0)
@@ -185,24 +203,32 @@ module.exports = {
             var episodes = await Episode
                 .find({ anime_id }, { _id: 0 })
                 .select("thumbnail number")
-                .limit(25)
+                .limit(12)
                 .sort({ number: - 1 })
                 .skip(skip)
+                .cache(60, "episodes-" + anime_id + number)
             episodeList.caption = "Episodes List"
             episodeList.items = episodes
-            var episode = await Episode.findOne({ anime_id, number }, { _id: 0 })
-            var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0 }).select("title genres anime_id slug en_title jp_title")
+            var episode = await Episode
+                .findOne({ anime_id, number }, { _id: 0 })
+                .cache(60, "episode-" + anime_id + number)
+
+            var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0 })
+                .select("title genres anime_id slug en_title jp_title")
+                .cache(60, "anime-" + anime_id + number)
 
             var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
             var totalRec = await Anime.countDocuments({ title: regex })
             var recommend = await Anime.find({ anime_id: { $ne: anime_id }, title: regex }, { _id: 0 })
                 .select("title slug thumb anime_id new")
-                .limit(16)
-            if (totalRec < 16) {
-                var limit = 16 - totalRec
+                .limit(8)
+                .cache(300, "recommend-" + anime_id + number)
+            if (totalRec < 8) {
+                var limit = 8 - totalRec + 1
                 var moreRecommend = await Anime
                     .aggregate([{ $match: { genres: { $in: anime.genres } } }, { $sample: { size: limit } }])
                     .project("title slug thumb anime_id new -_id")
+                    .cache(300, "recommendmore-" + anime_id + number)
                 recommend = recommend.concat(moreRecommend)
             }
             var sources = []
@@ -251,12 +277,14 @@ module.exports = {
                 .limit(50)
                 .sort(sort)
                 .select("title slug thumb anime_id")
+                .cache(300, "ranking-" + sort + g)
             if (topRank.length === 0) {
                 topRank = await Anime
                     .find({}, { _id: 0 })
                     .limit(50)
                     .sort(sort)
                     .select("title slug thumb anime_id")
+                    .cache(300, "ranking-" + sort)
             }
             res.render('ranking', {
                 settings,
@@ -299,11 +327,14 @@ module.exports = {
             var weekRecommend = await Anime
                 .aggregate([{ $sample: { size: 9 } }])
                 .project("title slug thumbPortrait anime_id -_id")
+                .cache(300, "recommend-calendar")
 
             var moreRecommend = await Anime
                 .aggregate([{ $sample: { size: 9 } }])
                 .sort({ favorites: -1 })
                 .project("title slug thumbPortrait anime_id -_id")
+                .cache(300, "recommendmore-calendar")
+
             res.render('calendar', {
                 settings,
                 proxyimg,
@@ -329,7 +360,7 @@ module.exports = {
     async getAnimeList(req, res) {
         try {
             var { settings, reqUrl, isMobile } = res.locals
-            var animes = await Anime.find({}, { _id: 0 }).select("title anime_id slug")
+            var animes = await Anime.find({}, { _id: 0 }).select("title anime_id slug").cache(300, "animelists")
             animes = alphabet(animes)
             res.render('animes-list', {
                 settings,
@@ -367,6 +398,7 @@ module.exports = {
                     { studios: regex }
                 ]
             }, { _id: 0 }).select("title slug anime_id").limit(5)
+                .cache(60, "search-" + q)
             res.send({ success: true, result: animes })
         } catch (err) {
             res.send({ success: false, message: err.message })
@@ -392,6 +424,7 @@ module.exports = {
                     { studios: regex }
                 ]
             }, { _id: 0 }).select("title thumb slug anime_id").limit(30)
+                .cache(60, "search-result-" + q)
             counts = {}
             for (var item of animes) {
                 var { anime_id } = item

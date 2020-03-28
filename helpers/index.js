@@ -32,6 +32,7 @@ module.exports = {
         return null
     },
     getDomain(url) {
+        if(!url) return;
         var hostname;
         //find & remove protocol (http, ftp, etc.) and get hostname
         if (url.indexOf("//") > -1) {

@@ -1,8 +1,8 @@
 extends ./layouts/default
 append head
-    link(rel='stylesheet' href='/mod/videojs/videojs.css')
-    link(rel='stylesheet' href='/mod/videojs/vsplugins.min.css')
-    link(rel='stylesheet' href='/mod/videojs/resume.css')
+    link(rel='stylesheet' href='/dist/mod/videojs/videojs.min.css')
+    link(rel='stylesheet' href='/dist/mod/videojs/vsplugins.min.css')
+    link(rel='stylesheet' href='/dist/mod/videojs/resume.min.css')
     - var description = "If you want watching anime "+ anime.title + " the world's fastest free anime number #1. BakadoraTV! From the masterpiece that you absolutely want to see, to the latest hot topic, the lineup is enhanced!"
     meta(name='description' content=description)
     meta(property='fb:pages' content='469597040116400')
@@ -23,13 +23,13 @@ append head
     script(type='text/javascript' src='//imasdk.googleapis.com/js/sdkloader/ima3.js')
     script(type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/store.js/1.3.17/store.min.js')
     script(type='text/javascript' src='//st.bebi.com/bebi_v3.js')
-    script(type='text/javascript' src='/mod/videojs/videojs.min.js')
-    script(type='text/javascript' src='/mod/videojs/ads/contrib.min.js')
-    script(type='text/javascript' src='/mod/videojs/ads/videojs.ima.js')
-    script(type='text/javascript' src='/mod/videojs/videojs.logo.js')
-    script(type='text/javascript' src='/mod/videojs/resume.min.js')
+    script(type='text/javascript' src='/dist/mod/videojs/videojs.min.js')
+    script(type='text/javascript' src='/dist/mod/videojs/ads/contrib.min.js')
+    script(type='text/javascript' src='/dist/mod/videojs/ads/videojs-ima.min.js')
+    script(type='text/javascript' src='/dist/mod/videojs/videojs-logo.min.js')
+    script(type='text/javascript' src='/dist/mod/videojs/resume.min.js')
 block content
-    script(type='text/javascript' src='/mod/videojs/core.min.js')
+    script(type='text/javascript' src='/dist/mod/videojs/core.min.js')
     div.ma-container.ma-container-mobile
         div
             - var breadcrumb = [{title: 'Home', href: '/' },{title: anime.title, href: `/anime/${anime.anime_id}/${anime.slug}`},{title: episode.caption ? episode.caption : "Episode " + episode.number}]

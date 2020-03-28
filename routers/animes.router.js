@@ -4,6 +4,10 @@ const { getIndex, getAnime, getEpisode, getAnimeRanking,
     getAnimeCalendar, getAnimeList, suggestSearch, searchAnime, getAnimeId } = require('../controllers/animes.controller')
 const { getOption } = require('../middlewares/animes.middleware')
 const apicache = require('apicache')
+apicache.options({
+    appendKey: (req, res) => res.locals.isMobile
+})
+
 let cache = apicache.middleware
 
 const countViewMidd = async (req, res, next) => {
@@ -27,10 +31,10 @@ route.get('/', getOption, getIndex)
 route.get('/animes-list', getOption, getAnimeList)
 route.get('/anime/:anime_id/:slug', countViewMidd, getOption, getAnime)
 route.get('/anime/:anime_id', countViewMidd, getOption, getAnimeId)
-route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, getOption, getEpisode)
+route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, getOption, cache('2 minutes'), getEpisode)
 route.get('/ranking/:sort', getOption, getAnimeRanking)
 route.get('/calendar/:day', getOption, getAnimeCalendar)
-route.get('/search',  getOption, searchAnime)
+route.get('/search', getOption, searchAnime)
 route.get('/privacy-policy', getOption, (req, res) => {
     var { settings, reqUrl, isMobile } = res.locals
     res.render('privacy-policy', {

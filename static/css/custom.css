@@ -1917,7 +1917,7 @@ body {
 
 @media screen and (min-width: 768px) {
   .page-wrapper.toggled .page-content {
-    padding-left: 300px;
+    padding-left: 220px;
   }
 }
 
@@ -2277,7 +2277,7 @@ body {
 }
 
 .chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-role, .chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-status, .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu, .chiller-theme .sidebar-wrapper .sidebar-search .input-group-text, .chiller-theme .sidebar-wrapper .sidebar-brand>a, .chiller-theme .sidebar-wrapper .sidebar-menu ul li a, .chiller-theme .sidebar-footer>a {
-  color: #818896;
+  color: #e6e6e6;
 }
 
 .chiller-theme .sidebar-wrapper .sidebar-menu ul li:hover>a, .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active>a, .chiller-theme .sidebar-wrapper .sidebar-header .user-info, .chiller-theme .sidebar-wrapper .sidebar-brand>a:hover, .chiller-theme .sidebar-footer>a:hover i {
@@ -2325,7 +2325,7 @@ body {
   background-color: #171717;
 }
 
-.adapt-mobile .ma-container-mobile {
+.adapt-mobile .ma-container-mobile:first-child {
   padding-top: 62px;
 }
 

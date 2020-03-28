@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-var mongooseRedisCache = require("mongoose-redis-cache");
-mongooseRedisCache(mongoose, {
-    cache: true
-});
+var MongooseCache = require('./cache')
+var MongooseArrCache = require('./cacheAggregate');
+MongooseCache(mongoose);
+MongooseArrCache(mongoose);
 
 mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true,

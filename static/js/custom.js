@@ -25,8 +25,8 @@ function carouselCallback(id, slide, lg, md, sm, xs) {
             lazyLoad: 'ondemand',
             slidesToShow: slide,
             slidesToScroll: slide,
-            nextArrow: `<a class="ma-carousel-next" href="#" role="button"><span class="ma-carousel-next-icon"></span><span class="sr-only">Next</span></a>`,
-            prevArrow: `<a class="ma-carousel-prev" href="#" role="button" style="display:inline-flex;"><span class="ma-carousel-prev-icon"></span><span class="sr-only">Previous</span></a>`,
+            nextArrow: '<a class="ma-carousel-next" href="#" role="button"><span class="ma-carousel-next-icon"></span><span class="sr-only">Next</span></a>',
+            prevArrow: '<a class="ma-carousel-prev" href="#" role="button" style="display:inline-flex;"><span class="ma-carousel-prev-icon"></span><span class="sr-only">Previous</span></a>',
             responsive: [
                 {
                     breakpoint: 1600,
@@ -130,11 +130,11 @@ jQuery(function ($) {
 
 $(document).ready(function () {
     var pathname = window.location.pathname;
-    var { search } = window.location
+    var searchAnime = window.location.search
     $('.ma-ranking-type-tablist li a[href="' + pathname + '"]').parent().addClass('active');
-    $('#select-menu-1 li a[href="' + search + '"]').parent().addClass('selected');
+    $('#select-menu-1 li a[href="' + searchAnime + '"]').parent().addClass('selected');
     var rankMenuTextPc = $('#select-menu-1 > li.selected a').text() || "All";
-    var rankMenuTextMb = $('.ma-select-menu-mobile-select option[value="' + search + '"]').text() || "All";
+    var rankMenuTextMb = $('.ma-select-menu-mobile-select option[value="' + searchAnime + '"]').text() || "All";
     $('.ma-select-menu-mobile-label-text').text(rankMenuTextMb)
     $('.ma-select-menu-desktop-label').text(rankMenuTextPc)
 
@@ -243,7 +243,7 @@ $(function () {
     var old_value = ""
     $("#ma-search-input").autocomplete({
         source: function (value, event) {
-            var { term } = value
+            var term = value.term
             if (term === old_value) {
                 return event(searchResult)
             } else {
@@ -264,7 +264,7 @@ $(function () {
             }
         },
         select: function (event, ui) {
-            var pathname = `/anime/${ui.item.anime_id}/${ui.item.slug}`
+            var pathname = '/anime/'+ui.item.anime_id+'/'+ui.item.slug+''
             window.location.pathname = pathname
         },
         position: {

@@ -22,12 +22,17 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
+    "mix-hash": "^1.0.5",
     "mongoose": "^5.9.3",
-    "mongoose-redis-cache": "0.0.3",
     "pug": "^2.0.4",
     "redis": "^3.0.2"
   },
   "devDependencies": {
+    "grunt": "^1.1.0",
+    "grunt-contrib-compress": "^1.6.0",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-contrib-uglify-es": "^3.3.0",
     "nodemon": "^2.0.2"
   }
 }

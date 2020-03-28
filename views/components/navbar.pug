@@ -2,7 +2,7 @@ header.navbar.navbar-dark.ma-bg-dark.ma-navbar.fixed-top
     ul.ma-navbar-menu-left.ma-non-list.m-0.p-0
         li.ma-navbar-menu-item
             div.ma-navbar-menu
-                button.ma-navbar-button.navbar-toggler#sidebar-toggler(data-trigger=isMobile ? "false" : "true")
+                div.btn.ma-navbar-button.navbar-toggler#sidebar-toggler(data-trigger=isMobile ? "false" : "true")
                     span.navbar-toggler-icon
         li.ma-navbar-menu-item
             div.ma-navbar-menu
@@ -13,18 +13,9 @@ header.navbar.navbar-dark.ma-bg-dark.ma-navbar.fixed-top
         li.ma-navbar-search-bar
             form.ma-navbar-search-area(role='search' action="/search")
                 input#ma-search-input.ma-navbar-search-input(type='text' name='q' autocomplete='off' placeholder='Sword Art Online' value='')
+                label(for='ma-search-input') Search something?
                 div#ma-search-icon.ma-navbar-search-icon
                     i.fas.fa-search
                 .ma-navbar-search-content
             script(type='application/ld+json').
-                {
-                "@context": "https://schema.org",
-                "name": "searchBox",
-                "@type": "WebSite",
-                "url": "https://bakadora/",
-                "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://bakadora/search/?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-                }
-                }
+                {"@context": "https://schema.org","name": "searchBox","@type": "WebSite","url": "https://bakadora/","potentialAction": {"@type": "SearchAction","target": "https://bakadora/search/?q={search_term_string}","query-input": "required name=search_term_string"}}
