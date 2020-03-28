@@ -24,7 +24,7 @@ module.exports = {
                 var data = resp.data
                 if (!data.success) return null
                 var id = data.results.id
-                var link = drDomain + '/hls/' + id + '.m3u8'
+                var link = "//drstream.live" + '/hls/' + id + '.m3u8'
                 return link
             }
             return null
