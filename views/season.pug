@@ -22,11 +22,34 @@ block content
         - var breadcrumb = [{title: 'Home', href: '/' }, {title: pageTitle}]
         - var data = seasons
         if(isMobile)  
-            include ./components/rankingMobile
+            .ma-ranking-mobile-type-tab-container
+                ul.ma-ranking-type-tablist.ma-non-list(role='tablist')
+                    li.ma-ranking-type-tablist-item(role='tab' aria-selected='true')
+                        a.ma-ranking-type-tablist-link.ma-link.ma-outline(href='/ranking/views') by Views
+                    li.ma-ranking-type-tablist-item(role='tab' aria-selected='false')
+                        a.ma-ranking-type-tablist-link.ma-link.ma-outline(href='/ranking/favorites') by Favorites   
+            .ma-ranking-mobile-ranking-list
+                each val, index in data
+                    - var {title, anime_id, thumb, slug} = val
+                    .ma-ranking-mobile-ranking-list-item
+                        a.ma-link-block(href=`/anime/${anime_id}/${slug}`)
+                            .ma-ranking-mobile-ranking-list-item-inner
+                                .ma-ranking-mobile-ranking-list-item-thumbnail
+                                    .ma-m-thumbnail.ma-m-thumbnail-loaded
+                                        - thumb = proxyimg(thumb)
+                                        img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=128&h=72&f=webp 1x, '+thumb+'?w=256&h=144&f=webp 2x' loading='lazy' src=thumb+'?w=128&h=72&f=webp')
+                                        .ma-m-thumbnail-play.ma-m-thumbnail-play-mobile
+                                            span.ma-m-play-icon.ma-m-play-icon-small
+                                                svg.ma-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
+                                                    use(xlink:href='/imgs/icons/playback.svg#svg-body')
+                                .ma-ranking-mobile-ranking-list-item-body
+                                    .ma-ranking-mobile-ranking-heading-wrapper
+                                        h2.ma-ranking-mobile-ranking-heading
+                                            span.ma-collapsed-text-container(style='line-height: 1.3; max-height: 3.9em; -webkit-line-clamp: 3;') #{index + 1}. #{title}
             include ./components/breadcrumb
         else  
             include ./components/breadcrumb
-            h1.ma-pageTitle Anime Ranking
+            h1.ma-pageTitle Season #{pageTitle}
             .ma-ranking-body
                 .ma-ranking-type
                     ul.ma-ranking-type-tablist.ma-non-list(role='tablist')
