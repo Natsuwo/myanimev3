@@ -16,8 +16,8 @@ const eventListenerOptionsSupported = () => {
 }
 
 const defaultOptions = {
-    passive: true,
-    capture: false
+    passive: false,
+    capture: true
 };
 const supportedPassiveTypes = [
     'scroll', 'wheel',

@@ -5,7 +5,7 @@ const Hash = require("mix-hash"),
 module.exports = function (mongoose, option) {
     var exec = mongoose.Query.prototype.exec;
     // var execFind = mongoose.Query.prototype.execFind;
-    const aggregate = mongoose.Model.aggregate;
+    // const aggregate = mongoose.Model.aggregate;
     var client = redis.createClient(option || "redis://127.0.0.1:6379");
     client.get = util.promisify(client.get);
     
