@@ -570,6 +570,7 @@
                 var slide = document.createElement('div');
                 for (b = 0; b < _.options.rows; b++) {
                     var row = document.createElement('div');
+                    row.className = "ma-slide-item"
                     for (c = 0; c < _.options.slidesPerRow; c++) {
                         var target = (a * slidesPerSection + ((b * _.options.slidesPerRow) + c));
                         if (originalSlides.get(target)) {

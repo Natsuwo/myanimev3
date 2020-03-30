@@ -1426,9 +1426,15 @@ a:hover.ma-outline {
   margin-top: 24px;
 }
 
+.ma-slide-item {
+  height: 100%;
+  width: 100%;
+}
+
 .ma-carousel-card-wrapper {
   padding-right: 16px;
   position: relative;
+  height: 100%;
 }
 
 .ma-episode-details-block-wrapper {

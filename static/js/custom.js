@@ -57,8 +57,6 @@ function carouselCallback(id, slide, lg, md, sm, xs) {
                     }
                 }
             ]
-        }).on('setPosition', function (event, slick) {
-            slick.$slides.css('height', slick.$slideTrack.height() + 'px');
         });
     });
 }
