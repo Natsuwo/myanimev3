@@ -64,11 +64,22 @@ module.exports = function (grunt) {
                 options: {
                     mode: 'gzip'
                 },
-                expand: true,
-                cwd: 'static/dist/',
-                src: ['**/*.css', '**/*.js'],
-                dest: 'static/dist/',
-                ext: '.min.css.gz'
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'static/dist/',
+                        src: ['**/*.css'],
+                        dest: 'static/dist/',
+                        ext: '.min.css.gz'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'static/dist/',
+                        src: ['**/*.js'],
+                        dest: 'static/dist/',
+                        ext: '.min.js.gz'
+                    }
+                ]
             }
         },
         cssmin: {
