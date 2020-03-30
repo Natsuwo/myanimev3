@@ -2,7 +2,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-
+    grunt.registerTask('default', ['uglify:source_map', 'compress:gzip_css', 'cssmin:min_css'])
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
