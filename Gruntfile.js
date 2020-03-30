@@ -94,6 +94,14 @@ module.exports = function (grunt) {
                             'static/mod/videojs/resume.css'
                         ],
                         dest: 'static/dist/baka.min.css'
+                    },
+                    {
+                        src: [
+                            'static/css/animate.css',
+                            'static/css/style01.css',
+                            'static/css/style04.css'
+                        ],
+                        dest: 'static/dist/calendar.min.css'
                     }
                 ]
             }
