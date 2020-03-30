@@ -54,7 +54,7 @@ module.exports = function (grunt) {
                     },
                     {
                         src: 'static/sw.js',
-                        dest: 'static/dist/sw.min.js'
+                        dest: 'static/sw.min.js'
                     }
                 ]
             }
