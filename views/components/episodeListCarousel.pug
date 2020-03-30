@@ -7,7 +7,7 @@
             - var {thumbnail, number} = val
             - var titleEp = title + " Eps. " + number
             - if(!thumbnail) thumbnail = "https://i.imgur.com/jUJVxG9.png"
-            - thumb = thumbnail + "?w=484&h=272&f=webp"
+            - thumb = thumbnail + "?w=484&h=272&f=webp&q=50"
             .card.ma-card
                 a.ma-link-block(href=`/anime/${anime_id}/${slug}/episode/${number}`)
                     - thumb = proxyimg(thumb)

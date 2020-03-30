@@ -14,7 +14,7 @@
                                 .ma-search-result-card
                                     .ma-m-thumbnail.ma-m-thumbnail-loaded
                                         - thumb = proxyimg(thumb)
-                                        img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=192&h=108&f=webp 1x, '+thumb+'?w=384&h=216&f=webp 2x' src=thumb+'?w=192&h=108&f=webp')
+                                        img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=192&h=108&f=webp&q=85 1x, '+thumb+'?w=384&h=216&f=webp&q=85 2x' src=thumb+'?w=192&h=108&f=webp&q=85')
                                         .ma-m-thumbnail-play.ma-m-thumbnail-play-desktop
                                             span.ma-m-play-icon
                                                 svg.ma-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')

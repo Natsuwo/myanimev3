@@ -109,28 +109,6 @@ jQuery(function ($) {
         // $(".page-wrapper").addClass("toggled");
     });
 
-    // Menu 2
-    // $("#ma-overlay").click(function () {
-    //     if ($("#sidebar-toggler").attr('data-trigger') == 'true') {
-    //         $("#sidebar-toggler").attr('data-trigger', 'false');
-    //         $(".page-wrapper").removeClass("toggled");
-    //         $(this).toggle();
-    //     }
-    // });
-
-    // $("#sidebar-toggler").click(function () {
-    //     if ($(this).attr('data-trigger') == 'true') {
-    //         $(this).attr('data-trigger', 'false');
-    //         $(".page-wrapper").removeClass("toggled");
-    //         $("#ma-overlay").toggle();
-    //     } else {
-    //         $(this).attr('data-trigger', 'true');
-    //         $(".page-wrapper").addClass("toggled");
-    //         $("#ma-overlay").toggle();
-    //     }
-    //     // $(".page-wrapper").addClass("toggled");
-    // });
-
     $("#ma-dropdown-details").click(function () {
         var contentId = ".ma-episode-section-details-mobile"
         if ($(contentId).attr('aria-hidden') == 'true') {

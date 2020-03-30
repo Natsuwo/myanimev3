@@ -68,7 +68,7 @@ html(lang="en" style="overflow-x:hidden;")
                         li
                             a(href=`/anime/${anime.anime_id}/${anime.slug}`)
                                 figure
-                                    img(src=anime.thumb+'?w=400&h=255&f=webp')
+                                    img(src=anime.thumb+'?w=400&h=255&f=webp&q=80')
                                 div
                                     h2
                                         span.title #{item.start_time} - #{item.end_time}           
@@ -83,7 +83,7 @@ html(lang="en" style="overflow-x:hidden;")
                         each week in weekRecommend
                             li
                                 a(href=`/anime/${week.anime_id}/${week.slug}`)
-                                    img(src=week.thumbPortrait+'?w=400&h=569&f=webp')
+                                    img(src=week.thumbPortrait+'?w=400&h=569&f=webp&q=80')
                 h2.c_h.c_h_m More Recommended
                 // 20
                 .c_twenty
@@ -91,7 +91,7 @@ html(lang="en" style="overflow-x:hidden;")
                         each more in moreRecommend
                             li
                                 a(href=`/anime/${more.anime_id}/${more.slug}`)
-                                    img(src=more.thumbPortrait+'?w=400&h=569&f=webp')
+                                    img(src=more.thumbPortrait+'?w=400&h=569&f=webp&q=80')
 script.
     var pathname = window.location.pathname;
     $('#ma-day ul li a[href="' + pathname + '"]').parent().addClass('active');

@@ -17,7 +17,7 @@
                                     .ma-card-inner
                                         .ma-m-thumbnail.ma-m-thumbnail-loaded
                                             - thumb = proxyimg(thumb)
-                                            img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=242&h=136&f=webp 1x, '+thumb+'?w=484&h=272&f=webp 2x' loading='lazy' src=thumb+'?w=242&h=136&f=webp')
+                                            img.ma-m-thumbnail-image(alt=title srcset=thumb+'?w=242&h=136&f=webp&q=50 1x, '+thumb+'?w=484&h=272&f=webp&q=50 2x' loading='lazy' src=thumb+'?w=242&h=136&f=webp&q=50')
                                         .ma-card-list-column-caption
                                             .ma-card-list-column-caption-inner
                                                 p.ma-card-title
