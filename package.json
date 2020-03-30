@@ -25,7 +25,8 @@
     "mix-hash": "^1.0.5",
     "mongoose": "^5.9.3",
     "pug": "^2.0.4",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "grunt": "^1.1.0",

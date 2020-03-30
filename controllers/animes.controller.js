@@ -125,10 +125,9 @@ module.exports = {
     },
     async getAnimeId(req, res, next) {
         try {
+            var { settings, reqUrl, isMobile } = res.locals
             var { anime_id } = req.params
-            if (!parseInt(anime_id)) {
-                throw Error("Not found.")
-            }
+            if (!parseInt(anime_id)) throw Error("Not found.")
             var fs = require('fs')
             var old_db = fs.readFileSync('./old_db.json', { encoding: 'utf8' })
             old_db = JSON.parse(old_db)
@@ -155,10 +154,8 @@ module.exports = {
     async getAnime(req, res) {
         try {
             var { settings, reqUrl, isMobile } = res.locals
-            var { anime_id, slug } = res.locals
-            if (!anime_id && !slug) {
-                var { anime_id, slug } = req.params
-            }
+            var { anime_id, slug } = req.params
+            if (!parseInt(anime_id)) throw Error("Not found.")
             var { sort, eps } = req.query
             eps = parseInt(eps)
             if (!sort || sort !== "asc" && sort !== "desc") sort = "desc"
@@ -221,7 +218,6 @@ module.exports = {
     },
     async getEpisode(req, res) {
         try {
-            req.connection.setTimeout(60 * 10 * 1000)
             var { settings, reqUrl, isMobile } = res.locals
             var { anime_id, slug, number } = req.params
             number = parseInt(number)

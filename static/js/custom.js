@@ -83,9 +83,11 @@ jQuery(function ($) {
                 .addClass("active");
         }
     });
-    // $("#sidebar-close").click(function () {
-    //     $(".page-wrapper").removeClass("toggled");
-    // });
+
+    // Sidebar 1
+    $("#sidebar-close").click(function () {
+        $(".page-wrapper").removeClass("toggled");
+    });
     $("#ma-overlay").click(function () {
         if ($("#sidebar-toggler").attr('data-trigger') == 'true') {
             $("#sidebar-toggler").attr('data-trigger', 'false');
@@ -93,6 +95,41 @@ jQuery(function ($) {
             $(this).toggle();
         }
     });
+
+    $("#sidebar-toggler").click(function () {
+        if ($(this).attr('data-trigger') == 'true') {
+            $(this).attr('data-trigger', 'false');
+            $(".page-wrapper").removeClass("toggled");
+            $("#ma-overlay").toggle();
+        } else {
+            $(this).attr('data-trigger', 'true');
+            $(".page-wrapper").addClass("toggled");
+            $("#ma-overlay").toggle();
+        }
+        // $(".page-wrapper").addClass("toggled");
+    });
+
+    // Menu 2
+    // $("#ma-overlay").click(function () {
+    //     if ($("#sidebar-toggler").attr('data-trigger') == 'true') {
+    //         $("#sidebar-toggler").attr('data-trigger', 'false');
+    //         $(".page-wrapper").removeClass("toggled");
+    //         $(this).toggle();
+    //     }
+    // });
+
+    // $("#sidebar-toggler").click(function () {
+    //     if ($(this).attr('data-trigger') == 'true') {
+    //         $(this).attr('data-trigger', 'false');
+    //         $(".page-wrapper").removeClass("toggled");
+    //         $("#ma-overlay").toggle();
+    //     } else {
+    //         $(this).attr('data-trigger', 'true');
+    //         $(".page-wrapper").addClass("toggled");
+    //         $("#ma-overlay").toggle();
+    //     }
+    //     // $(".page-wrapper").addClass("toggled");
+    // });
 
     $("#ma-dropdown-details").click(function () {
         var contentId = ".ma-episode-section-details-mobile"
@@ -114,23 +151,12 @@ jQuery(function ($) {
         $(".ma-readmore-button-wrapper").remove();
     });
 
-    $("#sidebar-toggler").click(function () {
-        if ($(this).attr('data-trigger') == 'true') {
-            $(this).attr('data-trigger', 'false');
-            $(".page-wrapper").removeClass("toggled");
-            $("#ma-overlay").toggle();
-        } else {
-            $(this).attr('data-trigger', 'true');
-            $(".page-wrapper").addClass("toggled");
-            $("#ma-overlay").toggle();
-        }
-        // $(".page-wrapper").addClass("toggled");
-    });
 });
 
 $(document).ready(function () {
     var pathname = window.location.pathname;
     var searchAnime = window.location.search
+    $('.ma-mobile-sidebar-menu-drawer div a[href="' + pathname + '"]').addClass('active');
     $('.ma-ranking-type-tablist li a[href="' + pathname + '"]').parent().addClass('active');
     $('#select-menu-1 li a[href="' + searchAnime + '"]').parent().addClass('selected');
     var rankMenuTextPc = $('#select-menu-1 > li.selected a').text() || "All";
@@ -264,7 +290,7 @@ $(function () {
             }
         },
         select: function (event, ui) {
-            var pathname = '/anime/'+ui.item.anime_id+'/'+ui.item.slug+''
+            var pathname = '/anime/' + ui.item.anime_id + '/' + ui.item.slug + ''
             window.location.pathname = pathname
         },
         position: {

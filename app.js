@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = (rootDir) => {
+    const { v5 } = require('uuid');
     require('./database');
     // require('./cache');
     const compression = require('compression');
@@ -17,6 +18,7 @@ module.exports = (rootDir) => {
         name: '_session',
         proxy: true,
         resave: true,
+        cookie: { expires: new Date(Date.now() + (12 * 30 * 86400 * 1000)) },
         saveUninitialized: true
     }));
 
@@ -71,29 +73,10 @@ module.exports = (rootDir) => {
     app.use(async (err, req, res, next) => {
         if (err) {
             console.error(err)
-            const Option = require('./models/Options')
-            res.removeHeader('X-Powered-By');
-            var option = await Option.findOne({ default: true })
-            if (!option) throw Error("Setting not found. Please set option in backend fisrt.")
-            var { settings } = option
-            const Mobile = require('./helpers/is-mobile')
-            res.status(404);
-            if (req.accepts('html')) {
-                res.render('error', {
-                    settings,
-                    pageTitle: 'Error',
-                    isMobile: Mobile(req),
-                    isFooter: false
-                });
-                return;
-            }
-            if (req.accepts('json')) {
-                res.send({ error: 'Not found' });
-                return;
-            }
-            res.type('txt').send('Not found');
+            return res.send('Not found');
         }
         next();
     });
+
     return app;
 }

@@ -3,6 +3,7 @@ const route = Router()
 const { getIndex, getAnime, getEpisode, getAnimeRanking,
     getAnimeCalendar, getAnimeList, suggestSearch, searchAnime, getAnimeId, getSeason } = require('../controllers/animes.controller')
 const { getOption } = require('../middlewares/animes.middleware')
+const {auth} = require('../middlewares/auth.middleware')
 const apicache = require('apicache')
 apicache.options({
     appendKey: (req, res) => res.locals.isMobile
@@ -14,6 +15,7 @@ const countViewMidd = async (req, res, next) => {
     var { anime_id, slug, number } = req.params
     var Anime = require('../models/Anime')
     var Episode = require('../models/Episode')
+    if (!parseInt(anime_id)) return next()
     if (number) {
         var episode = await Episode.findOne({ anime_id, number }, { __v: 0, _id: 0 })
         if (episode) {
@@ -27,7 +29,7 @@ const countViewMidd = async (req, res, next) => {
     return next()
 }
 
-route.get('/', getOption, getIndex)
+route.get('/', auth, getOption, getIndex)
 route.get('/animes-list', getOption, getAnimeList)
 route.get('/anime/:anime_id/:slug', countViewMidd, getOption, getAnime)
 route.get('/anime/:anime_id', countViewMidd, getOption, getAnimeId)

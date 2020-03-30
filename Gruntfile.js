@@ -2,6 +2,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
@@ -15,15 +16,17 @@ module.exports = function (grunt) {
             },
             source_map: {
                 options: {
+                    compress: {
+                        dead_code: true
+                    },
                     sourceMap: true
                 },
                 files: [
                     {
+
                         cwd: 'static/',
                         src: [
                             '**/*.js',
-                            '!**/service.js',
-                            '!**/sw.js',
                             '!**/*.min.js',
                             '!mod/boostrap/*',
                             '!mod/boostrap/js/*',
@@ -32,6 +35,7 @@ module.exports = function (grunt) {
                         dest: 'static/dist/',
                         expand: true,
                         flatten: false,
+                        dead_code: true,
                         ext: '.min.js'
                     }
                 ]

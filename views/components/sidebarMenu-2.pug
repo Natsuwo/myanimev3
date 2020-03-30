@@ -1,0 +1,80 @@
+- var day = "sunday";
+- switch((new Date).getDay()){case 0:day="sunday";break;case 1:day="monday";break;case 2:day="tuesday";break;case 3:day="wednesday";break;case 4:day="thursday";break;case 5:day="friday";break;case 6:day="saturday"}
+- function changeToSlug(e){var a;return a=(a="@"+(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=(a=e).replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi,"a")).replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi,"e")).replace(/i|í|ì|ỉ|ĩ|ị/gi,"i")).replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi,"o")).replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi,"u")).replace(/ý|ỳ|ỷ|ỹ|ỵ/gi,"y")).replace(/đ/gi,"d")).replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\[|\]|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,"")).replace(/ /gi,"_")).replace(/\-\-\-\-\-/gi,"_")).replace(/\-\-\-\-/gi,"_")).replace(/\-\-\-/gi,"_")).replace(/\-\-/gi,"_"))+"@").replace(/\@\-|\-\@|\@/gi,""),encodeURIComponent(a)}
+- var {prev_season, current_season, next_season} = settings
+- prev_season = prev_season ? changeToSlug(prev_season) : "";
+- current_season = current_season ? changeToSlug(current_season) : "";
+- next_season = next_season ? changeToSlug(next_season) : "";
+- 
+    var menus = 
+        [
+            {name: 'Animes List', url: '/animes-list', 'icon': 'fa fa-list'},
+            {name: 'Animes Rank', url: '/ranking/views', 'icon': 'fa fa-bolt'},
+            {name: 'Prev Season', url: `/season/${prev_season || ""}/views`, 'icon': 'far fa-folder'},
+            {name: 'Current Season', url: `/season/${current_season || ""}/views`, 'icon': 'fa fa-folder-open'},
+            {name: 'Next Season', url: `/season/${next_season || ""}/views`, 'icon': 'fa fa-folder'}
+        ]
+if(isMobile)
+    .ma-mobile-sidebar-menu-container
+        .ma-mobile-sidebar-menu-body
+            .ma-mobile-sidebar-menu-drawer(role='menu')
+                div
+                    each item in menus
+                        a.ma-mobile-sidebar-menu-item.ma-mobile-sidebar-menu-item-with-icon.ma-link.ma-link-dim(href=item.url role='menuitem')
+                            .ma-mobile-sidebar-menu-item-text-container
+                                i.ma-mobile-sidebar-menu-icon-fa(class=item.icon)
+                                span.ma-color-e6.ma-font-16 #{item.name}
+                a.ma-mobile-sidebar-menu-item.ma-link.ma-link-dim(href='/MyAnimeTV_V3.0.apk' role='menuitem')
+                    span.ma-color-e6.ma-font-14 Android App
+                a.ma-mobile-sidebar-menu-item.ma-link.ma-link-dim(href='/calendar/' + day role='menuitem')
+                    span.ma-color-e6.ma-font-14 Calendar
+else
+    .ma-sidebar-menu
+        nav.ma-sidebar-menu-wrapper
+            ul.ma-sidebar-menu-main.ma-non-list
+                li.ma-sidebar-menu-item
+                    .ma-sidebar-menu-item-wrapper
+                        .ma-sidebar-menu-item-inner
+                            a.ma-link-block(href='/MyAnimeTV_V3.0.apk')
+                                .ma-sidebar-menu-item-content
+                                    i.fab.fa-android.ma-mobile-sidebar-menu-icon-fa
+                                    .ma-sidebar-menu-item-text Android App
+                li.ma-sidebar-menu-item
+                    .ma-sidebar-menu-item-wrapper
+                        .ma-sidebar-menu-item-inner
+                            a.ma-link-block(href='/calendar/' + day)
+                                .ma-sidebar-menu-item-content
+                                    i.fa.fa-calendar.ma-mobile-sidebar-menu-icon-fa
+                                    .ma-sidebar-menu-item-text Calendar
+                li.ma-sidebar-horizontal-line
+                each item in menus
+                    li.ma-sidebar-menu-item
+                        .ma-sidebar-menu-item-wrapper
+                            .ma-sidebar-menu-item-inner
+                                a.ma-link-block(href=item.url)
+                                    .ma-sidebar-menu-item-content
+                                        i.ma-mobile-sidebar-menu-icon-fa(class=item.icon)
+                                        .ma-sidebar-menu-item-text #{item.name}
+            ul.ma-sidebar-menu-footer.ma-non-list
+                li.ma-sidebar-menu-item
+                    .ma-sidebar-menu-item-wrapper
+                        .ma-sidebar-menu-item-inner
+                            a.ma-link-block(href='/auth/lists')
+                                .ma-sidebar-menu-item-content
+                                    .ma-sidebar-menu-item-icon
+                                        span.ma-sidebar-menu-item-my-list 
+                                            svg.ma-icon-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
+                                                use(xlink:href='/imgs/icons/mylist.svg#svg-body')
+                                    .ma-sidebar-menu-item-text My List
+                            .ma-sidebar-menu-item-noti-wrapper
+                                .ma-sidebar-menu-item-noti-tips testne
+                li.ma-sidebar-menu-item
+                    .ma-sidebar-menu-item-wrapper
+                        .ma-sidebar-menu-item-inner
+                            a.ma-link-block(href='/auth/sign-in')
+                                .ma-sidebar-menu-item-content
+                                    .ma-sidebar-menu-item-icon
+                                        span.ma-sidebar-menu-item-my-list 
+                                            svg.ma-icon-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
+                                                use(xlink:href='/imgs/icons/account.svg#svg-body')
+                                    .ma-sidebar-menu-item-text Sign In
