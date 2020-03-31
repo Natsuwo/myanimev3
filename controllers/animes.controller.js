@@ -229,7 +229,7 @@ module.exports = {
             var skip = 0
             if (totalDoc <= 12) {
                 skip = 0
-            } else if (number <= 12) {
+            } else if (number < 12) {
                 skip = 12
             } else {
                 skip = totalDoc - number - 1
