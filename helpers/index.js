@@ -10,6 +10,24 @@ module.exports = {
             ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
         return ret.join('&');
     },
+    getSkipEp(totalDoc, number) {
+        var skip = 0
+        if (totalDoc <= 12) {
+            skip = 0
+        }
+        else if (number < 12 && totalDoc > 12) {
+            skip = totalDoc - 12
+        }
+
+        else if (number < 12 && totalDoc < 12) {
+            skip = 12
+        } else {
+            skip = totalDoc - number - 1
+            if (skip < 0)
+                skip = 0
+        }
+        return skip
+    },
     async getSourceHls(drive_id) {
         var drDomain = process.env.DRDOMAIN
         var endpoint = drDomain + '/api/v2/hls-drive/get-data'
@@ -32,7 +50,7 @@ module.exports = {
         return null
     },
     getDomain(url) {
-        if(!url) return;
+        if (!url) return;
         var hostname;
         //find & remove protocol (http, ftp, etc.) and get hostname
         if (url.indexOf("//") > -1) {

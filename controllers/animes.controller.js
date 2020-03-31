@@ -5,7 +5,7 @@ const Genre = require('../models/Genre')
 const Episode = require('../models/Episode')
 const Calendar = require('../models/Calendar')
 const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg,
-    getSourceHls, escapeRegexRec, changeToSlug } = require('../helpers')
+    getSourceHls, escapeRegexRec, getSkipEp } = require('../helpers')
 module.exports = {
     async getIndex(req, res) {
         try {
@@ -226,16 +226,7 @@ module.exports = {
                 .sort({ number: -1 }).select("number")
             var totalDoc = await Episode.countDocuments({ anime_id })
             totalEp = totalEp.number
-            var skip = 0
-            if (totalDoc <= 12) {
-                skip = 0
-            } else if (number < 12) {
-                skip = 12
-            } else {
-                skip = totalDoc - number - 1
-                if (skip < 0)
-                    skip = 0
-            }
+            var skip = getSkipEp(totalDoc, number)
             var episodes = await Episode
                 .find({ anime_id }, { _id: 0 })
                 .select("thumbnail number")
