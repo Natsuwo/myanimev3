@@ -230,7 +230,7 @@ module.exports = {
             if (totalDoc <= 12) {
                 skip = 0
             } else {
-                skip = totalDoc - curNum - 1
+                skip = totalDoc - number - 1
                 if (skip < 0)
                     skip = 0
             }
