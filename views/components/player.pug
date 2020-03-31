@@ -9,7 +9,7 @@ script(type="text/javascript").
     var nextEp = `/anime/${AniId}/${slug}/episode/${currentEp + 1}`
     var player = myAnimePlayer("player")
     var langs = !{JSON.stringify(sources)};
-    var lang = langs[0]
+    var lang = langs.filter(x => x.subtitle === "EN")[0] || langs[0]
     switchLangs(langs)
     var options = {
         autoplay: false,

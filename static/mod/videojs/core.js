@@ -115,8 +115,8 @@ function switchLangs(langs) {
                 });
                 $(clickedItem.el()).addClass('vjs-selected');
             };
-
-            for (var i = 0; i < langs.length; i++) {
+           
+            for (var i = 0; i < langs.length; i++) { 
                 var lang = langs[i]
                 var suffix = lang.suffix
                 var subtitle = shortToLongLang(lang.subtitle)
@@ -124,18 +124,17 @@ function switchLangs(langs) {
                 var item = new videojs.MenuItemTest(this.player_, {
                     tabIndex: i,
                     label: suffix ? `${subtitle} (${suffix})` : subtitle,
+                    subtitle: lang.subtitle,
                     source: lang.source,
                     backup: lang.backup,
                     class: 'vjs-menu-item'
                 }, onClickUnselectOthers);
 
-                if (i === 0) {
-                    $(item.el()).addClass('vjs-selected');
-                }
-
                 item.addClass(`vjs-${lang.subtitle}-menu-item`);
                 menuItems.push(item);
             }
+            var defaultItems = menuItems.filter(x => x.options_.subtitle === "EN")[0] || menuItems[0]
+            $(defaultItems.el()).addClass('vjs-selected')
             return menuItems
         }
     });
