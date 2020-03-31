@@ -227,13 +227,14 @@ module.exports = {
             var totalDoc = await Episode.countDocuments({ anime_id })
             totalEp = totalEp.number
             var skip = 0
+            var curNum = number
             if (totalDoc <= 12) {
                 skip = 0
             } else {
-                if (number < 12) {
-                    number = 1
+                if (curNum < 12) {
+                    curNum = 1
                 }
-                skip = totalDoc - number - 1
+                skip = totalDoc - curNum - 1
                 if (skip < 0)
                     skip = 0
             }

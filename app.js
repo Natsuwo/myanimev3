@@ -12,7 +12,8 @@ module.exports = (rootDir) => {
     const session = require('express-session');
     const flash = require('connect-flash');
     const routers = require('./routes');
-
+    
+    app.disable('x-powered-by');
     app.use(session({
         secret: process.env.SESSION_SECRET,
         name: '_session',
