@@ -78,6 +78,10 @@ module.exports = function (grunt) {
                         src: ['**/*.js'],
                         dest: 'static/dist/',
                         ext: '.min.js.gz'
+                    },
+                    {
+                        src: 'static/sw.min.js',
+                        dest: 'static/sw.min.js.gz'
                     }
                 ]
             }

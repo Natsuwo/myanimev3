@@ -148,7 +148,7 @@ $(document).ready(function () {
             if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10 && _TYPE) {
                 _COUNTLIST++
                 var request = $.ajax({
-                    url: `/user/loadlist/?page=${_COUNTLIST}&type=${_TYPE}`,
+                    url: `/api/user/loadlist/?page=${_COUNTLIST}&type=${_TYPE}`,
                     method: 'GET',
                     contentType: "application/json; charset=utf-8",
                     processData: false

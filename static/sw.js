@@ -3,22 +3,22 @@ const cacheName = 'bakadora-cache-v1';
 const startPage = './';
 const offlinePage = './';
 const filesToCache = [startPage, offlinePage];
-const neverCacheUrls = [];
-self.addEventListener('install', function(e) {
+const neverCacheUrls = [/\/api/];
+self.addEventListener('install', function (e) {
     console.log('SuperPWA service worker installation');
-    e.waitUntil(caches.open(cacheName).then(function(cache) {
+    e.waitUntil(caches.open(cacheName).then(function (cache) {
         console.log('SuperPWA service worker caching dependencies');
-        filesToCache.map(function(url) {
-            return cache.add(url).catch(function(reason) {
+        filesToCache.map(function (url) {
+            return cache.add(url).catch(function (reason) {
                 return console.log('SuperPWA: ' + String(reason) + ' ' + url);
             });
         });
     }));
 });
-self.addEventListener('activate', function(e) {
+self.addEventListener('activate', function (e) {
     console.log('SuperPWA service worker activation');
-    e.waitUntil(caches.keys().then(function(keyList) {
-        return Promise.all(keyList.map(function(key) {
+    e.waitUntil(caches.keys().then(function (keyList) {
+        return Promise.all(keyList.map(function (key) {
             if (key !== cacheName) {
                 console.log('SuperPWA old cache removed', key);
                 return caches.delete(key);
@@ -27,7 +27,7 @@ self.addEventListener('activate', function(e) {
     }));
     return self.clients.claim();
 });
-self.addEventListener('fetch', function(e) {
+self.addEventListener('fetch', function (e) {
     if (!neverCacheUrls.every(checkNeverCacheList, e.request.url)) {
         console.log('SuperPWA: Current request is excluded from cache.');
         return;
@@ -37,28 +37,28 @@ self.addEventListener('fetch', function(e) {
     if (new URL(e.request.url).origin !== location.origin)
         return;
     if (e.request.method !== 'GET') {
-        e.respondWith(fetch(e.request).catch(function() {
+        e.respondWith(fetch(e.request).catch(function () {
             return caches.match(offlinePage);
         }));
         return;
     }
     if (e.request.mode === 'navigate' && navigator.onLine) {
-        e.respondWith(fetch(e.request).then(function(response) {
-            return caches.open(cacheName).then(function(cache) {
+        e.respondWith(fetch(e.request).then(function (response) {
+            return caches.open(cacheName).then(function (cache) {
                 cache.put(e.request, response.clone());
                 return response;
             });
         }));
         return;
     }
-    e.respondWith(caches.match(e.request).then(function(response) {
-        return response || fetch(e.request).then(function(response) {
-            return caches.open(cacheName).then(function(cache) {
+    e.respondWith(caches.match(e.request).then(function (response) {
+        return response || fetch(e.request).then(function (response) {
+            return caches.open(cacheName).then(function (cache) {
                 cache.put(e.request, response.clone());
                 return response;
             });
         });
-    }).catch(function() {
+    }).catch(function () {
         return caches.match(offlinePage);
     }));
 });
