@@ -3,7 +3,50 @@ const crypto = require('crypto')
 const algorithm = 'aes-256-cbc'
 const key = process.env.CRYPTOKEY
 const axios = require('axios')
+const nodemailer = require('nodemailer')
 module.exports = {
+    async checkValidPass(password, confirm_password) {
+        var lowercase = /[a-z]/.test(password)
+        var number = /\d/.test(password)
+        var uppercase = /[A-Z]/.test(password)
+        if (password.length <= 8) {
+            throw Error("Password must be greater than 8 characters.")
+        }
+        if (!lowercase) {
+            throw Error("Password must be have a lowercase.")
+        }
+        if (!number) {
+            throw Error("Password must be have a number")
+        }
+        if (!uppercase) {
+            throw Error("Password must be have a uppercase.")
+        }
+        if (confirm_password !== password) {
+            throw Error("Password not match.")
+        }
+    },
+    async sendMail(email, subject, text, html) {
+        try {
+            var transporter = nodemailer.createTransport({
+                host: "smtp.yandex.com",
+                port: 465,
+                auth: {
+                    user: process.env.YANDEX_MAIL,
+                    pass: process.env.YANDEX_PASS
+                }
+            })
+            var mainOptions = {
+                from: process.env.YANDEX_MAIL,
+                to: email,
+                subject,
+                text,
+                html
+            }
+            await transporter.sendMail(mainOptions)
+        } catch (err) {
+            console.error(err.message, ' at sendMail')
+        }
+    },
     encodeQueryData(data) {
         const ret = [];
         for (let d in data)

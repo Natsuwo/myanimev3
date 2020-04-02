@@ -1,0 +1,35 @@
+extends ../../layouts/default
+append head
+    - var description = "BakadoraTV introduces free video lists for anime! Check out popular anime videos now!"
+    meta(name='description' content=description)
+    meta(property='fb:pages' content='469597040116400')
+    meta(property='fb:app_id' content='2167104370235589')
+    meta(property='og:site_name' content='BakadoraTV')
+    meta(property='og:title', content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='og:url' content=url)
+    meta(property='og:image' content='')
+    meta(property='og:description', content=description)
+    meta(property='og:type' content='video.episode')
+    meta(property='twitter:card' content='summary_large_image')
+    meta(property='twitter:site' content='@myanime_co')
+    meta(property='twitter:url' content=url)
+    meta(property='twitter:image' content='')
+    meta(property='twitter:description', content=description)
+    meta(property='twitter:title' content=`${settings.site_title} - ${pageTitle}`)
+    meta(property='twitter:app:country' content='US')
+block content
+    script(type='text/javascript' src='/mod/infinite-scroll/infinite-scroll.pkgd.min.js')
+    div.container.ma-container-mobile
+        - var breadcrumb = [{title: 'Home', href: '/' }, {title: 'My Lists'}]
+        include ../../components/breadcrumb
+        h1.ma-mylist-heading My Lists
+        .ma-mylist-tab
+            ul.ma-mylist-tablist.ma-non-list.m-0.p-0(role='tablist')
+                li.ma-mylist-tab-container.ma-mylist-tablist-justified.ma-mylist-tablist-active(role='tab' aria-selected='true')
+                    .ma-mylist-label-container.ma-mylist-label-container-justified
+                        span.ma-mylist-label.ma-mylist-label-active My Animes
+                li.ma-mylist-tab-container.ma-mylist-tablist-justified(role='tab' aria-selected='false')
+                    a.ma-mylist-label-container.ma-mylist-label-container-justified.ma-link(href='/auth/alerts')
+                        span.ma-mylist-label List Alerts
+            - var data = myList
+            include ../../components/userLists

@@ -3,7 +3,7 @@ const route = Router()
 const { getIndex, getAnime, getEpisode, getAnimeRanking,
     getAnimeCalendar, getAnimeList, suggestSearch, searchAnime, getAnimeId, getSeason } = require('../controllers/animes.controller')
 const { getOption } = require('../middlewares/animes.middleware')
-const {auth} = require('../middlewares/auth.middleware')
+const { auth } = require('../middlewares/auth.middleware')
 const apicache = require('apicache')
 apicache.options({
     appendKey: (req, res) => res.locals.isMobile
@@ -29,16 +29,16 @@ const countViewMidd = async (req, res, next) => {
     return next()
 }
 
-route.get('/', auth, getOption, getIndex)
-route.get('/animes-list', getOption, getAnimeList)
-route.get('/anime/:anime_id/:slug', countViewMidd, getOption, getAnime)
-route.get('/anime/:anime_id', countViewMidd, getOption, getAnimeId)
-route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, getOption, cache('2 minutes'), getEpisode)
-route.get('/ranking/:sort', getOption, getAnimeRanking)
-route.get('/season/:slug/:sort', getOption, getSeason)
+route.get('/', getOption, auth, getIndex)
+route.get('/animes-list', getOption, auth, getAnimeList)
+route.get('/anime/:anime_id/:slug', countViewMidd, auth, getOption, getAnime)
+route.get('/anime/:anime_id', countViewMidd, getOption, auth, getAnimeId)
+route.get('/anime/:anime_id/:slug/episode/:number', countViewMidd, getOption, cache('2 minutes'), auth, getEpisode)
+route.get('/ranking/:sort', getOption, auth, getAnimeRanking)
+route.get('/season/:slug/:sort', getOption, auth, getSeason)
 route.get('/calendar/:day', getOption, getAnimeCalendar)
-route.get('/search', getOption, searchAnime)
-route.get('/privacy-policy', getOption, (req, res) => {
+route.get('/search', getOption, auth, searchAnime)
+route.get('/privacy-policy', getOption, auth, (req, res) => {
     var { settings, reqUrl, isMobile } = res.locals
     res.render('privacy-policy', {
         settings,

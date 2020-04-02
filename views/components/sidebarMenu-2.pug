@@ -67,14 +67,20 @@ else
                                                 use(xlink:href='/imgs/icons/mylist.svg#svg-body')
                                     .ma-sidebar-menu-item-text My List
                             .ma-sidebar-menu-item-noti-wrapper
-                                .ma-sidebar-menu-item-noti-tips testne
+                                #my-noti.ma-sidebar-menu-item-noti-tips
                 li.ma-sidebar-menu-item
                     .ma-sidebar-menu-item-wrapper
                         .ma-sidebar-menu-item-inner
-                            a.ma-link-block(href='/auth/sign-in')
-                                .ma-sidebar-menu-item-content
-                                    .ma-sidebar-menu-item-icon
-                                        span.ma-sidebar-menu-item-my-list 
-                                            svg.ma-icon-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
-                                                use(xlink:href='/imgs/icons/account.svg#svg-body')
-                                    .ma-sidebar-menu-item-text Sign In
+                            if(user)
+                                a.ma-link-block(href='/auth/logout')
+                                    .ma-sidebar-menu-item-content(style="padding-left: 20px;")
+                                        i.fas.fa-sign-out-alt.ma-mobile-sidebar-menu-icon-fa
+                                        .ma-sidebar-menu-item-text Logout
+                            else
+                                a.ma-link-block(href='/auth/sign-in')
+                                    .ma-sidebar-menu-item-content
+                                        .ma-sidebar-menu-item-icon
+                                            span.ma-sidebar-menu-item-my-list 
+                                                svg.ma-icon-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
+                                                    use(xlink:href='/imgs/icons/account.svg#svg-body')
+                                        .ma-sidebar-menu-item-text Sign In

@@ -62,6 +62,7 @@ function carouselCallback(id, slide, lg, md, sm, xs) {
 }
 
 jQuery(function ($) {
+
     $(".sidebar-dropdown > a").click(function () {
         $(".sidebar-submenu").slideUp(200);
         if (
@@ -132,6 +133,43 @@ jQuery(function ($) {
 });
 
 $(document).ready(function () {
+    // Loadmore
+    var _COUNTLIST = 1
+    var _TYPE = null
+    var _PATHNAME = window.location.pathname.split("/")
+    if (_PATHNAME.length > 2 && _PATHNAME[2] === "alerts") {
+        _TYPE = "alert"
+    }
+    if (_PATHNAME.length > 2 && _PATHNAME[2] === "lists") {
+        _TYPE = "mylist"
+    }
+    if (_TYPE) {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10 && _TYPE) {
+                _COUNTLIST++
+                var request = $.ajax({
+                    url: `/user/loadlist/?page=${_COUNTLIST}&type=${_TYPE}`,
+                    method: 'GET',
+                    contentType: "application/json; charset=utf-8",
+                    processData: false
+                })
+                request.done(function (resp) {
+                    if (resp.data.length) {
+                        $.each(resp.data, function (index, item) {
+                            var { anime_id, title, slug, thumb } = item
+                            $('#ma-itemList')
+                                .append(`<li class="ma-mylist-animeList-item"><a class="ma-link-block" href="/anime/${anime_id}/${slug}"><div class="ma-mylist-animeList-inner"><div class="ma-mylist-animeList-item-thumbnail"><div class="ma-m-thumbnail ma-m-thumbnail-loaded"><img class="ma-m-thumbnail-image" alt="BNA" srcset="${thumb}?w=192&h=108&amp;q=85&f=webp 1x, ${thumb}?w=384&h=216&q=85&f=webp 2x" loading="lazy" src="${thumb}?w=192&h=108&q=85&f=webp"><div class="ma-m-thumbnail-play ma-m-thumbnail-play-desktop"><span class="ma-m-play-icon"><svg class="ma-symbol" aria-label="" width="100%" height="100%" role="img" focusable="false"><use xlink:href="/imgs/icons/playback.svg?v=v20.227.5#svg-body"></use></svg></span></div></div></div><div class="ma-mylist-animeList-item-details"><p class="ma-mylist-animeList-item-entity-title">${title}</p></div><div class="ma-mylist-animeList-item-delete"><div class="ma-mylist-animeList-item-delete-button" type="button" onclick="event.stopPropagation();event.preventDefault();removeMyList(this,'${title}','${anime_id}')"><svg class="ma-symbol" aria-label="Delete" width="100%" height="100%" role="img" focusable="false"><use xlink:href="/imgs/icons/delete.svg#svg-body"></use></svg></div></div></div></a></li>`);
+                        });
+                    } else {
+                        _TYPE = null
+                    }
+                }).fail(function (data) {
+                    _TYPE = null
+                })
+            }
+        });
+    }
+    // End Loadmore
     var pathname = window.location.pathname;
     var searchAnime = window.location.search
     $('.ma-mobile-sidebar-menu-drawer div a[href="' + pathname + '"]').addClass('active');
@@ -240,6 +278,87 @@ function socialShare(type, text, url) {
         var url = "https://social-plugins.line.me/lineit/share?url=" + url + ""
         windowPopup(url, 600, 480);
     }
+}
+
+function myListAlert(type, title, anime_id, user_id) {
+    var form = {
+        title,
+        anime_id,
+        user_id
+    }
+    var request = $.ajax({
+        url: '/user/' + type,
+        method: 'PUT',
+        data: JSON.stringify(form),
+        contentType: "application/json; charset=utf-8",
+        processData: false
+    })
+    request.done(function (resp) {
+        var isDisabled = resp.disabled || false
+        changeAlertMyList(type, isDisabled)
+        snackBar(!isDisabled, resp.message)
+    }).fail(function (data) {
+        snackBar(false, data.responseJSON.error)
+    })
+}
+
+function changeAlertMyList(type, isDisabled) {
+    var svg = document.getElementById("ma-" + type).getElementsByTagName('use')[0];
+    var _BUTTON = $("#ma-" + type + " .ma-" + type + "-button")
+    var icon = "alarm_clock_"
+    if (type === "mylist")
+        icon = ""
+    if (isDisabled) {
+        _BUTTON.removeClass("active")
+        svg.href.baseVal = `/imgs/icons/${icon}plus.svg?v=v20.227.5#svg-body`;
+        return;
+    } else {
+        _BUTTON.addClass("active")
+        svg.href.baseVal = `/imgs/icons/${icon}checkmark.svg?v=v20.227.5#svg-body`;
+        return;
+    }
+}
+
+function snackBar(bl, string) {
+    var x = $("#my-noti");
+    x.text(string);
+    var istrue = bl ? '' : 'error';
+    x.removeClass("done")
+    x.addClass(`show ${istrue}`);
+    setTimeout(function () {
+        x.addClass("done")
+        x.removeClass(`show ${istrue}`)
+        return;
+    }, 5000);
+}
+
+function removeMyList(e, title, anime_id) {
+    var _TYPE = null
+    var _PATHNAME = window.location.pathname.split("/")
+    if (_PATHNAME.length > 2 && _PATHNAME[2] === "alerts") {
+        _TYPE = "alert"
+    }
+    if (_PATHNAME.length > 2 && _PATHNAME[2] === "lists") {
+        _TYPE = "mylist"
+    }
+    var form = {
+        title,
+        anime_id
+    }
+    var request = $.ajax({
+        url: '/user/' + _TYPE,
+        method: 'PUT',
+        data: JSON.stringify(form),
+        contentType: "application/json; charset=utf-8",
+        processData: false
+    })
+    request.done(function (resp) {
+        var isDisabled = resp.disabled || false
+        $(e).parents('li').remove();
+        snackBar(!isDisabled, resp.message)
+    }).fail(function (data) {
+        snackBar(false, data.responseJSON.error)
+    })
 }
 
 $(function () {

@@ -13,17 +13,47 @@
                 p.ma-anime-content-section-info.ma-readmore !{anime.description}
             div.ma-readmore-button-section
                 div#ma-readmore-button.btn.ma-readmore-button(type='button') Show more
-            .ma-share
-                ul.ma-share-container
-                    li.ma-share-item(tabindex='-1')
-                        .ma-share-button-section(onclick="socialShare('twit', '"+anime.title+"', window.location.href)")
-                            div.btn.ma-share-twitter-button(aria-label='Twitter' type='button' tabindex='-1')
-                                svg.ma-share-twitter-icon(aria-label='')
-                                    use(xlink:href='/imgs/icons/twitter.svg?v=v20.227.5#svg-body')
-                        span.ma-share-label Twitter
-                    li.ma-share-item(tabindex='-1')
-                        .ma-share-button-section(onclick="socialShare('fb', null, window.location.href)")
-                            div.btn.ma-share-facebook-button(aria-label='Facebook' type='button' tabindex='-1')
-                                svg.ma-share-facebook-icon(aria-label='')
-                                    use(xlink:href='/imgs/icons/facebook.svg?v=v20.227.5#svg-body')
-                        span.ma-share-label Facebook
+            .ma-slot-button
+                if(user)
+                    div#ma-alert.ma-alert-item
+                        - var {title, anime_id} = anime
+                        - var {user_id} = user || null
+                        - var isAlert = user.myAlert.some(x => x === anime_id)
+                        .ma-alert-container
+                            div.btn.ma-alert-button.ma-color-e6(
+                                class=isAlert?"active":"" 
+                                aria-label='Alert' 
+                                type='button' 
+                                onclick='myListAlert("alert", "'+title+'", "'+anime_id+'", "'+user_id+'")')
+                                span.ma-alert-button-icon
+                                    svg.ma-symbol(aria-label='')
+                                        use(xlink:href=`/imgs/icons/alarm_clock_${isAlert?'checkmark':'plus'}.svg?v=v20.227.5#svg-body`)
+                        span.ma-share-label Get Notification
+                        - var isMylist = user.myList.some(x => x === anime_id)
+                    div#ma-mylist.ma-alert-item
+                        .ma-alert-container
+                            div.btn.ma-mylist-button.ma-color-e6(
+                                class=isMylist?"active":"" 
+                                aria-label='My List' 
+                                type='button'
+                                onclick='myListAlert("mylist", "'+title+'", "'+anime_id+'", "'+user_id+'")'
+                                )
+                                span.ma-mylist-button-icon
+                                    svg.ma-symbol(aria-label='')
+                                        use(xlink:href=`/imgs/icons/${isMylist?'checkmark':'plus'}.svg?v=v20.227.5#svg-body`)
+                        span.ma-share-label My List
+                .ma-slot-share
+                    .ma-share
+                        ul.ma-share-container    
+                            li.ma-share-item(tabindex='-1')
+                                .ma-share-button-section(onclick="socialShare('twit', '"+anime.title+"', window.location.href)")
+                                    div.btn.ma-share-twitter-button(aria-label='Twitter' type='button' tabindex='-1')
+                                        svg.ma-share-twitter-icon(aria-label='')
+                                            use(xlink:href='/imgs/icons/twitter.svg?v=v20.227.5#svg-body')
+                                span.ma-share-label Twitter
+                            li.ma-share-item(tabindex='-1')
+                                .ma-share-button-section(onclick="socialShare('fb', null, window.location.href)")
+                                    div.btn.ma-share-facebook-button(aria-label='Facebook' type='button' tabindex='-1')
+                                        svg.ma-share-facebook-icon(aria-label='')
+                                            use(xlink:href='/imgs/icons/facebook.svg?v=v20.227.5#svg-body')
+                                span.ma-share-label Facebook

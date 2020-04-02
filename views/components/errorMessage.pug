@@ -1,0 +1,4 @@
+if(message.errors && message.errors.length)
+    div.alert.alert-danger(role="alert") #{message.errors[0]}
+if(message.success && message.success.length)
+    div.alert.alert-success(role="alert") #{message.success[0]}

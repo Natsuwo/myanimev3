@@ -1,0 +1,26 @@
+.ma-mylist-tab-content
+    .ma-mylist-tab-content-inner
+        ul#ma-itemList.ma-mylist-animeList.ma-non-list
+            each item in data || []
+                - var {anime_id, thumb, slug, title} = item
+                - var {user_id} = user
+                li.ma-mylist-animeList-item
+                    a.ma-link-block(href=`/anime/${anime_id}/${slug}`)
+                        .ma-mylist-animeList-inner
+                            .ma-mylist-animeList-item-thumbnail
+                                .ma-m-thumbnail.ma-m-thumbnail-loaded
+                                    img.ma-m-thumbnail-image(
+                                        alt=title 
+                                        srcset=thumb+'?w=192&h=108&q=85&f=webp 1x, '+thumb+'?w=384&h=216&q=85&f=webp 2x' 
+                                        loading='lazy' 
+                                        src=thumb+'?w=192&h=108&q=85&f=webp')
+                                    .ma-m-thumbnail-play.ma-m-thumbnail-play-desktop
+                                        span.ma-m-play-icon
+                                            svg.ma-symbol(aria-label='' width='100%' height='100%' role='img' focusable='false')
+                                                use(xlink:href='http://localhost:4000/imgs/icons/playback.svg?v=v20.227.5#svg-body')
+                            .ma-mylist-animeList-item-details
+                                p.ma-mylist-animeList-item-entity-title !{title}
+                            .ma-mylist-animeList-item-delete
+                                div.ma-mylist-animeList-item-delete-button(type='button' onclick='event.stopPropagation(); event.preventDefault(); removeMyList(this, "'+title+'", "'+anime_id+'", "'+user_id+'")')
+                                    svg.ma-symbol(aria-label='Delete' width='100%' height='100%' role='img' focusable='false')
+                                        use(xlink:href='/imgs/icons/delete.svg#svg-body') 

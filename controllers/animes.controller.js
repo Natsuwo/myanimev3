@@ -9,7 +9,8 @@ const { dayToNum, alphabet, escapeRegex, getProxy, proxyimg,
 module.exports = {
     async getIndex(req, res) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             var { current_season } = settings
             if (current_season) {
                 var currentSeasonItems = await Anime
@@ -65,6 +66,7 @@ module.exports = {
                 })
 
             res.render('index', {
+                user,
                 settings,
                 proxyimg,
                 url: reqUrl,
@@ -77,6 +79,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,
@@ -86,7 +89,8 @@ module.exports = {
     },
     async getSeason(req, res) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             var { slug, sort } = req.params
             if (!slug) throw Error("Not found.")
             if (!sort || sort !== "views" && sort !== "favorites") throw Error("Not found.")
@@ -105,6 +109,7 @@ module.exports = {
             }
 
             res.render('season', {
+                user,
                 slug,
                 settings,
                 proxyimg,
@@ -116,6 +121,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,
@@ -125,7 +131,8 @@ module.exports = {
     },
     async getAnimeId(req, res, next) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, isMobile, user } = res.locals
+            if(!user) user = null
             var { anime_id } = req.params
             if (!parseInt(anime_id)) throw Error("Not found.")
             var fs = require('fs')
@@ -144,6 +151,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,
@@ -153,7 +161,8 @@ module.exports = {
     },
     async getAnime(req, res) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             var { anime_id, slug } = req.params
             if (!parseInt(anime_id)) throw Error("Not found.")
             var { sort, eps } = req.query
@@ -195,6 +204,7 @@ module.exports = {
                 sort = "asc"
             }
             res.render('anime', {
+                user,
                 settings,
                 url: reqUrl,
                 pageTitle: anime.title,
@@ -209,6 +219,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,
@@ -218,7 +229,8 @@ module.exports = {
     },
     async getEpisode(req, res) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             var { anime_id, slug, number } = req.params
             number = parseInt(number)
             var episodeList = {}
@@ -265,6 +277,7 @@ module.exports = {
                 sources.push(item)
             }
             res.render('watch', {
+                user,
                 settings,
                 totalEp,
                 proxyimg,
@@ -280,6 +293,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,
@@ -289,7 +303,8 @@ module.exports = {
     },
     async getAnimeRanking(req, res) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             var { sort } = req.params
             var { g } = req.query
             if (g === "all" || !parseInt(g)) {
@@ -334,7 +349,8 @@ module.exports = {
     },
     async getAnimeCalendar(req, res) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             var { day } = req.params
             if (!day) day = "monday"
             day = dayToNum(day)
@@ -377,6 +393,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,
@@ -386,7 +403,8 @@ module.exports = {
     },
     async getAnimeList(req, res) {
         try {
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             var animes = await Anime.find({}, { _id: 0 }).select("title anime_id slug").cache(300, "animelists")
             animes = alphabet(animes)
             res.render('animes-list', {
@@ -399,6 +417,7 @@ module.exports = {
             })
         } catch (err) {
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,
@@ -434,7 +453,8 @@ module.exports = {
     async searchAnime(req, res) {
         try {
             var { q } = req.query
-            var { settings, reqUrl, isMobile } = res.locals
+            var { settings, reqUrl, isMobile, user } = res.locals
+            if(!user) user = null
             if (/["]/.test(q)) {
                 var regex = q.replace(/['"]+/g, '')
             } else {
@@ -458,6 +478,7 @@ module.exports = {
                 counts[anime_id] = await Episode.countDocuments({ anime_id })
             }
             res.render('search', {
+                user,
                 settings,
                 proxyimg,
                 query: q,
@@ -470,6 +491,7 @@ module.exports = {
         } catch (err) {
             console.error(err)
             res.render('error', {
+                user,
                 settings,
                 pageTitle: 'Error',
                 isMobile,

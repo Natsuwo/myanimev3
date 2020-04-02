@@ -20,8 +20,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    avatar: String,
-    rank: Number,
+    myList: {
+        type: Array,
+        default: []
+    },
+    myAlert: {
+        type: Array,
+        default: []
+    },
     created_at: Number
 })
 
@@ -37,9 +43,28 @@ userSchema.pre('save', function (next) {
         bcrypt.hash(user.password, salt, async function (err, hash) {
             if (err) return next(err)
             user.password = hash
-            var counter = await Counter.findOneAndUpdate({ key: "user" }, { $inc: { value: 1 } }, { new: true })
-            user.user_id = counter.value
-            next()
+            if (counter) {
+                var counter = await Counter.findOneAndUpdate({ key: "user" }, { $inc: { value: 1 } }, { new: true })
+                user.user_id = counter.value
+                return next()
+            } else {
+                await Counter.create({ key: "user", value: 1 })
+                user.user_id = 1
+                return next()
+            }
+        })
+    })
+})
+
+userSchema.pre('updateOne', function (next) {
+    var update = this.getUpdate()
+    if (!update.password) return next()
+    bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+        if (err) return next(err)
+        bcrypt.hash(update.password, salt, async function (err, hash) {
+            if (err) return next(err)
+            update.password = hash
+            return next()
         })
     })
 })

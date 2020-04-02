@@ -1,0 +1,65 @@
+extends ../../layouts/auth
+block content
+    - var form = message.form ? message.form : null
+    - if(form && form.length) var {email, username} = form[0]
+    .container 
+        if(message.errors || message.success)
+            .pt-5
+                include ../../components/errorMessage
+        .row
+            .col-md-4.offset-md-4.col-10.offset-1.login-main.border.rounded.pb-4.pt-5
+                form(method="POST")
+                    .row
+                        .col-md-4.col-12.heading-image.text-white.text-center
+                            img(src="/imgs/192.png")
+                    .row
+                        .col-md-12.col-12.mt-5
+                            .input-group
+                                .input-group-prepend
+                                    span.input-group-text.bg-white.border-0.p-3
+                                        i.fa.fa-user
+                                input.form-control.border-0.pl-3(type='text' name="username" placeholder='Name' required='' value=username?username:"")
+                    .row
+                        .col-md-12.col-12.mt-3
+                            .input-group
+                                .input-group-prepend
+                                    span.input-group-text.bg-white.border-0.p-3
+                                        i.fa.fa-user
+                                input.form-control.border-0.pl-3(type='email' name="email" placeholder='Email' required='' value=email?email:"")
+                    .row
+                        .col-md-12.col-12.mt-3
+                            .input-group
+                                .input-group-prepend
+                                    span.input-group-text.bg-white.border-0.p-3
+                                        i.fa.fa-user
+                                input.form-control.border-0.pl-3.pb-0(type='password' name="password" placeholder='Password' required='' autocomplete="on")
+                    .row
+                        .col-md-12.col-12.mt-3
+                            .input-group
+                                .input-group-prepend
+                                    span.input-group-text.bg-white.border-0.p-3
+                                        i.fa.fa-user
+                                input.form-control.border-0.pl-3.pb-0(type='password' name="confirm_password" placeholder='Confirm Password' required='' autocomplete="on") 
+                    .row
+                        .col-md-12.col-12.mt-3
+                            button.btn.btn-info.rounded-0.w-100(type='submit') Register
+                    .row
+                        .col-md-12.col-12.mt-3.options
+                            .row
+                                .col-md-6.col-12.pl-4
+                                    a.text-white(href="/auth/sign-in")
+                                        .text-white Already have an account?
+                                .col-md-6.col-12.pl-4
+                                    a.text-white(href='/auth/forgot')
+                                        i Forgot Password?
+    ul.bubble-boxes
+        li
+        li
+        li
+        li
+        li
+        li
+        li
+        li
+        li
+        li
