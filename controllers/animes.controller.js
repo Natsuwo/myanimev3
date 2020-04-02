@@ -182,7 +182,7 @@ module.exports = {
             var episodes = await Episode.find(search, { _id: 0 })
                 .select("thumbnail views sources number description")
                 .sort(sort).limit(25)
-                .cache(60, "episodes-" + anime_id)
+                .cache(60, "episodes-" + anime_id + eps)
             var regex = new RegExp(escapeRegexRec(anime.title), 'gi')
             var totalRec = await Anime.countDocuments({ title: regex })
             var recommend = await Anime.find({ anime_id: { $ne: anime_id }, title: regex }, { _id: 0 })
