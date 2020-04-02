@@ -14,9 +14,15 @@ module.exports = {
             if (user)
                 return res.redirect("/")
             res.render('pages/auth/sign-in', {
+                pageTitle: "Sign in",
                 message: req.flash()
             })
         } catch (err) {
+            res.render('error', {
+                user,
+                pageTitle: 'Error',
+                isFooter: false
+            });
         }
     },
     async getSignUp(req, res) {
@@ -25,9 +31,15 @@ module.exports = {
             if (user)
                 return res.redirect("/")
             res.render('pages/auth/sign-up', {
+                pageTitle: "Sign up",
                 message: req.flash()
             })
         } catch (err) {
+            res.render('error', {
+                user,
+                pageTitle: 'Error',
+                isFooter: false
+            });
         }
     },
     async getForgotPass(req, res) {
@@ -36,9 +48,15 @@ module.exports = {
             if (user)
                 return res.redirect("/")
             res.render('pages/auth/forgot', {
+                pageTitle: "Fogot password",
                 message: req.flash()
             })
         } catch (err) {
+            res.render('error', {
+                user,
+                pageTitle: 'Error',
+                isFooter: false
+            });
         }
     },
     async getResetPass(req, res) {
@@ -51,6 +69,7 @@ module.exports = {
             var { expired } = verify
             if (Date.now() >= expired) throw Error('Session is expired.')
             res.render('pages/auth/reset', {
+                pageTitle: "Reset Password",
                 message: req.flash()
             })
         } catch (err) {
