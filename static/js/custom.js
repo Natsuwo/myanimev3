@@ -143,31 +143,40 @@ $(document).ready(function () {
     if (_PATHNAME.length > 2 && _PATHNAME[2] === "lists") {
         _TYPE = "mylist"
     }
+    var scrollTimer = null;
+
     if (_TYPE) {
         $(window).scroll(function () {
-            if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10 && _TYPE) {
-                _COUNTLIST++
-                var request = $.ajax({
-                    url: `/api/user/loadlist/?page=${_COUNTLIST}&type=${_TYPE}`,
-                    method: 'GET',
-                    contentType: "application/json; charset=utf-8",
-                    processData: false
-                })
-                request.done(function (resp) {
-                    if (resp.data.length) {
-                        $.each(resp.data, function (index, item) {
-                            var { anime_id, title, slug, thumb } = item
-                            $('#ma-itemList')
-                                .append(`<li class="ma-mylist-animeList-item"><a class="ma-link-block" href="/anime/${anime_id}/${slug}"><div class="ma-mylist-animeList-inner"><div class="ma-mylist-animeList-item-thumbnail"><div class="ma-m-thumbnail ma-m-thumbnail-loaded"><img class="ma-m-thumbnail-image" alt="BNA" srcset="${thumb}?w=192&h=108&amp;q=85&f=webp 1x, ${thumb}?w=384&h=216&q=85&f=webp 2x" loading="lazy" src="${thumb}?w=192&h=108&q=85&f=webp"><div class="ma-m-thumbnail-play ma-m-thumbnail-play-desktop"><span class="ma-m-play-icon"><svg class="ma-symbol" aria-label="" width="100%" height="100%" role="img" focusable="false"><use xlink:href="/imgs/icons/playback.svg?v=v20.227.5#svg-body"></use></svg></span></div></div></div><div class="ma-mylist-animeList-item-details"><p class="ma-mylist-animeList-item-entity-title">${title}</p></div><div class="ma-mylist-animeList-item-delete"><div class="ma-mylist-animeList-item-delete-button" type="button" onclick="event.stopPropagation();event.preventDefault();removeMyList(this,'${title}','${anime_id}')"><svg class="ma-symbol" aria-label="Delete" width="100%" height="100%" role="img" focusable="false"><use xlink:href="/imgs/icons/delete.svg#svg-body"></use></svg></div></div></div></a></li>`);
-                        });
-                    } else {
-                        _TYPE = null
-                    }
-                }).fail(function (data) {
-                    _TYPE = null
-                })
+            if (scrollTimer) {
+                clearTimeout(scrollTimer);   // clear any previous pending timer
             }
+            scrollTimer = setTimeout(handleScroll, 300);   // set new timer
         });
+    }
+    function handleScroll() {
+        scrollTimer = null;
+        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10 && _TYPE) {
+            _COUNTLIST++
+            var request = $.ajax({
+                url: `/api/user/loadlist/?page=${_COUNTLIST}&type=${_TYPE}`,
+                method: 'GET',
+                contentType: "application/json; charset=utf-8",
+                processData: false
+            })
+            request.done(function (resp) {
+                if (resp.data.length) {
+                    $.each(resp.data, function (index, item) {
+                        var { anime_id, title, slug, thumb } = item
+                        $('#ma-itemList')
+                            .append(`<li class="ma-mylist-animeList-item"><a class="ma-link-block" href="/anime/${anime_id}/${slug}"><div class="ma-mylist-animeList-inner"><div class="ma-mylist-animeList-item-thumbnail"><div class="ma-m-thumbnail ma-m-thumbnail-loaded"><img class="ma-m-thumbnail-image" alt="BNA" srcset="${thumb}?w=192&h=108&amp;q=85&f=webp 1x, ${thumb}?w=384&h=216&q=85&f=webp 2x" loading="lazy" src="${thumb}?w=192&h=108&q=85&f=webp"><div class="ma-m-thumbnail-play ma-m-thumbnail-play-desktop"><span class="ma-m-play-icon"><svg class="ma-symbol" aria-label="" width="100%" height="100%" role="img" focusable="false"><use xlink:href="/imgs/icons/playback.svg?v=v20.227.5#svg-body"></use></svg></span></div></div></div><div class="ma-mylist-animeList-item-details"><p class="ma-mylist-animeList-item-entity-title">${title}</p></div><div class="ma-mylist-animeList-item-delete"><div class="ma-mylist-animeList-item-delete-button" type="button" onclick="event.stopPropagation();event.preventDefault();removeMyList(this,'${title}','${anime_id}')"><svg class="ma-symbol" aria-label="Delete" width="100%" height="100%" role="img" focusable="false"><use xlink:href="/imgs/icons/delete.svg#svg-body"></use></svg></div></div></div></a></li>`);
+                    });
+                } else {
+                    _TYPE = null
+                }
+            }).fail(function (data) {
+                _TYPE = null
+            })
+        }
     }
     // End Loadmore
     var pathname = window.location.pathname;
