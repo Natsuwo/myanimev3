@@ -97,7 +97,7 @@ module.exports = {
                 var list_id = user.myAlert || []
             else
                 var list_id = user.myList || []
-            if (list_id.length > 12)
+            if (list_id.length)
                 list_id = list_id.slice((page - 1) * 12, page * 12)
             var items = await Anime
                 .find({ anime_id: { $in: list_id } }, { _id: 0 })
