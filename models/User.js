@@ -8,13 +8,11 @@ const userSchema = new mongoose.Schema({
     user_id: Number,
     email: {
         type: String,
-        required: true,
-        index: { unique: true }
+        required: true
     },
     username: {
         type: String,
-        required: true,
-        index: { unique: true }
+        required: true
     },
     password: {
         type: String,
@@ -43,6 +41,7 @@ userSchema.pre('save', function (next) {
         bcrypt.hash(user.password, salt, async function (err, hash) {
             if (err) return next(err)
             user.password = hash
+            var counter = await Counter.countDocuments({ key: "user" })
             if (counter) {
                 var counter = await Counter.findOneAndUpdate({ key: "user" }, { $inc: { value: 1 } }, { new: true })
                 user.user_id = counter.value
