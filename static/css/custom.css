@@ -2161,10 +2161,6 @@ input.ma-find-ep-input[type=text]:focus {
   width: 24px;
 }
 
-.page-wrapper.toggled .ma-mobile-sidebar-menu-container {
-  pointer-events: auto
-}
-
 .page-wrapper.toggled .ma-mobile-sidebar-menu-icon-close {
   opacity: 1;
   pointer-events: auto;
