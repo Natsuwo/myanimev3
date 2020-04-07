@@ -10,7 +10,7 @@ module.exports = {
     async getIndex(req, res) {
         try {
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var { current_season } = settings
             if (current_season) {
                 var currentSeasonItems = await Anime
@@ -90,7 +90,7 @@ module.exports = {
     async getSeason(req, res) {
         try {
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var { slug, sort } = req.params
             if (!slug) throw Error("Not found.")
             if (!sort || sort !== "views" && sort !== "favorites") throw Error("Not found.")
@@ -132,7 +132,7 @@ module.exports = {
     async getAnimeId(req, res, next) {
         try {
             var { settings, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var { anime_id } = req.params
             if (!parseInt(anime_id)) throw Error("Not found.")
             var fs = require('fs')
@@ -162,7 +162,7 @@ module.exports = {
     async getAnime(req, res) {
         try {
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var { anime_id, slug } = req.params
             if (!parseInt(anime_id)) throw Error("Not found.")
             var { sort, eps } = req.query
@@ -171,7 +171,7 @@ module.exports = {
             sort = { number: sort }
             var search = eps >= 0 ? { anime_id, number: eps } : { anime_id }
             var anime = await Anime
-                .findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0, __v: 0 })
+                .findOne({ anime_id }, { _id: 0, __v: 0 })
                 .cache(300, anime_id)
 
             if (!anime) throw Error("Not found.")
@@ -230,7 +230,7 @@ module.exports = {
     async getEpisode(req, res) {
         try {
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var { anime_id, slug, number } = req.params
             number = parseInt(number)
             var episodeList = {}
@@ -252,7 +252,7 @@ module.exports = {
                 .findOne({ anime_id, number }, { _id: 0 })
                 .cache(60, "episode-" + anime_id + number)
 
-            var anime = await Anime.findOne({ $or: [{ anime_id }, { slug }] }, { _id: 0 })
+            var anime = await Anime.findOne({ anime_id }, { _id: 0 })
                 .select("title genres anime_id slug en_title jp_title")
                 .cache(60, "anime-" + anime_id + number)
 
@@ -304,7 +304,7 @@ module.exports = {
     async getAnimeRanking(req, res) {
         try {
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var { sort } = req.params
             var { g } = req.query
             if (g === "all" || !parseInt(g)) {
@@ -350,7 +350,7 @@ module.exports = {
     async getAnimeCalendar(req, res) {
         try {
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var { day } = req.params
             if (!day) day = "monday"
             day = dayToNum(day)
@@ -404,7 +404,7 @@ module.exports = {
     async getAnimeList(req, res) {
         try {
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             var animes = await Anime.find({}, { _id: 0 }).select("title anime_id slug").cache(300, "animelists")
             animes = alphabet(animes)
             res.render('animes-list', {
@@ -454,7 +454,7 @@ module.exports = {
         try {
             var { q } = req.query
             var { settings, reqUrl, isMobile, user } = res.locals
-            if(!user) user = null
+            if (!user) user = null
             if (/["]/.test(q)) {
                 var regex = q.replace(/['"]+/g, '')
             } else {
