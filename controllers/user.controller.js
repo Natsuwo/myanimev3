@@ -44,7 +44,6 @@ module.exports = {
     async addMyList(req, res) {
         try {
             var { user } = res.locals
-            console.log(user)
             if (!user) throw Error("You are not signed in.")
             var { anime_id, title } = req.body
             var { user_id } = user
@@ -55,9 +54,11 @@ module.exports = {
             var isHas = await User.countDocuments({ myList: { $in: anime_id } })
             if (isHas) {
                 await User.updateOne({ $pull: { myList: anime_id } })
+                await Anime.updateOne({ anime_id }, { $inc: { favorites: -1 } }, { new: true })
                 return res.send({ success: true, disabled: true, message: title + " removed in your list." })
-            } else {
+            } else {      
                 await User.updateOne({ $push: { myList: { $each: [anime_id], $position: 0 } } })
+                await Anime.updateOne({ anime_id }, { $inc: { favorites: 1 } }, { new: true })
                 return res.send({ success: true, disabled: false, message: title + " added in your list." })
             }
         } catch (err) {

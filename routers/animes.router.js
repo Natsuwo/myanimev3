@@ -50,4 +50,41 @@ route.get('/privacy-policy', getOption, auth, (req, res) => {
 
 route.get('/search/queries', suggestSearch)
 
+// Sitemap
+const { SitemapStream, streamToPromise } = require('sitemap')
+const { createGzip } = require('zlib')
+let sitemap
+route.get('/sitemap.xml', async (req, res) => {
+    res.header('Content-Type', 'application/xml');
+    res.header('Content-Encoding', 'gzip');
+    if (sitemap) {
+        return res.send(sitemap)
+
+    }
+    try {
+        const Anime = require('../models/Anime')
+        const smStream = new SitemapStream({ hostname: 'https://myanime.co/' })
+        const pipeline = smStream.pipe(createGzip())
+        var defaultPage = ['/', '/animes-list', '/ranking/views', '/ranking/favorites']
+        var animes = await Anime.find({}, { _id: 0 }).select("slug anime_id")
+        // pipe your entries or directly write them.
+        for (var item of defaultPage) {
+            smStream.write({ url: item, changefreq: 'daily', priority: 0.3 })
+        }
+        for (var anime of animes) {
+            var { slug, anime_id } = anime
+            var url = '/anime/' + anime_id + '/' + slug
+            smStream.write({ url, changefreq: 'daily', priority: 0.3 })
+        }
+        smStream.end()
+        // cache the response
+        streamToPromise(pipeline).then(sm => sitemap = sm)
+        // stream write the response
+        pipeline.pipe(res).on('error', (e) => { throw e })
+    } catch (e) {
+        console.error(e)
+        res.status(500).end()
+    }
+})
+
 module.exports = route
