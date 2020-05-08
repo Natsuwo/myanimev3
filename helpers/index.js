@@ -73,24 +73,7 @@ module.exports = {
     },
     async getSourceHls(drive_id) {
         try {
-            var drDomain = process.env.DRDOMAIN
-            var endpoint = drDomain + '/api/v2/hls-drive/get-data'
-            var token = process.env.DRTOKEN
-            var user_id = process.env.DRUSER
-            var query = `?user_id=${user_id}&drive_id=${drive_id}&secret_token=${token}`
-            var checkProgress = await axios.get(drDomain + '/api/v2/hls-drive/progress' + query)
-            if (checkProgress.data.success) {
-                var progress = checkProgress.data.progress
-                if (progress.rendered && progress.deleted) {
-                    var resp = await axios.get(endpoint + query)
-                    var data = resp.data
-                    if (!data.success) return null
-                    var id = data.results.id
-                    var link = "//drstream.live" + '/hls/' + id + '.m3u8'
-                    return link
-                }
-                return null
-            }
+            
             return null
         } catch (err) {
             return null

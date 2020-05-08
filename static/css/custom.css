@@ -1763,7 +1763,7 @@ a:hover.ma-outline {
   word-wrap: break-word;
 }
 
-.ma-lang-icon::before {
+.ma-lang-icon::before, .ma-quality-icon::before {
   font-size: 1.8em;
   line-height: 1.67;
 }
